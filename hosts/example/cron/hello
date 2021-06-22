@@ -1,0 +1,2 @@
+# Run the example Hello World report
+05 8-17 * * * root /usr/bin/docker run --rm --env-file /rcc/example/.env rcc_example Rscript redcapcustodian/report/hello-example.R

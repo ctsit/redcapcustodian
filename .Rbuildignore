@@ -1,0 +1,12 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^.*\.env$
+^VERSION$
+^build.sh$
+^Dockerfile$
+^.dockerignore$
+^examples/.*
+^etl/.*
+^report/.*
+^output/.*
+^hosts/.*

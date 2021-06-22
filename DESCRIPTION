@@ -1,0 +1,21 @@
+Package: redcapcustodian
+Type: Package
+Title: System data cleaning for REDCap
+Version: 0.1.0
+Authors@R: c(
+  person("Philip", "Chase", email = "pbc@ufl.edu", role = c("aut", "cre")),
+  person("Laurence", "James-Woodley", email = "lawjames1@ufl.edu", role = "aut"),
+  person("Kyle", "Chesney", email = "kyle.chesney@ufl.edu", role = "aut"),
+  person("Taryn", "Stoffs", email = "tls@ufl.edu", role = "ctb"),
+  person("Christopher", "Barnes", email = "cpb@ufl.edu", role = "ctb")
+  )
+Maintainer: Philip B Chase <pbc@ufl.edu>
+Description: Automates data grooming activities that support the 
+    business of running a REDCap service. Detects, corrects, and 
+    reports on data issues with scheduled processes.
+License: Apache License (>= 2.0)
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

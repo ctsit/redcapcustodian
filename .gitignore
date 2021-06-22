@@ -1,0 +1,17 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# data files and their archives
+*.csv
+*.xls
+*.xlsx
+*.zip
+hosts/*
+!hosts/example
+!inst/testdata/*.csv
+
+# env file
+*.env
+!examples/*.env

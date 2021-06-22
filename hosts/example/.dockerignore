@@ -1,0 +1,14 @@
+# ignore .git and .cache folders
+.git
+.cache
+.gitignore
+.DS_Store
+
+# ignore any secrets
+.env
+
+# other things not used by the container
+man
+*.md
+redcapcustodian.Rproj
+.Rproj.user
