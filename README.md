@@ -25,7 +25,7 @@ sudo ./build.sh -d <hostname>
 
 # Testing in Docker
 
-To build an updated `redcapcustodian` image for the _example_ host, run `./build.sh example`.  This will build two images: `redcapcustodian` and `rcc_example`. The latter is built on top of the former.
+To build an updated `redcapcustodian` image for the _example_ host, create a copy of `example.env` named `.env` inside the `hosts/example` directory i.e., `cp hosts/example/example.env hosts/example/.env`, and run `./build.sh example`.  This will build two images: `redcapcustodian` and `rcc_example`. The latter is built on top of the former.
 
 To see the working directory and the contents of the `redcapcustodian` directory run
 
