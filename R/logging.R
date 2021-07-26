@@ -1,6 +1,11 @@
 # Set a package-scoped environment for "global" vars on package load
 redcapcustodian.env <- new.env(parent = emptyenv())
 
+# Standardized error message tibble
+error_list <- dplyr::tibble(
+  message = character()
+)
+
 #' Builds formatted data frame from source data
 #'
 #' @param result, the df to log
@@ -133,6 +138,94 @@ set_script_run_time <- function(fake_runtime = lubridate::NA_POSIXct_) {
   return(redcapcustodian.env$script_run_time)
 }
 
+#' Attempts to connect to the DB using all LOG_DB_* environment variables. Returns an empty list if a connection is established, returns an `error_list` entry otherwise.
+#'
+#' @param drv, an object that inherits from DBIDriver, or an existing DBIConnection object (in order to clone an existing connection).
+#'
+#' @return An `error_list` entry
+#'
+#' @examples
+#' \dontrun{
+#'  verify_log_connectivity()
+#' }
+verify_log_connectivity <- function(drv) {
+  error <- error_list
+
+  result <- dbCanConnect(
+    drv,
+    dbname = Sys.getenv("LOG_DB_NAME"),
+    host = Sys.getenv("LOG_DB_HOST"),
+    user = Sys.getenv("LOG_DB_USER"),
+    password = Sys.getenv("LOG_DB_PASSWORD"),
+    port = Sys.getenv("LOG_DB_PORT")
+  )
+
+  if (result == FALSE) {
+    error <- error %>% add_row(message = attributes(result)$reason)
+  }
+
+  return(error)
+}
+
+#' Verifies all required environment variables are set. Returns an empty list if all necessary environment variables are set, returns a list of errors otherwise.
+#'
+#' @return A list of `error_list` entries.
+#'
+#' @examples
+#' \dontrun{
+#'  verify_log_env_variables()
+#' }
+verify_log_env_variables <- function() {
+  errors <- error_list
+
+  log_db_name <- Sys.getenv("LOG_DB_NAME")
+  log_db_host <- Sys.getenv("LOG_DB_HOST")
+  log_db_user <- Sys.getenv("LOG_DB_USER")
+  log_db_password <- Sys.getenv("LOG_DB_PASSWORD")
+  log_db_schema <- Sys.getenv("LOG_DB_SCHEMA")
+
+  if (log_db_name == "") {
+    errors <- errors %>% add_row(message = "LOG_DB_NAME is not set. It is required to write log entries.")
+  }
+  if (log_db_host == "") {
+    errors <- errors %>% add_row(message = "LOG_DB_HOST is not set. It is required to write log entries.")
+  }
+  if (log_db_user == "") {
+    errors <- errors %>% add_row(message = "LOG_DB_USER is not set. It is required to write log entries.")
+  }
+  if (log_db_password == "") {
+    errors <- errors %>% add_row(message = "LOG_DB_PASSWORD is not set. It is required to write log entries.")
+  }
+  if (log_db_schema == "") {
+    errors <- errors %>% add_row(message = "LOG_DB_SCHEMA is not set. It is required to write log entries.")
+  }
+
+  return(errors)
+}
+
+#' Verifies all dependencies required to write log entries.
+#'
+#' @param drv, an object that inherits from DBIDriver, or an existing DBIConnection object (in order to clone an existing connection).
+#'
+#' @return A list of `error_list` entries.
+#'
+#' @examples
+#' \dontrun{
+#'  verify_log_dependencies(
+#'      drv = MariaDB()
+#'  )
+#' }
+verify_log_dependencies <- function(drv = MariaDB()) {
+  errors <- error_list
+
+  can_connect <- verify_log_connectivity(drv)
+  all_env_set <- verify_log_env_variables()
+
+  errors <- dplyr::combine(can_connect, all_env_set)
+
+  return(errors)
+}
+
 #' Write an error log entry
 #'
 #' @param con, a DB connection
@@ -153,16 +246,25 @@ set_script_run_time <- function(fake_runtime = lubridate::NA_POSIXct_) {
 #'  )
 #' }
 write_error_log_entry <- function(con, target_db_name, table_written = NULL, df, pk_col) {
-  df_to_write <- build_formatted_df_from_result(df, target_db_name, table_written, "ERROR", pk_col)
-  write_to_sql_db(
-    conn = con,
-    table_name = "etl_log",
-    df_to_write = df_to_write,
-    schema = Sys.getenv("LOG_DB_SCHEMA"),
-    overwrite = FALSE,
-    db_name = Sys.getenv("LOG_DB_NAME"),
-    append = TRUE
-  )
+  missing_dependencies <- verify_log_dependencies()
+  tryCatch({
+    stopifnot(nrow(missing_dependencies) == 0)
+
+    df_to_write <- build_formatted_df_from_result(df, target_db_name, table_written, "ERROR", pk_col)
+    write_to_sql_db(
+      conn = con,
+      table_name = "etl_log",
+      df_to_write = df_to_write,
+      schema = Sys.getenv("LOG_DB_SCHEMA"),
+      overwrite = FALSE,
+      db_name = Sys.getenv("LOG_DB_NAME"),
+      append = TRUE
+    )
+  },
+  error = function(cond) {
+    # TODO improve error output
+    print(paste0("Failed to write error log entry:", missing_dependencies))
+  })
 }
 
 #' Write an info log entry
@@ -186,14 +288,23 @@ write_error_log_entry <- function(con, target_db_name, table_written = NULL, df,
 #'  )
 #' }
 write_info_log_entry <- function(con, target_db_name, table_written = NULL, df, pk_col) {
-  df_to_write <- build_formatted_df_from_result(df, target_db_name, table_written, "INFO", pk_col)
-  write_to_sql_db(
-    conn = con,
-    table_name = "etl_log",
-    df_to_write = df_to_write,
-    schema = Sys.getenv("LOG_DB_SCHEMA"),
-    overwrite = FALSE,
-    db_name = Sys.getenv("LOG_DB_NAME"),
-    append = TRUE
-  )
+  missing_dependencies <- verify_log_dependencies()
+  tryCatch({
+    stopifnot(nrow(missing_dependencies) == 0)
+
+    df_to_write <- build_formatted_df_from_result(df, target_db_name, table_written, "INFO", pk_col)
+    write_to_sql_db(
+      conn = con,
+      table_name = "etl_log",
+      df_to_write = df_to_write,
+      schema = Sys.getenv("LOG_DB_SCHEMA"),
+      overwrite = FALSE,
+      db_name = Sys.getenv("LOG_DB_NAME"),
+      append = TRUE
+    )
+  },
+  error = function(cond) {
+    # TODO improve error output
+    print(paste0("Failed to write info log entry:", missing_dependencies))
+  })
 }
