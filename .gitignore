@@ -9,9 +9,9 @@
 *.xlsx
 *.zip
 hosts/*
-!hosts/example
 !inst/testdata/*.csv
 
 # env file
 *.env
-!examples/*.env
+!host_template/*.env
+!host_template/.env

@@ -36,7 +36,7 @@ if [ -z $hostopt ]; then
   exit
 fi
 
-if [ -d $hostopt -a -e "${hostopt}/.env" ]; then 
+if [ -d $hostopt -a -e "${hostopt}/.env" ]; then
   hostpath=$hostopt
 elif [ -d ./hosts/$hostopt -a -e "./hosts/${hostopt}/.env" ]; then
   hostpath=./hosts/$hostopt
@@ -76,7 +76,7 @@ if [ $deploy ]; then
   if [ -e $hostpath/.env ]; then
     . $hostpath/.env
   fi
-  # make the target folder for env files if if does not exist
+  # make the target folder for env files if it does not exist
   if [ ! -d $ENV_FILES_FOLDER ]; then 
     mkdir -p $ENV_FILES_FOLDER
   fi

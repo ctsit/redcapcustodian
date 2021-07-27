@@ -25,7 +25,19 @@ sudo ./build.sh -d <hostname>
 
 # Testing in Docker
 
-To build an updated `redcapcustodian` image for the _example_ host, run `./build.sh example`.  This will build two images: `redcapcustodian` and `rcc_example`. The latter is built on top of the former.
+To build an updated `redcapcustodian` image for an _example_ host, create a host folder from the template:
+
+```bash
+./make_host.sh example
+```
+
+Build `redcapcustodian` and the `example` host image:
+
+```bash
+./build.sh example
+```
+
+This will build two images: `redcapcustodian` and `rcc_example`. The latter is built on top of the former.
 
 To see the working directory and the contents of the `redcapcustodian` directory run
 
@@ -36,9 +48,6 @@ docker run --rm rcc_example
 To run the shared `hello.R` report within the shared container, run 
 
 ```bash
-# make sure the .env file exists
-if [ ! -e .env ]; then touch .env; fi
-
 # run the script inside the container
 docker run --env-file .env --rm redcapcustodian Rscript redcapcustodian/report/hello.R
 ```
@@ -46,9 +55,6 @@ docker run --env-file .env --rm redcapcustodian Rscript redcapcustodian/report/h
 To run the localized `hello-local.R` report from the _example_ host within the container, run 
 
 ```bash
-# make sure the .env file exists
-if [ ! -e .env ]; then touch .env; fi
-
 # run the script inside the container
 docker run --env-file .env --rm rcc_example Rscript redcapcustodian/report/hello-local.R
 ```
