@@ -29,7 +29,7 @@ error_list <- dplyr::tibble(
 build_formatted_df_from_result <- function(result, database_written, table_written, log_level, pk_col) {
   log_data <- result %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(record_level_data = purrr::pmap(., ~ rjson::toJSON(c(...)))) %>%
+    dplyr::mutate(record_level_data = purrr::pmap(.data$., ~ rjson::toJSON(c(...)))) %>%
     dplyr::select(primary_key = pk_col, .data$record_level_data) %>%
     dplyr::mutate(
       script_name = get_script_name(),
@@ -59,7 +59,7 @@ get_current_time <- function() {
     lubridate::now(),
     tzone = Sys.getenv("TIME_ZONE")
   )
-  return (current_time)
+  return(current_time)
 }
 
 #' Fetches the package-scoped value of script_name
@@ -84,19 +84,19 @@ get_script_run_time <- function() {
 #'
 #' @param script_name optional arg to override the calling script
 #' @importFrom magrittr "%>%"
+#' @importFrom rlang .data
 #' @export
 set_script_name <- function(script_name = "") {
-  key <- value <- NULL
   if (script_name == "") {
     # adapted from https://stackoverflow.com/a/55322344
     script_name <- commandArgs() %>%
-      tibble::enframe(name=NULL) %>%
-      tidyr::separate(col=value, into=c("key", "value"), sep="=", fill='right') %>%
-      dplyr::filter(key == "--file") %>%
-      dplyr::pull(value)
+      tibble::enframe(name = NULL) %>%
+      tidyr::separate(col = .data$value, into = c("key", "value"), sep = "=", fill = "right") %>%
+      dplyr::filter(.data$key == "--file") %>%
+      dplyr::pull(.data$value)
 
     if (length(script_name) == 0) {
-      if(rstudioapi::isAvailable()) {
+      if (rstudioapi::isAvailable()) {
         script_name <- rstudioapi::getSourceEditorContext()$path %>%
           basename()
       }
@@ -141,6 +141,7 @@ set_script_run_time <- function(fake_runtime = lubridate::NA_POSIXct_) {
 #' Attempts to connect to the DB using all LOG_DB_* environment variables. Returns an empty list if a connection is established, returns an `error_list` entry otherwise.
 #'
 #' @param drv, an object that inherits from DBIDriver, or an existing DBIConnection object (in order to clone an existing connection).
+#' @importFrom magrittr "%>%"
 #'
 #' @return An `error_list` entry
 #'
@@ -151,7 +152,7 @@ set_script_run_time <- function(fake_runtime = lubridate::NA_POSIXct_) {
 verify_log_connectivity <- function(drv) {
   error <- error_list
 
-  result <- dbCanConnect(
+  result <- DBI::dbCanConnect(
     drv,
     dbname = Sys.getenv("LOG_DB_NAME"),
     host = Sys.getenv("LOG_DB_HOST"),
@@ -161,7 +162,8 @@ verify_log_connectivity <- function(drv) {
   )
 
   if (result == FALSE) {
-    error <- error %>% add_row(message = attributes(result)$reason)
+    error <- error %>%
+      tibble::add_row(message = attributes(result)$reason)
   }
 
   return(error)
@@ -185,19 +187,24 @@ verify_log_env_variables <- function() {
   log_db_schema <- Sys.getenv("LOG_DB_SCHEMA")
 
   if (log_db_name == "") {
-    errors <- errors %>% add_row(message = "LOG_DB_NAME is not set. It is required to write log entries.")
+    errors <- errors %>%
+      tibble::add_row(message = "LOG_DB_NAME is not set. It is required to write log entries.")
   }
   if (log_db_host == "") {
-    errors <- errors %>% add_row(message = "LOG_DB_HOST is not set. It is required to write log entries.")
+    errors <- errors %>%
+      tibble::add_row(message = "LOG_DB_HOST is not set. It is required to write log entries.")
   }
   if (log_db_user == "") {
-    errors <- errors %>% add_row(message = "LOG_DB_USER is not set. It is required to write log entries.")
+    errors <- errors %>%
+      tibble::add_row(message = "LOG_DB_USER is not set. It is required to write log entries.")
   }
   if (log_db_password == "") {
-    errors <- errors %>% add_row(message = "LOG_DB_PASSWORD is not set. It is required to write log entries.")
+    errors <- errors %>%
+      tibble::add_row(message = "LOG_DB_PASSWORD is not set. It is required to write log entries.")
   }
   if (log_db_schema == "") {
-    errors <- errors %>% add_row(message = "LOG_DB_SCHEMA is not set. It is required to write log entries.")
+    errors <- errors %>%
+      tibble::add_row(message = "LOG_DB_SCHEMA is not set. It is required to write log entries.")
   }
 
   return(errors)
@@ -215,7 +222,7 @@ verify_log_env_variables <- function() {
 #'      drv = MariaDB()
 #'  )
 #' }
-verify_log_dependencies <- function(drv = MariaDB()) {
+verify_log_dependencies <- function(drv = RMariaDB::MariaDB()) {
   errors <- error_list
 
   can_connect <- verify_log_connectivity(drv)
