@@ -7,7 +7,7 @@
 verify_log_dependencies(drv = RMariaDB::MariaDB())
 }
 \arguments{
-\item{drv, }{an object that inherits from DBIDriver, or an existing DBIConnection object (in order to clone an existing connection).}
+\item{drv, }{an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).}
 }
 \value{
 A list of `error_list` entries.
@@ -18,7 +18,7 @@ Verifies all dependencies required to write log entries.
 \examples{
 \dontrun{
  verify_log_dependencies(
-     drv = MariaDB()
+     drv = RMariaDB::MariaDB()
  )
 }
 }

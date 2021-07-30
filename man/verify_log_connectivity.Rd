@@ -4,10 +4,10 @@
 \alias{verify_log_connectivity}
 \title{Attempts to connect to the DB using all LOG_DB_* environment variables. Returns an empty list if a connection is established, returns an `error_list` entry otherwise.}
 \usage{
-verify_log_connectivity(drv)
+verify_log_connectivity(drv = RMariaDB::MariaDB())
 }
 \arguments{
-\item{drv, }{an object that inherits from DBIDriver, or an existing DBIConnection object (in order to clone an existing connection).}
+\item{drv, }{an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).}
 }
 \value{
 An `error_list` entry
@@ -17,6 +17,6 @@ Attempts to connect to the DB using all LOG_DB_* environment variables. Returns 
 }
 \examples{
 \dontrun{
- verify_log_connectivity()
+ verify_log_connectivity(RMariaDB::MariaDB())
 }
 }

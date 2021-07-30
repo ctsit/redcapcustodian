@@ -4,10 +4,10 @@
 \alias{write_error_log_entry}
 \title{Write an error log entry}
 \usage{
-write_error_log_entry(con, target_db_name, table_written = NULL, df, pk_col)
+write_error_log_entry(conn, target_db_name, table_written = NULL, df, pk_col)
 }
 \arguments{
-\item{con, }{a DB connection}
+\item{conn, }{a DB connection}
 
 \item{target_db_name, }{the database to write to}
 

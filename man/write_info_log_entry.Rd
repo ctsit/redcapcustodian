@@ -4,10 +4,10 @@
 \alias{write_info_log_entry}
 \title{Write an info log entry}
 \usage{
-write_info_log_entry(con, target_db_name, table_written = NULL, df, pk_col)
+write_info_log_entry(conn, target_db_name, table_written = NULL, df, pk_col)
 }
 \arguments{
-\item{con, }{a DB connection}
+\item{conn, }{a DB connection}
 
 \item{target_db_name, }{the database to write to}
 
@@ -23,7 +23,7 @@ Write an info log entry
 \examples{
 \dontrun{
  write_info_log_entry(
-   conn = conn,
+   conn = con,
    target_db_name = rc_case,
    table_written = "cases",
    df = data_written,

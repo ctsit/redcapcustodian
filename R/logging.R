@@ -140,16 +140,16 @@ set_script_run_time <- function(fake_runtime = lubridate::NA_POSIXct_) {
 
 #' Attempts to connect to the DB using all LOG_DB_* environment variables. Returns an empty list if a connection is established, returns an `error_list` entry otherwise.
 #'
-#' @param drv, an object that inherits from DBIDriver, or an existing DBIConnection object (in order to clone an existing connection).
+#' @param drv, an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).
 #' @importFrom magrittr "%>%"
 #'
 #' @return An `error_list` entry
 #'
 #' @examples
 #' \dontrun{
-#'  verify_log_connectivity()
+#'  verify_log_connectivity(RMariaDB::MariaDB())
 #' }
-verify_log_connectivity <- function(drv) {
+verify_log_connectivity <- function(drv = RMariaDB::MariaDB()) {
   error <- error_list
 
   result <- DBI::dbCanConnect(
@@ -212,14 +212,14 @@ verify_log_env_variables <- function() {
 
 #' Verifies all dependencies required to write log entries.
 #'
-#' @param drv, an object that inherits from DBIDriver, or an existing DBIConnection object (in order to clone an existing connection).
+#' @param drv, an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).
 #'
 #' @return A list of `error_list` entries.
 #'
 #' @examples
 #' \dontrun{
 #'  verify_log_dependencies(
-#'      drv = MariaDB()
+#'      drv = RMariaDB::MariaDB()
 #'  )
 #' }
 verify_log_dependencies <- function(drv = RMariaDB::MariaDB()) {
@@ -235,7 +235,7 @@ verify_log_dependencies <- function(drv = RMariaDB::MariaDB()) {
 
 #' Write an error log entry
 #'
-#' @param con, a DB connection
+#' @param conn, a DB connection
 #' @param target_db_name, the database to write to
 #' @param table_written, the table that was written to
 #' @param df, the data to write
@@ -252,14 +252,14 @@ verify_log_dependencies <- function(drv = RMariaDB::MariaDB()) {
 #'    pk_col = "record_id",
 #'  )
 #' }
-write_error_log_entry <- function(con, target_db_name, table_written = NULL, df, pk_col) {
+write_error_log_entry <- function(conn, target_db_name, table_written = NULL, df, pk_col) {
   missing_dependencies <- verify_log_dependencies()
   tryCatch({
     stopifnot(nrow(missing_dependencies) == 0)
 
     df_to_write <- build_formatted_df_from_result(df, target_db_name, table_written, "ERROR", pk_col)
     write_to_sql_db(
-      conn = con,
+      conn = conn,
       table_name = "etl_log",
       df_to_write = df_to_write,
       schema = Sys.getenv("LOG_DB_SCHEMA"),
@@ -276,7 +276,7 @@ write_error_log_entry <- function(con, target_db_name, table_written = NULL, df,
 
 #' Write an info log entry
 #'
-#' @param con, a DB connection
+#' @param conn, a DB connection
 #' @param target_db_name, the database to write to
 #' @param table_written, the table that was written to
 #' @param df, the data to write
@@ -287,21 +287,21 @@ write_error_log_entry <- function(con, target_db_name, table_written = NULL, df,
 #' @examples
 #' \dontrun{
 #'  write_info_log_entry(
-#'    conn = conn,
+#'    conn = con,
 #'    target_db_name = rc_case,
 #'    table_written = "cases",
 #'    df = data_written,
 #'    pk_col = "record_id",
 #'  )
 #' }
-write_info_log_entry <- function(con, target_db_name, table_written = NULL, df, pk_col) {
+write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df, pk_col) {
   missing_dependencies <- verify_log_dependencies()
   tryCatch({
     stopifnot(nrow(missing_dependencies) == 0)
 
     df_to_write <- build_formatted_df_from_result(df, target_db_name, table_written, "INFO", pk_col)
     write_to_sql_db(
-      conn = con,
+      conn = conn,
       table_name = "etl_log",
       df_to_write = df_to_write,
       schema = Sys.getenv("LOG_DB_SCHEMA"),
