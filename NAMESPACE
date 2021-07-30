@@ -3,7 +3,6 @@
 export(get_current_time)
 export(get_script_name)
 export(get_script_run_time)
-export(hello)
 export(set_script_name)
 export(set_script_run_time)
 export(write_error_log_entry)
