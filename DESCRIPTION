@@ -32,7 +32,8 @@ Imports:
   tidyr,
   tidyverse,
   readr,
-  knitr
+  knitr,
+  vctrs
 Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

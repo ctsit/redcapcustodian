@@ -228,7 +228,7 @@ verify_log_dependencies <- function(drv = RMariaDB::MariaDB()) {
   can_connect <- verify_log_connectivity(drv)
   all_env_set <- verify_log_env_variables()
 
-  errors <- dplyr::combine(can_connect, all_env_set)
+  errors <- vctrs::vec_c(can_connect, all_env_set)
 
   return(errors)
 }
