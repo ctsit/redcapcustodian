@@ -29,7 +29,7 @@ error_list <- dplyr::tibble(
 build_formatted_df_from_result <- function(result, database_written, table_written, log_level, pk_col) {
   log_data <- result %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(record_level_data = purrr::pmap(.data$., ~ rjson::toJSON(c(...)))) %>%
+    dplyr::mutate(record_level_data = purrr::pmap(., ~ rjson::toJSON(c(...)))) %>%
     dplyr::select(primary_key = pk_col, .data$record_level_data) %>%
     dplyr::mutate(
       script_name = get_script_name(),
@@ -270,7 +270,10 @@ write_error_log_entry <- function(conn, target_db_name, table_written = NULL, df
   },
   error = function(cond) {
     # TODO improve error output
-    print(paste0("Failed to write error log entry:", missing_dependencies))
+    print(paste0("Failed to write error log entry:", cond))
+    if (nrow(missing_dependencies > 0)) {
+      print(paste0("Missing dependencies:",missing_dependencies))
+    }
   })
 }
 
