@@ -1,0 +1,21 @@
+CREATE TABLE `etl_log` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `log_date` datetime NOT NULL,
+  `script_name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `script_run_time` datetime NOT NULL,
+  `database_written` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `table_written` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ufid` varchar(8) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `primary_key` varchar(63) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `record_level_data` json,
+  `level` enum('INFO','DEBUG','ERROR') COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `log_date` (`log_date`),
+  KEY `script_name` (`script_name`),
+  KEY `script_run_time` (`script_run_time`),
+  KEY `database_written` (`database_written`),
+  KEY `table_written` (`table_written`),
+  KEY `ufid` (`ufid`),
+  KEY `primary_key` (`primary_key`),
+  KEY `level` (`level`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

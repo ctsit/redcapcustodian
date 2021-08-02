@@ -16,6 +16,25 @@ Description: Automates data grooming activities that support the
 License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true
-Suggests: 
+Imports:
+  DBI,
+  RMariaDB,
+  dplyr,
+  lubridate,
+  magrittr,
+  purrr,
+  rjson,
+  rlang,
+  rstudioapi,
+  sendmailR,
+  sqldf,
+  tibble,
+  tidyr,
+  tidyverse,
+  readr,
+  knitr,
+  vctrs
+Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+RoxygenNote: 7.1.1
