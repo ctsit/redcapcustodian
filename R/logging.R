@@ -29,7 +29,7 @@ error_list <- dplyr::tibble(
 build_formatted_df_from_result <- function(result, database_written, table_written, log_level, pk_col) {
   log_data <- result %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(record_level_data = purrr::pmap(., ~ rjson::toJSON(c(...)))) %>%
+    dplyr::mutate(record_level_data = purrr::pmap(.data, ~ rjson::toJSON(c(...)))) %>%
     dplyr::select(primary_key = pk_col, .data$record_level_data) %>%
     dplyr::mutate(
       script_name = get_script_name(),
