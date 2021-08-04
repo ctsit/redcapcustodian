@@ -11,3 +11,5 @@
 ^output/.*
 ^hosts/.*
 ^schema/.*
+host_template/
+make_host.sh
