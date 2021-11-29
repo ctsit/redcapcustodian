@@ -2,7 +2,8 @@
 % Please edit documentation in R/redcap.R
 \name{connect_to_redcap_db}
 \alias{connect_to_redcap_db}
-\title{Connect to the Primary REDCap MySQL Database}
+\title{Connect to the Primary REDCap MySQL Database
+Assigns package-scoped conn}
 \usage{
 connect_to_redcap_db()
 }
@@ -11,9 +12,10 @@ An S4 object. Run ?dbConnect for more information
 }
 \description{
 Connect to the Primary REDCap MySQL Database
+Assigns package-scoped conn
 }
 \examples{
 \dontrun{
-con <- connect_to_redcap_db()
+conn <- connect_to_redcap_db()
 }
 }

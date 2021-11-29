@@ -20,6 +20,7 @@ Imports:
   DBI,
   RMariaDB,
   dplyr,
+  glue,
   lubridate,
   magrittr,
   purrr,
