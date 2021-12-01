@@ -9,9 +9,17 @@
 #' conn <- connect_to_redcap_db()
 #' }
 connect_to_redcap_db <- function() {
-  if (exists(redcapcustodian.env$conn)) {
-    warning(glue::glue("Disconnecting from REDCap database {dbGetInfo(con)$host}:{dbGetInfo(con)$dbname}, before reconnect"))
-    DBI::dbDisconnect(redcapcustodian.env$conn)
+  # verify the environment exists,
+  # that `conn` is a member,
+  # and that the DB connection is still valid
+  # before disconnecting
+  if (exists("redcapcustodian.env") &&
+      "conn" %in% names(redcapcustodian.env) &&
+      DBI::dbIsValid(redcapcustodian.env$conn)
+      ) {
+    conn <- redcapcustodian.env$conn
+    warning(glue::glue("Disconnecting from REDCap database {dbGetInfo(conn)$host}:{dbGetInfo(conn)$dbname}, before reconnect"))
+    DBI::dbDisconnect(conn)
   }
 
   if (Sys.getenv("REDCAP_DB_PORT") == '') port = "3306" else
