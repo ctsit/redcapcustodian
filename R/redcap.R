@@ -41,3 +41,23 @@ connect_to_redcap_db <- function() {
 
   return(redcapcustodian.env$conn)
 }
+
+#' Get connection to the primary REDCap database
+#'
+#' @return The existing connection object to the REDCap database
+#'
+#' @export
+#' @examples
+#' \dontrun{
+#' conn <- get_redcap_db_connection()
+#' }
+get_redcap_db_connection <- function() {
+  if (exists("redcapcustodian.env") &&
+    "conn" %in% names(redcapcustodian.env) &&
+    DBI::dbIsValid(redcapcustodian.env$conn)
+  ) {
+    return(redcapcustodian.env$conn)
+  } else {
+    warning("You have no connection!")
+  }
+}

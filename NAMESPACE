@@ -2,6 +2,7 @@
 
 export(connect_to_redcap_db)
 export(get_current_time)
+export(get_redcap_db_connection)
 export(get_script_name)
 export(get_script_run_time)
 export(set_script_name)
