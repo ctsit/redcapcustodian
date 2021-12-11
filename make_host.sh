@@ -10,7 +10,7 @@ while getopts ":ht:" opt; do
       echo ""
       echo "Please provide a name for the host you are creating"
       echo "Using this name, this script will copy the host_template folder"
-      echo "to a new folder under ./hosts and configure with the new host name." 
+      echo "to a new folder under ./site and configure with the new host name." 
       echo ""
       echo "We recommend usage something like this:"
       echo ""
@@ -18,7 +18,7 @@ while getopts ":ht:" opt; do
       echo ""
       echo "Or specify your own template like this:"
       echo ""
-      echo "   ./make_host.sh -t hosts/my_template example"
+      echo "   ./make_host.sh -t site/my_template example"
       echo ""
       exit 0
       ;;
@@ -49,7 +49,7 @@ if [ ! -d ${TEMPLATE_FOLDER} ]; then
   exit
 fi
 
-TARGET_DIR=hosts/${HOST_NAME}
+TARGET_DIR=site/${HOST_NAME}
 
 SOURCE_ENV_FILE=${TEMPLATE_FOLDER}/example.env
 TARGET_ENV_FOLDER=${TARGET_DIR}/env
