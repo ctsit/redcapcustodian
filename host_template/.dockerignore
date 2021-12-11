@@ -12,3 +12,5 @@ man
 *.md
 redcapcustodian.Rproj
 .Rproj.user
+cron/*
+env/*

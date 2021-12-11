@@ -58,3 +58,7 @@ To run the localized `hello-local.R` report from the _example_ host within the c
 # run the script inside the container
 docker run --env-file .env --rm rcc_example Rscript redcapcustodian/report/hello-local.R
 ```
+
+## Writing your own redcapcustodian Rscripts
+
+redcapcustodian supports custom code to address the specific needs of REDCap teams and projects. For details see [Writing your own redcapcustodian Rscripts](./docs/custom_rscript.md)
