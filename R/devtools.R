@@ -24,7 +24,8 @@ create_test_table <- function(conn, table_name, data_file = NA_character_, empty
   # Populate table
   if (!empty) {
     table_file_name <- dplyr::if_else(is.na(data_file), paste0(table_name, ".csv"), data_file)
-    table_data <- readr::read_csv(file=system.file("testdata", table_file_name, package = "redcapcustodian"))
+    table_data <- readr::read_csv(file=system.file("testdata", table_file_name, package = "redcapcustodian"),
+                                  na = c("", "NA", "NULL"))
     DBI::dbAppendTable(conn=conn,
                   name=table_name,
                   value=table_data
