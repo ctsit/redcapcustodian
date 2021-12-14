@@ -3,9 +3,9 @@
 #   container
 
 # This script requires a single parameter that names the host for which
-# the conainer will be built. The parameter can be either full or 
+# the container will be built. The parameter can be either full or 
 # relative path to the host folder or the name of the host folder itself.
-# In the latter case, "./hosts/" will be prepended to the parameter 
+# In the latter case, "./site/" will be prepended to the parameter 
 # given in an attempt to locate the host folder
 
 # Parse options to the `build.sh` command
@@ -38,8 +38,8 @@ fi
 
 if [ -d $hostopt -a -e "${hostopt}/.env" ]; then
   hostpath=$hostopt
-elif [ -d ./hosts/$hostopt -a -e "./hosts/${hostopt}/.env" ]; then
-  hostpath=./hosts/$hostopt
+elif [ -d ./site/$hostopt -a -e "./site/${hostopt}/.env" ]; then
+  hostpath=./site/$hostopt
 else
   echo "Could not verify a path to the directory for $hostopt"
   exit

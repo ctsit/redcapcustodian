@@ -10,7 +10,7 @@ while getopts ":ht:" opt; do
       echo ""
       echo "Please provide a name for the host you are creating"
       echo "Using this name, this script will copy the host_template folder"
-      echo "to a new folder under ./hosts and configure with the new host name." 
+      echo "to a new folder under ./site and configure with the new host name." 
       echo ""
       echo "We recommend usage something like this:"
       echo ""
@@ -18,7 +18,7 @@ while getopts ":ht:" opt; do
       echo ""
       echo "Or specify your own template like this:"
       echo ""
-      echo "   ./make_host.sh -t hosts/my_template example"
+      echo "   ./make_host.sh -t site/my_template example"
       echo ""
       exit 0
       ;;
@@ -49,12 +49,29 @@ if [ ! -d ${TEMPLATE_FOLDER} ]; then
   exit
 fi
 
-TARGET_DIR=hosts/${HOST_NAME}
+SITE_DIR=site
+TARGET_DIR=${SITE_DIR}/${HOST_NAME}
 
 SOURCE_ENV_FILE=${TEMPLATE_FOLDER}/example.env
 TARGET_ENV_FOLDER=${TARGET_DIR}/env
 TARGET_ENV_FILE=${TARGET_ENV_FOLDER}/.env
 
+# make site folder structure
+if [ ! -e $SITE_DIR ]; then
+  mkdir ${SITE_DIR}
+  mkdir ${SITE_DIR}/etl
+  mkdir ${SITE_DIR}/report
+  cp ${TEMPLATE_FOLDER}/example.env ${SITE_DIR}/.env
+cat <<END > ${SITE_DIR}/.gitignore
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.env
+END
+fi
+
+# make host folder
 if [ -e ${TARGET_DIR} ]; then
     echo "The ${TARGET_DIR} folder already exists.  I will not proceed lest I damage an existing host"
     exit
@@ -62,6 +79,9 @@ else
     echo "Creating ${TARGET_DIR} from the ${TEMPLATE_FOLDER} folder"
 fi
 
+if [ ! -e ${TARGET_DIR} ]; then 
+  mkdir -p ${TARGET_DIR}
+fi
 rsync -r ${TEMPLATE_FOLDER}/ ${TARGET_DIR}
 
 mkdir ${TARGET_ENV_FOLDER}

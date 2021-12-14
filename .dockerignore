@@ -4,8 +4,8 @@
 .gitignore
 .DS_Store
 
-# we want nothing in the hosts folder
-hosts
+# we want nothing in the site folder
+site
 
 # ignore any secrets
 .env
@@ -16,3 +16,4 @@ man
 build.sh
 redcapcustodian.Rproj
 .Rproj.user
+docs

@@ -9,7 +9,8 @@
 ^etl/.*
 ^report/.*
 ^output/.*
-^hosts/.*
+^site/.*
 ^schema/.*
 host_template/
 make_host.sh
+docs/*
