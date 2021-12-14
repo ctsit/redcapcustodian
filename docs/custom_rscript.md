@@ -19,7 +19,7 @@ To run your custom `etl/cleanup_bad_email_addresses.R` script regularly on a hos
 ```sh
 cat <<END>> prod/cron/cleanup_bad_email_addresses
 # Clean up bad email addresses daily at 6:07 a.m.
-7 6 * * * root /usr/bin/docker run --rm --env-file /rcc/prod.env stp Rscript redcapcustodian/etl/cleanup_bad_email_addresses.R
+7 6 * * * root /usr/bin/docker run --rm --env-file /rcc/prod.env redcapcustodian Rscript redcapcustodian/etl/cleanup_bad_email_addresses.R
 END
 ```
 
