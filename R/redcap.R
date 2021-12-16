@@ -61,3 +61,36 @@ get_redcap_db_connection <- function() {
     warning("You have no connection!")
   }
 }
+
+#' Get all user emails in redcap_user_information as tall data
+#'
+#' @param conn A DBI Connection object
+#'
+#' @return a dataframe with these columns:
+#' \itemize{
+#'   \item ui_id - row_id of table
+#'   \item username - REDCap username"
+#'   \item email_field_name - the name of the column containing the email address
+#'   \item email - the email address in email_field_name
+#' }
+#'
+#' @export
+#' @importFrom rlang .data
+#' @importFrom magrittr "%>%"
+#' @examples
+#' \dontrun{
+#' conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+#' create_test_table(conn, "redcap_user_information")
+#' get_redcap_emails(conn)
+#' }
+get_redcap_emails <- function(conn) {
+  redcap_email_query <- "select ui_id, username, user_email, user_email2, user_email3 from redcap_user_information"
+  redcap_emails <- DBI::dbGetQuery(conn, statement = redcap_email_query) %>%
+    tidyr::pivot_longer(dplyr::starts_with("user_email"),
+                 names_to="email_field_name",
+                 values_to="email",
+                 values_drop_na = TRUE) %>%
+    dplyr::filter(.data$email != "")
+
+  return(redcap_emails)
+}
