@@ -20,7 +20,10 @@ create_test_table <- function(conn, table_name, data_file = NA_character_, empty
   # Create empty table
   schema_file_name <- paste0(table_name, "_schema.sql")
   schema <- readr::read_file(file=system.file("testdata", schema_file_name, package = "redcapcustodian"))
-  DBI::dbSendQuery(conn, schema)
+  res <- DBI::dbSendQuery(conn, schema)
+  # close result set to avoid warning
+  DBI::dbClearResult(res)
+
   # Populate table
   if (!empty) {
     table_file_name <- dplyr::if_else(is.na(data_file), paste0(table_name, ".csv"), data_file)
