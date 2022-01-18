@@ -14,8 +14,9 @@ while getopts ":hd" opt; do
     h )
       echo "Usage:"
       echo "    build.sh -h                      Display this help message."
-      echo "    build.sh <host>                  build <host>."
-      echo "    build.sh -d <host>               build and deploy <host>."
+      echo "    build.sh                         Build the redcapcustodian and rcc.site Docker images."
+      echo "    build.sh <host>                  Also build the image for <host>."
+      echo "    build.sh -d <host>               Also build and deploy the image for <host>."
       exit 0
       ;;
     d )
@@ -29,24 +30,18 @@ while getopts ":hd" opt; do
 done
 shift $((OPTIND -1))
 
+hostopt=''
 hostopt=$1; shift
 
-if [ -z $hostopt ]; then
-  echo "Please specify a host to build"
-  exit
-fi
-
-if [ -d $hostopt -a -e "${hostopt}/.env" ]; then
-  hostpath=$hostopt
-elif [ -d ./site/$hostopt -a -e "./site/${hostopt}/.env" ]; then
+if [ -d ./site/$hostopt -a -e "./site/${hostopt}/.env" ]; then
   hostpath=./site/$hostopt
+  host=`basename ${hostpath}`
 else
-  echo "Could not verify a path to the directory for $hostopt"
-  exit
+  hostpath='./site'
+  host='site'
 fi
 
-host=`basename ${hostpath}`
-image_name=rcc_$host
+image_name=rcc.$host
 
 if [ $deploy ]; then 
   echo Deploying redcapcustodian for $host
@@ -91,10 +86,19 @@ fi
 
 shared_image=redcapcustodian
 echo "Building $shared_image image"
-docker build -t $shared_image . && docker tag $shared_image:latest $shared_image:`cat VERSION` && docker image ls $shared_image | head
+docker build -t $shared_image . && docker tag $shared_image:latest $shared_image:`cat VERSION` && docker image ls $shared_image | head -n 5
 
-echo "Building host-specific redcapcustodian image $image_name for $host"
+site_image=rcc.site
+echo "Building site-specific redcapcustodian image $site_image"
 old_pwd=$(pwd)
-cd $hostpath
-docker build -t $image_name . && docker tag $image_name:latest $image_name:`cat VERSION` && docker image ls $image_name | head
+cd site
+docker build -t $site_image . && docker tag $site_image:latest $site_image:`cat VERSION` && docker image ls $site_image | head -n 5
 cd $old_pwd
+
+if [ $host != 'site' ]; then
+  echo "Building host-specific redcapcustodian image $image_name for $host"
+  old_pwd=$(pwd)
+  cd $hostpath
+  docker build -t $image_name . && docker tag $image_name:latest $image_name:`cat VERSION` && docker image ls $image_name | head -n 5
+  cd $old_pwd
+fi
