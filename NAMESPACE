@@ -2,6 +2,7 @@
 
 export(connect_to_redcap_db)
 export(create_test_table)
+export(get_bad_emails_from_listserv_digest)
 export(get_current_time)
 export(get_institutional_person_data)
 export(get_redcap_db_connection)
