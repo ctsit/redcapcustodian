@@ -9,9 +9,11 @@ tables <- c(
   "redcap_user_information"
 )
 
-map2(
-  .x = c(conn),
-  .y = tables,
+pmap(
+  .l  = list(
+  "conn" = c(conn),
+  "table_name" = c(tables)
+  ),
   .f = create_test_table
 )
 
