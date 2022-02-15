@@ -56,7 +56,9 @@ get_test_table_names <- function() {
 #' A wrapper around \code{\link{create_test_table}} to create all tables, or a specified subset of them
 #'
 #' @param conn A DBI Connection object
-#' @param table_names A character list of the names of all tables you wish to create, if nothing is provided, the result of \code{\link{get_test_table_names()}} will be used to create all test tables
+#' @param table_names A character list of the names of all tables you wish
+#' to create, if nothing is provided, the result of
+#' \code{\link{get_test_table_names}} will be used to create all test tables
 #'
 #' @return NA
 #' @export

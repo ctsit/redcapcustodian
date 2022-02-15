@@ -9,7 +9,9 @@ create_test_tables(conn, table_names = c())
 \arguments{
 \item{conn}{A DBI Connection object}
 
-\item{table_names}{A character list of the names of all tables you wish to create, if nothing is provided, the result of \code{\link{get_test_table_names()}} will be used to create all test tables}
+\item{table_names}{A character list of the names of all tables you wish
+to create, if nothing is provided, the result of
+\code{\link{get_test_table_names}} will be used to create all test tables}
 }
 \value{
 NA
