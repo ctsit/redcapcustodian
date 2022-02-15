@@ -35,3 +35,51 @@ create_test_table <- function(conn, table_name, data_file = NA_character_, empty
     )
   }
 }
+
+
+#' Provides a list of table names which have schema and data files as part of the package
+#'
+#' @return A list of table names which have schema and data files as part of the package
+#' @export
+#'
+#' @examples
+#' get_test_table_names()
+get_test_table_names <- function() {
+  table_names <- c(
+    "redcap_projects",
+    "redcap_user_information"
+  )
+  return (table_names)
+}
+
+
+#' A wrapper around \code{\link{create_test_table}} to create all tables, or a specified subset of them
+#'
+#' @param conn A DBI Connection object
+#' @param table_names A character list of the names of all tables you wish
+#' to create, if nothing is provided, the result of
+#' \code{\link{get_test_table_names}} will be used to create all test tables
+#'
+#' @return NA
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+#' create_test_tables(conn) # create all test tables
+#'
+#' }
+create_test_tables <- function(conn, table_names = c()) {
+  if (length(table_names) == 0) {
+    table_names <- get_test_table_names()
+  }
+
+  purrr::pmap(
+    .l  = list(
+      "conn" = c(conn),
+      "table_name" = c(table_names)
+    ),
+    .f = create_test_table
+  )
+
+}
