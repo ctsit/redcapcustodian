@@ -120,22 +120,27 @@ get_redcap_emails <- function(conn) {
 #' }
 get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
   person_data_for_redcap_users_with_bad_emails <- person %>%
-    dplyr::select(user_id, email) %>%
-    dplyr::filter(user_id %in% bad_redcap_user_emails$username)
+    dplyr::select(.data$user_id, .data$email) %>%
+    dplyr::filter(.data$user_id %in% bad_redcap_user_emails$username)
 
   redcap_email_revisions <- bad_redcap_user_emails %>%
     dplyr::inner_join(person_data_for_redcap_users_with_bad_emails, by = c("username" = "user_id"), suffix = c(".bad", ".replacement")) %>%
-    dplyr::filter(email.bad != email.replacement) %>%
-    dplyr::filter(!is.na(email.replacement)) %>%
-    dplyr::filter(email.replacement != "") %>%
-    dplyr::mutate(corrected_email = email.replacement) %>%
-    dplyr::group_by(ui_id, email_field_name) %>%
+    dplyr::filter(.data$email.bad != .data$email.replacement) %>%
+    dplyr::filter(!is.na(.data$email.replacement)) %>%
+    dplyr::filter(.data$email.replacement != "") %>%
+    dplyr::mutate(corrected_email = .data$email.replacement) %>%
+    dplyr::group_by(.data$ui_id, .data$email_field_name) %>%
     # columnar equivalent of coalesce for each row
     # ensures retention of corrected_email where marked for deletion
     # https://stackoverflow.com/a/60645992/7418735
     dplyr::summarise_all(~ na.omit(.)[1]) %>%
     dplyr::ungroup() %>%
-    dplyr::select(ui_id, username, email_field_name, corrected_email)
+    dplyr::select(
+             .data$ui_id,
+             .data$username,
+             .data$email_field_name,
+             .data$corrected_email
+           )
 
   return(redcap_email_revisions)
 }
