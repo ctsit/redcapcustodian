@@ -1,0 +1,27 @@
+name: Run tests 
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/ctsit/rstudio-ci:latest
+      credentials:
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.CR_PAT }}
+
+    env:
+      CI: "TRUE"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Check
+        run: devtools::test(stop_on_failure = TRUE)
+        shell: Rscript {0}
