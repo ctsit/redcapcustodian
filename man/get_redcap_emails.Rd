@@ -12,8 +12,8 @@ get_redcap_emails(conn)
 \value{
 a dataframe with these columns:
 \itemize{
-  \item ui_id - ui_id for the associated user in REDCap's redcap_user_information table
-  \item username - REDCap username
+  \item ui_id - row_id of table
+  \item username - REDCap username"
   \item email_field_name - the name of the column containing the email address
   \item email - the email address in email_field_name
 }
