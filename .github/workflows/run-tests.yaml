@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/ctsit/rstudio-ci:4.0.2
+      image: ghcr.io/ctsit/rstudio-ci:4.1.0
       credentials:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.CR_PAT }}
