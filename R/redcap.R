@@ -105,7 +105,7 @@ get_redcap_emails <- function(conn) {
 #'   \item ui_id - ui_id for the associated user in REDCap's redcap_user_information table
 #'   \item username - REDCap username
 #'   \item email_field_name - the name of the column containing the email address
-#'   \item corrected_email - the corrected email address in email_field_name
+#'   \item corrected_email - the corrected email address to be placed in the column from email_field_name
 #' }
 #'
 #' @export
@@ -123,24 +123,26 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
     dplyr::select(.data$user_id, .data$email) %>%
     dplyr::filter(.data$user_id %in% bad_redcap_user_emails$username)
 
-  redcap_email_revisions <- bad_redcap_user_emails %>%
+  replacement_email_addresses_for_bad_redcap_emails <- bad_redcap_user_emails %>%
     dplyr::inner_join(person_data_for_redcap_users_with_bad_emails, by = c("username" = "user_id"), suffix = c(".bad", ".replacement")) %>%
     dplyr::filter(.data$email.bad != .data$email.replacement) %>%
     dplyr::filter(!is.na(.data$email.replacement)) %>%
-    dplyr::filter(.data$email.replacement != "") %>%
     dplyr::mutate(corrected_email = .data$email.replacement) %>%
+    dplyr::select(
+      .data$ui_id,
+      .data$username,
+      .data$email_field_name,
+      .data$corrected_email
+    )
+
+  redcap_email_revisions <- replacement_email_addresses_for_bad_redcap_emails %>%
+    dplyr::bind_rows(bad_redcap_user_emails) %>%
     dplyr::group_by(.data$ui_id, .data$email_field_name) %>%
     # columnar equivalent of coalesce for each row
     # ensures retention of corrected_email where marked for deletion
     # https://stackoverflow.com/a/60645992/7418735
     dplyr::summarise_all(~ na.omit(.)[1]) %>%
-    dplyr::ungroup() %>%
-    dplyr::select(
-             .data$ui_id,
-             .data$username,
-             .data$email_field_name,
-             .data$corrected_email
-           )
+    dplyr::ungroup()
 
   return(redcap_email_revisions)
 }
