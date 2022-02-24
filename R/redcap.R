@@ -164,7 +164,8 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
 #' bad_redcap_user_emails <- get_redcap_emails(conn) %>%
 #'   filter(email %in% bad_emails)
 #'
-#' redcap_email_revisions(bad_redcap_user_emails)
+#' person_data <- get_institutional_person_data()
+#' redcap_email_revisions <- get_redcap_email_revisions(bad_redcap_email_output, person_data)
 #'
 #' update_redcap_email_addresses(conn, redcap_email_revisions)
 #' }
