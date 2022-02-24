@@ -37,6 +37,16 @@ get_bad_redcap_email_output <- dplyr::tribble(
   6, "dan",   "user_email3", "dan_c@example.org"
 ) %>% dplyr::mutate(ui_id = as.integer(ui_id))
 
+get_updated_redcap_email_addresses <- dplyr::tribble(
+  ~ui_id, ~username, ~user_email, ~user_email2, ~user_email3,
+  1, "site_admin", NA_character_, NA_character_, NA_character_,
+  2, "admin", "admin@example.org", NA_character_, NA_character_,
+  3, "alice", "real_alice@example.org",  NA_character_, NA_character_,
+  4, "bob",   "bob_b@example.org", "bob_b@example.org", NA_character_,
+  5, "carol", "carol_a@example.org", "carol_a@example.org", NA_character_,
+  6, "dan",   "daniel@example.org", "daniel@example.org", "daniel@example.org"
+)
+
 test_that("get_redcap_emails returns the correct dataframe", {
   expect_identical(get_redcap_emails(conn), get_redcap_email_output)
 })
@@ -78,4 +88,18 @@ test_that("get_redcap_email_revisions properly updates alice's email", {
     pull(email)
 
   expect_equal(alice_new_email, alice_correct_email)
+})
+
+test_that("update_redcap_email_addresses properly updates email addresses in redcap_user_information", {
+
+  redcap_email_revisions <- get_redcap_email_revisions(get_bad_redcap_email_output, get_institutional_person_output)
+  update_redcap_email_addresses(conn, redcap_email_revisions)
+
+  result <- DBI::dbGetQuery(
+    conn,
+    "select ui_id, username, user_email, user_email2, user_email3 from redcap_user_information"
+  ) %>%
+    tibble::tibble()
+
+  expect_equal(get_updated_redcap_email_addresses, result)
 })

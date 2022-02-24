@@ -146,3 +146,68 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
 
   return(redcap_email_revisions)
 }
+
+#' Updates bad redcap email addresses in redcap_user_information
+#'
+#' @param conn A DBI Connection object
+#' @param redcap_email_revisions a df returned by \code{\link{get_redcap_email_revisions}}
+#'
+#' @examples
+#' \dontrun{
+#' conn <- connect_to_redcap_db()
+#' bad_emails <- get_bad_emails_from_listserv_digest(
+#'   username = "jdoe",
+#'   password = "jane_does_password",
+#'   url ="imaps://outlook.office365.com",
+#'   messages_since_date = as.Date("2022-01-01", format = "%Y-%m-%d")
+#'   )
+#' bad_redcap_user_emails <- get_redcap_emails(conn) %>%
+#'   filter(email %in% bad_emails)
+#'
+#' redcap_email_revisions(bad_redcap_user_emails)
+#'
+#' update_redcap_email_addresses(conn, redcap_email_revisions)
+#' }
+update_redcap_email_addresses <- function(conn, redcap_email_revisions) {
+  # break down updated emails by field
+  # columns (e.g. user_email<n>) cannot be parameterized
+  # pivot_wider cannot be used as NAs in non-replacement fields result in overwrites
+  # the solution is to create a list of lists, one list for each email_field_name
+  redcap_email_change_groups <- redcap_email_revisions %>%
+    dplyr::select(.data$email_field_name, .data$corrected_email, .data$ui_id) %>%
+    dplyr::group_split(.data$email_field_name, .key = "email_field_name", .keep = FALSE) %>%
+    # RMySQL prepared statements do not allow named parameters
+    lapply(as.list) %>%
+    lapply(unname) %>%
+    purrr::set_names(nm = c(paste0("user_email", seq_along(.))))
+
+  DBI::dbExecute(
+    conn,
+    paste0(
+      "UPDATE redcap_user_information ",
+      "SET user_email = ? ",
+      "WHERE ui_id = ?"
+    ),
+    redcap_email_change_groups$user_email1
+  )
+
+  DBI::dbExecute(
+    conn,
+    paste0(
+      "UPDATE redcap_user_information ",
+      "SET user_email2 = ? ",
+      "WHERE ui_id = ?"
+    ),
+    redcap_email_change_groups$user_email2
+  )
+
+  DBI::dbExecute(
+    conn,
+    paste0(
+      "UPDATE redcap_user_information ",
+      "SET user_email3 = ? ",
+      "WHERE ui_id = ?"
+    ),
+    redcap_email_change_groups$user_email3
+  )
+}
