@@ -149,11 +149,23 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
 
 #' Updates bad redcap email addresses in redcap_user_information
 #'
-#' @parm conn A DBI Connection object
-#' @param redcap_email_revisions a df returned by  \code{\link{get_redcap_email_revisions}}
+#' @param conn A DBI Connection object
+#' @param redcap_email_revisions a df returned by \code{\link{get_redcap_email_revisions}}
 #'
+#' @examples
 #' \dontrun{
-#' conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+#' conn <- connect_to_redcap_db()
+#' bad_emails <- get_bad_emails_from_listserv_digest(
+#'   username = "jdoe",
+#'   password = "jane_does_password",
+#'   url ="imaps://outlook.office365.com",
+#'   messages_since_date = as.Date("2022-01-01", format = "%Y-%m-%d")
+#'   )
+#' bad_redcap_user_emails <- get_redcap_emails(conn) %>%
+#'   filter(email %in% bad_emails)
+#'
+#' redcap_email_revisions(bad_redcap_user_emails)
+#'
 #' update_redcap_email_addresses(conn, redcap_email_revisions)
 #' }
 update_redcap_email_addresses <- function(conn, redcap_email_revisions) {
