@@ -212,3 +212,27 @@ update_redcap_email_addresses <- function(conn, redcap_email_revisions) {
     redcap_email_change_groups$user_email3
   )
 }
+
+#' Suspends users with no primary email in redcap_user_information
+#'
+#' @param conn A DBI Connection object
+#'
+#' @examples
+#' \dontrun{
+#' suspend_users_with_no_primary_email(conn)
+#' }
+suspend_users_with_no_primary_email <- function(conn) {
+  # TODO: include TZ in user_comments
+
+  count_of_users_suspended <- dbExecute(
+    conn,
+    "
+    UPDATE redcap_user_information
+    SET user_suspended_time = now(),
+    user_comments = concat('Account suspended on ', now(), ' due to no valid email address')
+    WHERE user_email IS NULL and user_suspended_time is NULL
+    "
+  )
+
+  return(count_of_users_suspended)
+}
