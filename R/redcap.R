@@ -226,12 +226,12 @@ suspend_users_with_no_primary_email <- function(conn) {
 
   count_of_users_suspended <- dbExecute(
     conn,
-    "
-    UPDATE redcap_user_information
-    SET user_suspended_time = now(),
-    user_comments = concat('Account suspended on ', now(), ' due to no valid email address')
-    WHERE user_email IS NULL and user_suspended_time is NULL
-    "
+    paste0(
+      "UPDATE redcap_user_information ",
+      "SET user_suspended_time = now(), ",
+      "user_comments = 'Account suspended on ", now(), " due to no valid email address' ",
+      "WHERE user_email IS NULL and user_suspended_time is NULL"
+    )
   )
 
   return(count_of_users_suspended)
