@@ -3,6 +3,11 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.4.0] - 2022-03-03
+### Added
+- Remove host image concet and deploy from site project (Philip Chase)
+
+
 ## [0.3.0] - 2022-03-03
 ### Added
 - Add mRpostman and writexl to the Dockerfile (Philip Chase)

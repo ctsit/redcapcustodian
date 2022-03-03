@@ -15,8 +15,7 @@ while getopts ":hd" opt; do
       echo "Usage:"
       echo "    build.sh -h                      Display this help message."
       echo "    build.sh                         Build the redcapcustodian and rcc.site Docker images."
-      echo "    build.sh <host>                  Also build the image for <host>."
-      echo "    build.sh -d <host>               Also build and deploy the image for <host>."
+      echo "    build.sh -d                      Build the images and deploy all configuration files"
       exit 0
       ;;
     d )
@@ -30,58 +29,45 @@ while getopts ":hd" opt; do
 done
 shift $((OPTIND -1))
 
-hostopt=''
-hostopt=$1; shift
+sitepath='./site'
+image_name=rcc.site
 
-if [ -d ./site/$hostopt -a -e "./site/${hostopt}/.env" ]; then
-  hostpath=./site/$hostopt
-  host=`basename ${hostpath}`
-else
-  hostpath='./site'
-  host='site'
-fi
-
-image_name=rcc.$host
-
-if [ $deploy ]; then 
-  echo Deploying redcapcustodian for $host
-  # Copy the cron files from $hostpath/cron/ if they have changed
-  CRON_DIR=$hostpath/cron
-  TARGET_CRON_FILE=/etc/cron.d/$image_name
-  TEMP_CRON_FILE=$(mktemp)
-  cat $CRON_DIR/* > $TEMP_CRON_FILE
-  if [ -f $TARGET_CRON_FILE ]; then
-    diff -q -u $TARGET_CRON_FILE $TEMP_CRON_FILE
-    if [ $? = 1 ]; then
-      echo Updating cron files for $host
-      echo ""
-      diff -u $TARGET_CRON_FILE $TEMP_CRON_FILE
-      echo ""
-      cp -v $TEMP_CRON_FILE $TARGET_CRON_FILE
-      echo ""
-    fi
-  else
-    echo Copying cron files for $host
-    cp $TEMP_CRON_FILE $TARGET_CRON_FILE
+if [ $deploy ]; then
+  echo Deploying redcapcustodian
+  TARGET_CRON_FOLDER=/etc/cron.d/
+  if [ -f $TARGET_CRON_FOLDER ]; then
+    echo Copying cron files
+    old_pwd=$(pwd)
+    cd $sitepath
+    find . -type d -iname cron -exec ls -d {} \; | \
+    xargs -i find {} -type f | sed "s/.\{2\}//;" | \
+    perl -n -e 'chop(); $src=$_; $target=$_; $target =~ s/\//-/g; system("cp $src ~/temp/rcc-$target\n");'
+    cd $old_pwd
   fi
 
   # Deploy environment files
   # Specify the target folder for environment files
-  ENV_FILES_FOLDER=/rcc/$host
-  if [ -e $hostpath/.env ]; then
-    . $hostpath/.env
+  ENV_FILES_FOLDER=/rcc
+  if [ -e $sitepath/.env ]; then
+    . $sitepath/.env
   fi
   # make the target folder for env files if it does not exist
   if [ ! -d $ENV_FILES_FOLDER ]; then 
     mkdir -p $ENV_FILES_FOLDER
   fi
-  # Copy all of the host's env files to the config folder.
-  if [ -e $hostpath/.env ]; then
-    cp $hostpath/.env $ENV_FILES_FOLDER
+
+  # Copy all of the env files from the site project to the config folder.  
+  if [ -e $sitepath/.env ]; then
+    cp $sitepath/.env $ENV_FILES_FOLDER
   fi
-  if [ -d $hostpath/env/ ]; then
-    cp $hostpath/env/* $ENV_FILES_FOLDER
-  fi
+
+  # Deploy all env folders
+  old_pwd=$(pwd)
+  cd $sitepath
+  find . -type d -iname "env" | xargs -i mkdir -p ${ENV_FILES_FOLDER}/{} 
+  find . -type d -iname "env" | xargs -i rsync -arcv {}/ ${ENV_FILES_FOLDER}/{} 
+  cd $old_pwd
+
 fi
 
 shared_image=redcapcustodian
@@ -94,11 +80,3 @@ old_pwd=$(pwd)
 cd site
 docker build -t $site_image . && docker tag $site_image:latest $site_image:`cat VERSION` && docker image ls $site_image | head -n 5
 cd $old_pwd
-
-if [ $host != 'site' ]; then
-  echo "Building host-specific redcapcustodian image $image_name for $host"
-  old_pwd=$(pwd)
-  cd $hostpath
-  docker build -t $image_name . && docker tag $image_name:latest $image_name:`cat VERSION` && docker image ls $image_name | head -n 5
-  cd $old_pwd
-fi
