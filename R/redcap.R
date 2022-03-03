@@ -105,7 +105,7 @@ get_redcap_emails <- function(conn) {
 #'   \item ui_id - ui_id for the associated user in REDCap's redcap_user_information table
 #'   \item username - REDCap username
 #'   \item email_field_name - the name of the column containing the email address
-#'   \item corrected_email - the corrected email address in email_field_name
+#'   \item corrected_email - the corrected email address to be placed in the column from email_field_name
 #' }
 #'
 #' @export
@@ -123,24 +123,116 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
     dplyr::select(.data$user_id, .data$email) %>%
     dplyr::filter(.data$user_id %in% bad_redcap_user_emails$username)
 
-  redcap_email_revisions <- bad_redcap_user_emails %>%
+  replacement_email_addresses_for_bad_redcap_emails <- bad_redcap_user_emails %>%
     dplyr::inner_join(person_data_for_redcap_users_with_bad_emails, by = c("username" = "user_id"), suffix = c(".bad", ".replacement")) %>%
     dplyr::filter(.data$email.bad != .data$email.replacement) %>%
     dplyr::filter(!is.na(.data$email.replacement)) %>%
-    dplyr::filter(.data$email.replacement != "") %>%
     dplyr::mutate(corrected_email = .data$email.replacement) %>%
+    dplyr::select(
+      .data$ui_id,
+      .data$username,
+      .data$email_field_name,
+      .data$corrected_email
+    )
+
+  redcap_email_revisions <- replacement_email_addresses_for_bad_redcap_emails %>%
+    dplyr::bind_rows(bad_redcap_user_emails) %>%
     dplyr::group_by(.data$ui_id, .data$email_field_name) %>%
     # columnar equivalent of coalesce for each row
     # ensures retention of corrected_email where marked for deletion
     # https://stackoverflow.com/a/60645992/7418735
     dplyr::summarise_all(~ na.omit(.)[1]) %>%
-    dplyr::ungroup() %>%
-    dplyr::select(
-             .data$ui_id,
-             .data$username,
-             .data$email_field_name,
-             .data$corrected_email
-           )
+    dplyr::ungroup()
 
   return(redcap_email_revisions)
+}
+
+#' Updates bad redcap email addresses in redcap_user_information
+#'
+#' @param conn A DBI Connection object
+#' @param redcap_email_revisions a df returned by \code{\link{get_redcap_email_revisions}}
+#'
+#' @examples
+#' \dontrun{
+#' conn <- connect_to_redcap_db()
+#' bad_emails <- get_bad_emails_from_listserv_digest(
+#'   username = "jdoe",
+#'   password = "jane_does_password",
+#'   url ="imaps://outlook.office365.com",
+#'   messages_since_date = as.Date("2022-01-01", format = "%Y-%m-%d")
+#'   )
+#' bad_redcap_user_emails <- get_redcap_emails(conn) %>%
+#'   filter(email %in% bad_emails)
+#'
+#' person_data <- get_institutional_person_data()
+#' redcap_email_revisions <- get_redcap_email_revisions(bad_redcap_email_output, person_data)
+#'
+#' update_redcap_email_addresses(conn, redcap_email_revisions)
+#' }
+update_redcap_email_addresses <- function(conn, redcap_email_revisions) {
+  # break down updated emails by field
+  # columns (e.g. user_email<n>) cannot be parameterized
+  # pivot_wider cannot be used as NAs in non-replacement fields result in overwrites
+  # the solution is to create a list of lists, one list for each email_field_name
+  redcap_email_change_groups <- redcap_email_revisions %>%
+    dplyr::select(.data$email_field_name, .data$corrected_email, .data$ui_id) %>%
+    dplyr::group_split(.data$email_field_name, .key = "email_field_name", .keep = FALSE) %>%
+    # RMySQL prepared statements do not allow named parameters
+    lapply(as.list) %>%
+    lapply(unname) %>%
+    purrr::set_names(nm = c(paste0("user_email", seq_along(.))))
+
+  DBI::dbExecute(
+    conn,
+    paste0(
+      "UPDATE redcap_user_information ",
+      "SET user_email = ? ",
+      "WHERE ui_id = ?"
+    ),
+    redcap_email_change_groups$user_email1
+  )
+
+  DBI::dbExecute(
+    conn,
+    paste0(
+      "UPDATE redcap_user_information ",
+      "SET user_email2 = ? ",
+      "WHERE ui_id = ?"
+    ),
+    redcap_email_change_groups$user_email2
+  )
+
+  DBI::dbExecute(
+    conn,
+    paste0(
+      "UPDATE redcap_user_information ",
+      "SET user_email3 = ? ",
+      "WHERE ui_id = ?"
+    ),
+    redcap_email_change_groups$user_email3
+  )
+}
+
+#' Suspends users with no primary email in redcap_user_information
+#'
+#' @param conn A DBI Connection object
+#'
+#' @examples
+#' \dontrun{
+#' suspend_users_with_no_primary_email(conn)
+#' }
+suspend_users_with_no_primary_email <- function(conn) {
+  # TODO: include TZ in user_comments
+
+  count_of_users_suspended <- dbExecute(
+    conn,
+    paste0(
+      "UPDATE redcap_user_information ",
+      "SET user_suspended_time = now(), ",
+      "user_comments = 'Account suspended on ", lubridate::now(), " due to no valid email address' ",
+      "WHERE user_email IS NULL and user_suspended_time is NULL"
+    )
+  )
+
+  return(count_of_users_suspended)
 }

@@ -17,7 +17,7 @@ a dataframe with these columns:
   \item ui_id - ui_id for the associated user in REDCap's redcap_user_information table
   \item username - REDCap username
   \item email_field_name - the name of the column containing the email address
-  \item corrected_email - the corrected email address in email_field_name
+  \item corrected_email - the corrected email address to be placed in the column from email_field_name
 }
 }
 \description{
