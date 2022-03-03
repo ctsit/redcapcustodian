@@ -2,6 +2,17 @@
 All notable changes to the redcapcustodian package and its contained scripts will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [0.3.0] - 2022-03-03
+### Added
+- Add mRpostman and writexl to the Dockerfile (Philip Chase)
+- Add suspend_users_with_no_primary_email (Laurence James-Woodley)
+- Add update_redcap_email_addresses (Laurence James-Woodley)
+
+### Changed
+- Fix get_redcap_email_revisions to match initial implementation allows it to create data that will result in user suspension (Kyle Chesney)
+
+
 ## [0.2.0] - 2022-02-16
 ### Added
 - Add get_redcap_email_revisions (Michael Bentz)
