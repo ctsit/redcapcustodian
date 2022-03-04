@@ -3,6 +3,11 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.4.1] - 2022-03-04
+### Changed
+- Fix build.sh deployment bugs (Philip Chase)
+
+
 ## [0.4.0] - 2022-03-03
 ### Added
 - Remove host image concet and deploy from site project (Philip Chase)
