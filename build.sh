@@ -35,13 +35,14 @@ image_name=rcc.site
 if [ $deploy ]; then
   echo Deploying redcapcustodian
   TARGET_CRON_FOLDER=/etc/cron.d/
-  if [ -f $TARGET_CRON_FOLDER ]; then
+  if [ -d $TARGET_CRON_FOLDER ]; then
     echo Copying cron files
     old_pwd=$(pwd)
     cd $sitepath
     find . -type d -iname cron -exec ls -d {} \; | \
     xargs -i find {} -type f | sed "s/.\{2\}//;" | \
-    perl -n -e 'chop(); $src=$_; $target=$_; $target =~ s/\//-/g; system("cp $src ~/temp/rcc-$target\n");'
+    perl -n -e 'chop(); $src=$_; $target=$_; $target =~ s/\//-/g; $cmd = "cp $src /etc/cron.d/rcc-$target\n"; print $cmd; system($cmd);'
+    ls -ltr /etc/cron.d/rcc-*
     cd $old_pwd
   fi
 
