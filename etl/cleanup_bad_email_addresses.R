@@ -30,7 +30,7 @@ bad_redcap_user_emails <- redcap_emails %>%
 
 person <- get_institutional_person_data()
 redcap_email_revisions <- get_redcap_email_revisions(bad_redcap_user_emails, person)
-update_redcap_email_addresses(redcap_email_revisions)
+update_redcap_email_addresses(conn, redcap_email_revisions)
 number_users_suspended <- suspend_users_with_no_primary_email(conn)
 
 dbDisconnect(conn)
