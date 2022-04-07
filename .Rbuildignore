@@ -14,3 +14,5 @@
 host_template/
 make_host.sh
 docs/*
+^.github/.*
+^hosts/.*
