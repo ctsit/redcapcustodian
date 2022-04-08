@@ -22,7 +22,7 @@ test_that("is_db_con returns TRUE for a DBI connection object", {
     DBI::dbDisconnect(conn)
 })
 
-test_that("is_db_con returns FALSE for a DBI connection object", {
+test_that("is_db_con returns FALSE for a non DBI connection object", {
     conn <- "invalid connection"
     expect_false(is_db_con(conn))
 })
