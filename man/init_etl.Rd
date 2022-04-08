@@ -4,14 +4,14 @@
 \alias{init_etl}
 \title{Initialize all etl dependencies}
 \usage{
-init_etl(script_name = "", fake_runtime = NULL, drv = NULL)
+init_etl(script_name = "", fake_runtime = NULL, log_db_drv = NULL)
 }
 \arguments{
 \item{script_name}{name passed to \code{\link{set_script_name}}}
 
 \item{fake_runtime}{An optional asserted script run time passed to \code{\link{set_script_run_time}}, defaults to the time this function is called}
 
-\item{drv, }{an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).}
+\item{log_db_drv, }{an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).}
 }
 \description{
 Initialize all etl dependencies

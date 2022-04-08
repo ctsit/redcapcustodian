@@ -1,6 +1,6 @@
 test_that("log_job_debug writes a debug log entry", {
     script_name <- "test-logging-debug"
-    init_etl(script_name, drv = RSQLite::SQLite())
+    init_etl(script_name, log_db_drv = RSQLite::SQLite())
     log_con <- get_package_scope_var("log_con")
     summary <- paste("Writing log for", script_name)
 
@@ -14,7 +14,7 @@ test_that("log_job_debug writes a debug log entry", {
 
 test_that("log_job_failure writes an error log entry", {
     script_name <- "test-logging-failure"
-    init_etl(script_name, drv = RSQLite::SQLite())
+    init_etl(script_name, log_db_drv = RSQLite::SQLite())
     log_con <- get_package_scope_var("log_con")
     summary <- paste("Writing log for", script_name)
 
@@ -29,7 +29,7 @@ test_that("log_job_failure writes an error log entry", {
 
 test_that("log_job_success writes a success log entry", {
     script_name <- "test-logging-success"
-    init_etl(script_name, drv = RSQLite::SQLite())
+    init_etl(script_name, log_db_drv = RSQLite::SQLite())
     log_con <- get_package_scope_var("log_con")
     summary <- paste("Writing log for", script_name)
 

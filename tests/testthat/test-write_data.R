@@ -25,7 +25,7 @@ test_that("write_to_sql_db returns the identical data frame that is written", {
 test_that("on error, write_to_sql_db does not log a failure when continue_on_error = TRUE", {
     drv <- RSQLite::SQLite()
 
-    init_etl("write_to_sql_db - log failure", drv = drv)
+    init_etl("write_to_sql_db - log failure", log_db_drv = drv)
     log_con <- get_package_scope_var("log_con")
     con <- connect_to_db(drv)
     table_name <- "sample_data"
@@ -69,7 +69,7 @@ test_that("on error, write_to_sql_db does log a failure when continue_on_error =
     disable_non_interactive_quit()
     drv <- RSQLite::SQLite()
 
-    init_etl("write_to_sql_db - log failure", drv = drv)
+    init_etl("write_to_sql_db - log failure", log_db_drv = drv)
     log_con <- get_package_scope_var("log_con")
     con <- connect_to_db(drv)
     table_name <- "sample_data"
@@ -113,7 +113,7 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
     
     drv <- RSQLite::SQLite()
 
-    init_etl("write_to_sql_db - log failure", drv = drv)
+    init_etl("write_to_sql_db - log failure", log_db_drv = drv)
     log_con <- get_package_scope_var("log_con")
     con <- connect_to_db(drv)
     table_name <- "sample_data"

@@ -30,7 +30,7 @@ test_that("is_db_con returns FALSE for a DBI connection object", {
 test_that("init_etl properly sets script name, script run time, and initializes log connection", {
     test_script_name <- "test_script"
     test_run_time <- lubridate::now()
-    init_etl(script_name = test_script_name, fake_runtime = test_run_time, drv = RSQLite::SQLite())
+    init_etl(script_name = test_script_name, fake_runtime = test_run_time, log_db_drv = RSQLite::SQLite())
     expect_equal(get_script_name(), test_script_name)
     expect_equal(get_script_run_time(), test_run_time)
     expect_true(is_db_con(get_package_scope_var("log_con")))
