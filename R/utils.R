@@ -1,3 +1,5 @@
+utils::globalVariables(".")
+
 #' Provide the exact length of the time span between start time and end time
 #'
 #'
@@ -30,6 +32,7 @@ get_package_scope_var  <- function(key) {
 #'
 #' @param script_name name passed to \code{\link{set_script_name}}
 #' @param fake_runtime An optional asserted script run time passed to \code{\link{set_script_run_time}}, defaults to the time this function is called
+#' @param drv, an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).
 #' 
 #' @export
 #' @examples
@@ -37,14 +40,14 @@ get_package_scope_var  <- function(key) {
 #'   init_etl("name_of_file")
 #' }
 #'
-init_etl <- function(script_name = "", fake_runtime = NULL) {
+init_etl <- function(script_name = "", fake_runtime = NULL, drv = NULL) {
   set_script_name(script_name)
   if (!is.null(fake_runtime)) {
     set_script_run_time(fake_runtime)
   } else {
     set_script_run_time()
   }
-  init_log_con()
+  init_log_con(drv)
 }
 
 #' Check if the provided connection is a DBI connection object
@@ -62,7 +65,7 @@ init_etl <- function(script_name = "", fake_runtime = NULL) {
 #'  )
 #'}
 is_db_con <- function(con) {
-  return(typeof(con) == "S4")
+  return(inherits(con, "DBIConnection"))
 }
 
 #' Check if "CI" environment variable is set to TRUE
@@ -95,7 +98,7 @@ set_package_scope_var  <- function(key, value) {
   assign(key, value, envir = redcapcustodian.env)
 }
 
-#' Assign a value to the stp.env environment, retrievable with \code{\link{get_package_scope_var}}
+#' Assign a value to the redcapcustodian.env environment, retrievable with \code{\link{get_package_scope_var}}
 #'
 #' @param key The identifying string to store as the lookup key
 #' @param value The value to store

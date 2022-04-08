@@ -6,6 +6,39 @@ error_list <- dplyr::tibble(
   message = character()
 )
 
+#' Builds formatted rcc_job_log data frame from source data
+#'
+#' @param job_duration, the job duration in seconds
+#' @param job_summary, the summary of the job performed
+#' @param level, the log level (DEBUG, ERROR, INFO)
+#'
+#' @return df_etl_log_job, the df matching the rcc_job_log table
+#'
+#' @examples
+#' \dontrun{
+#'  build_etl_job_log_df(
+#'    job_duration,
+#'    job_summary
+#'    level,
+#'  )
+#' }
+build_etl_job_log_df <- function(job_duration, job_summary, level) {
+  log_data <- dplyr::tribble(
+    ~job_duration, ~ job_summary_data, ~ level,
+    job_duration, job_summary, level
+  ) %>%
+  dplyr::mutate(
+    log_date = get_current_time(),
+    script_name = get_script_name(),
+    script_run_time = get_script_run_time(),
+    job_duration = .data$job_duration,
+    job_summary_data = .data$job_summary_data,
+    level = .data$level
+  )
+
+  return(log_data)
+}
+
 #' Builds formatted data frame from source data
 #'
 #' @param result, the df to log
@@ -45,6 +78,25 @@ build_formatted_df_from_result <- function(result, database_written, table_writt
   return(log_data)
 }
 
+#' Connect to the log db
+#'
+#' @param drv, an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).
+#' @param continue_on_error if TRUE then continue execution on error, if FALSE then quit non interactive sessions on error
+#' @return An S4 object. Run ?dbConnect for more information
+#' @examples
+#'
+#' \dontrun{
+#' # connect to log db using LOG_DB_* environment variables
+#' con <- connect_to_log_db()
+#'
+#' # connect to sqlite log db
+#' con <- connect_to_log_db(drv = RSQLite::SQLite())
+#' }
+#' @export
+connect_to_log_db <- function(drv, continue_on_error = FALSE) {
+  return(connect_to_db(drv = drv, continue_on_error = continue_on_error))
+}
+
 #' Fetches the current time in system time zone
 #'
 #' @return A duration object representing the current time
@@ -76,6 +128,21 @@ get_script_name <- function() {
 #' get_script_run_time()
 get_script_run_time <- function() {
   return(redcapcustodian.env$script_run_time)
+}
+
+#' Initialize the connection to the log db and set redcapcustodian.env$log_con
+#'
+#' @param drv, an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).
+#'
+#' @examples
+#' \dontrun{
+#'  # use a sqlite db instead
+#'  init_log_con(drv = RSQLite::SQLite())
+#' }
+#' @export
+init_log_con <- function(drv = RMariaDB::MariaDB()) {
+  con <- connect_to_log_db(drv)
+  set_package_scope_var("log_con", con)
 }
 
 #' Assigns package-scoped script_name. \cr
@@ -231,6 +298,184 @@ verify_log_dependencies <- function(drv = RMariaDB::MariaDB()) {
   errors <- vctrs::vec_c(can_connect, all_env_set)
 
   return(errors)
+}
+
+#' Log a job debug entry
+#'
+#' @param summary, the job summary
+#'
+#' @examples
+#' \dontrun{
+#'  log_job_debug(
+#'    summary = "Job debug step"
+#'  )
+#' }
+#' @export
+log_job_debug <- function(summary) {
+  tryCatch(
+    expr = {
+    log_con <- get_package_scope_var("log_con")
+  },
+    error = function(error_message) {
+      stop("redcapcustodian.env$log_con is undefined cannot call log_job_debug.")
+    }
+  )
+  job_duration <- get_job_duration(get_script_run_time(), get_current_time())
+
+  write_debug_job_log_entry(log_con, job_duration, summary)
+}
+
+#' Log a failed job run
+#'
+#' @param summary, the job summary
+#'
+#' @examples
+#' \dontrun{
+#'  log_job_failure(
+#'    summary = "Job failed"
+#'  )
+#' }
+#' @export
+log_job_failure <- function(summary) {
+  tryCatch(
+    expr = {
+      log_con <- get_package_scope_var("log_con")
+    },
+    error = function(error_message) {
+      stop("redcapcustodian.env$log_con is undefined cannot call log_job_failure.")
+    }
+  )
+  job_duration <- get_job_duration(get_script_run_time(), get_current_time())
+
+  # sys.calls returns the function calls that created each existing stack frame
+  # the last item in the stack trace is this function, log_job_failure, remove it
+  stack_trace <- utils::head(
+    paste(
+      sys.calls()
+    ),
+    -1
+  )
+
+  error_log_json <- rjson::toJSON(
+    list(
+      "error_message" = summary,
+      stack_trace = stack_trace
+    )
+  )
+
+  write_error_job_log_entry(log_con, job_duration, error_log_json)
+}
+
+#' Log a successful job run
+#'
+#' @param summary, the job summary
+#'
+#' @examples
+#' \dontrun{
+#'  log_job_success(
+#'    summary = "Job succeeded"
+#'  )
+#' }
+#' @export
+log_job_success <- function(summary) {
+  tryCatch(
+    expr = {
+      log_con <- get_package_scope_var("log_con")
+    },
+    error = function(error_message) {
+      stop("redcapcustodian.env$log_con is undefined cannot call log_job_success.")
+    }
+  )
+  job_duration <- get_job_duration(get_script_run_time(), get_current_time())
+
+  write_success_job_log_entry(log_con, job_duration, summary)
+}
+
+#' Write a debug log entry for the job
+#'
+#' @param con, a DB connection
+#' @param job_duration, the duration of the job in seconds
+#' @param job_summary, the summary of the job performed as JSON
+#'
+#' @examples
+#' \dontrun{
+#'  write_debug_job_log_entry(
+#'    conn = con,
+#'    job_duration = 30,
+#'    job_summary = as.json("Update vaccination status")
+#'  )
+#' }
+write_debug_job_log_entry <- function(con, job_duration, job_summary) {
+  con_info <- DBI::dbGetInfo(con)
+  df_to_write <- build_etl_job_log_df(job_duration, job_summary, "DEBUG")
+  write_to_sql_db(
+    conn = con,
+    table_name = "rcc_job_log",
+    df_to_write = df_to_write,
+    schema = con_info$dbname,
+    overwrite = FALSE,
+    db_name = con_info$dbname,
+    append = TRUE,
+    is_log_con = TRUE
+  )
+}
+
+#' Write an error log entry for the job
+#'
+#' @param con, a DB connection
+#' @param job_duration, the duration of the job in seconds
+#' @param job_summary, the summary of the job performed as JSON
+#'
+#' @examples
+#' \dontrun{
+#'  write_error_job_log_entry(
+#'    conn = con,
+#'    job_duration = 30,
+#'    job_summary = as.json("Update vaccination status")
+#'  )
+#' }
+write_error_job_log_entry <- function(con, job_duration, job_summary) {
+  con_info <- DBI::dbGetInfo(con)
+  df_to_write <- build_etl_job_log_df(job_duration, job_summary, "ERROR")
+  write_to_sql_db(
+    conn = con,
+    table_name = "rcc_job_log",
+    df_to_write = df_to_write,
+    schema = con_info$dbname,
+    overwrite = FALSE,
+    db_name = con_info$dbname,
+    append = TRUE,
+    is_log_con = TRUE
+  )
+}
+
+#' Write an success job log entry
+#'
+#' @param con, a DB connection
+#' @param job_duration, the duration of the job in seconds
+#' @param job_summary, the summary of the job performed as JSON
+#'
+#' @examples
+#' \dontrun{
+#'  write_success_job_log_entry(
+#'    conn = con,
+#'    job_duration = 30,
+#'    job_summary = as.json("Update vaccination status")
+#'  )
+#' }
+write_success_job_log_entry <- function(con, job_duration, job_summary) {
+  con_info <- DBI::dbGetInfo(con)
+  df_to_write <- build_etl_job_log_df(job_duration, job_summary, "SUCCESS")
+  write_to_sql_db(
+    conn = con,
+    table_name = "rcc_job_log",
+    df_to_write = df_to_write,
+    schema = con_info$dbname,
+    overwrite = FALSE,
+    db_name = con_info$dbname,
+    append = TRUE,
+    is_log_con = TRUE
+  )
 }
 
 #' Write an error log entry

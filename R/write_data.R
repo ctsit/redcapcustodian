@@ -6,6 +6,8 @@
 #' @param schema database we will write to
 #' @param overwrite a logical that controls whether we will overwrite the table
 #' @param db_name the name of the database written to
+#' @param is_log_con if FALSE then log failures, if TRUE then do not attempt to log errors
+#' @param continue_on_error if TRUE then continue execution on error, if FALSE then quit non interactive sessions on error
 #' @param ... Additional parameters that will be passed to DBI::dbWriteTable
 #'
 #' @return No value is returned
@@ -30,6 +32,8 @@ write_to_sql_db <- function(
   schema,
   overwrite,
   db_name,
+  is_log_con = FALSE,
+  continue_on_error = FALSE,
   ...) {
 
   # CTSIT team specific check.
@@ -39,7 +43,7 @@ write_to_sql_db <- function(
   #  print("write_to_prod not set to True, appending '_test' to table_name before write")
   #}
 
-  tryCatch(
+  result <- tryCatch(
     expr = {
       DBI::dbWriteTable(
         conn = conn,
@@ -61,8 +65,23 @@ write_to_sql_db <- function(
         Sys.getenv("INSTANCE"), "|", get_script_run_time()
       )
 
-      print(paste0(message, email_subject))
       #send_upload_email(message, email_subject)
+
+      if (interactive()) {
+        # write_to_sql_db is called from log_job_debug
+        # calling log_job_failure on a log connection will result in and endless function call loop
+        if (!is_log_con) {
+          log_job_failure(message)
+        }
+        warning(message)
+      } else if (!continue_on_error) {
+        # write_to_sql_db is called from log_job_failure
+        # calling log_job_failure on a log connection will result in and endless function call loop
+        if (!is_log_con) {
+          log_job_failure(message)
+        }
+        quit_non_interactive_run()
+      }
     }
   )
 }

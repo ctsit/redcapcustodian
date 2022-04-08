@@ -4,7 +4,17 @@
 \alias{write_to_sql_db}
 \title{Write to a MySQL Database with error checking and email alerting on failure}
 \usage{
-write_to_sql_db(conn, table_name, df_to_write, schema, overwrite, db_name, ...)
+write_to_sql_db(
+  conn,
+  table_name,
+  df_to_write,
+  schema,
+  overwrite,
+  db_name,
+  is_log_con = FALSE,
+  continue_on_error = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conn}{a DBI database connection}
@@ -18,6 +28,10 @@ write_to_sql_db(conn, table_name, df_to_write, schema, overwrite, db_name, ...)
 \item{overwrite}{a logical that controls whether we will overwrite the table}
 
 \item{db_name}{the name of the database written to}
+
+\item{is_log_con}{if FALSE then log failures, if TRUE then do not attempt to log errors}
+
+\item{continue_on_error}{if TRUE then continue execution on error, if FALSE then quit non interactive sessions on error}
 
 \item{...}{Additional parameters that will be passed to DBI::dbWriteTable}
 }
