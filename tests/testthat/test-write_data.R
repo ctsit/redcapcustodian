@@ -131,6 +131,7 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
         df_to_write = d,
         db_name = ":memory",
         overwrite = TRUE,
+        continue_on_error = FALSE,
         is_log_con = TRUE
     )
 
