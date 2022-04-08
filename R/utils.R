@@ -1,5 +1,18 @@
 utils::globalVariables(".")
 
+#' Prevent \code{\link{quit_non_interactive_run}} from quitting.
+#' This is not meant to be used outside of tests. See test-write.R for an example.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'  disable_non_interactive_quit()
+#'}
+disable_non_interactive_quit <- function() {
+  Sys.setenv("NON_INTERACTIVE_QUIT_ENABLED" = FALSE)
+}
+
 #' Provide the exact length of the time span between start time and end time
 #'
 #'
@@ -125,7 +138,7 @@ quit_non_interactive_run <- function() {
     warning("quit_non_interactive_run was called for an interactive session.")
   }
 
-  if (!interactive()) {
+  if (!interactive() && isTRUE(Sys.getenv("NON_INTERACTIVE_QUIT_ENABLED"))) {
     q()
   }
 }
