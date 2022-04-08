@@ -94,7 +94,7 @@ build_formatted_df_from_result <- function(result, database_written, table_writt
 #' }
 #' @export
 connect_to_log_db <- function(drv, continue_on_error = FALSE) {
-  return(connect_to_db(drv = drv, continue_on_error = continue_on_error))
+  return(connect_to_db(drv = drv, prefix = "LOG", continue_on_error = continue_on_error))
 }
 
 #' Fetches the current time in system time zone
