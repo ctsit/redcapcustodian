@@ -11,10 +11,10 @@ sync_metadata(
 )
 }
 \arguments{
-\item{source_credentials}{A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}}\n
+\item{source_credentials}{A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}} \cr
 contains credentials for the project you wish to copy from}
 
-\item{target_credentials}{A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}}\n
+\item{target_credentials}{A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}} \cr
 contains credentials for the project you wish to overwrite}
 
 \item{strip_action_tags}{Optional toggle to remove action tags, useful for porting to a development environment; defaults to FALSE}

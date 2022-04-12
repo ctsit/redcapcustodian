@@ -106,12 +106,13 @@ set_super_api_token <- function(conn, username) {
 }
 
 
-#' Generate an API token for a REDCap project
+#' Generate an API token for a REDCap project and assign it to a specified user
 #'
 #' @param conn a DBI database connection, such as that from \code{\link{get_redcap_db_connection}}
-#' @param username a REDCap username
-#' @param project_id The project id of the project you wish to generate a token for
-#' @return The newly created token
+#' @param username a REDCap username \cr
+#' This user must already have access to the project, i.e. they must appear in the project's User Rights
+#' @param project_id The project id of the project for which you wish to generate a token
+#' @return nothing
 #'
 #' @export
 #' @examples
@@ -120,15 +121,26 @@ set_super_api_token <- function(conn, username) {
 #'   my_new_token <- set_project_api_token(conn, "admin", 15)
 #' }
 set_project_api_token <- function(conn, username, project_id) {
-  # copied from Classes/RedCapDB.php::setAPIToken
-  token <- paste0(username, project_id)
+  # inspired by Classes/RedCapDB.php::setAPIToken
+  # Mersenne-Twister is R's default RNG, see ?Random
+  # TODO: clone REDCap Core's getRandomHash to complete match
+  salt <- sample(64:128, 1)
+
+  token <- paste(username, project_id, salt, sep = "&") %>%
+    digest::digest(algo = "md5") %>%
+    toupper()
+
+  # TODO: create new row if user does not already have access to this project
+  # TODO: consider respecting existing API tokens
   sql <- paste0(
-    "UPDATE redcap_user_rights",
-    "SET api_token = ", token,
-    "WHERE username = ", username,
-    "AND project_id = ", project_id,
+    "UPDATE `redcap_user_rights` ",
+    "SET api_token = '", token, "' ",
+    "WHERE username = '", username, "' ",
+    "AND project_id = ", project_id, " ",
     "LIMIT 1"
   )
+
+  DBI::dbExecute(conn, sql)
 }
 
 

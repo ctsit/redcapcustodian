@@ -1,8 +1,8 @@
 #' Sync data dictionary of a source project to a target project, using REDCapR credentials
 #'
-#' @param source_credentials A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}}\n
+#' @param source_credentials A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}} \cr
 #' contains credentials for the project you wish to copy from
-#' @param target_credentials A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}}\n
+#' @param target_credentials A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}} \cr
 #' contains credentials for the project you wish to overwrite
 #' @param strip_action_tags Optional toggle to remove action tags, useful for porting to a development environment; defaults to FALSE
 #'
