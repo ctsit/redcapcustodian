@@ -4,12 +4,12 @@
 \alias{scrape_user_api_tokens}
 \title{Gather all API tokens on a specified REDCap server for a given user}
 \usage{
-scrape_user_api_tokens(conn, username_to_scrape)
+scrape_user_api_tokens(conn, username_to_scrape = Sys.info()[["user"]])
 }
 \arguments{
 \item{conn}{a DBI database connection to a REDCap instance, such as that from \code{\link{get_redcap_db_connection}}}
 
-\item{username_to_scrape}{a REDCap username}
+\item{username_to_scrape}{a REDCap username, defaults to your system's username}
 }
 \value{
 A dataframe of all tokens assigned to the user containing the following:

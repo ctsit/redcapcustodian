@@ -1,7 +1,7 @@
 #' Gather all API tokens on a specified REDCap server for a given user
 #'
 #' @param conn a DBI database connection to a REDCap instance, such as that from \code{\link{get_redcap_db_connection}}
-#' @param username_to_scrape a REDCap username
+#' @param username_to_scrape a REDCap username, defaults to your system's username
 #'
 #' @return A dataframe of all tokens assigned to the user containing the following:
 #' \itemize{
@@ -18,7 +18,7 @@
 #'   my_credentials <- scrape_user_api_tokens(conn, "admin")
 #'
 #' }
-scrape_user_api_tokens <- function(conn, username_to_scrape) {
+scrape_user_api_tokens <- function(conn, username_to_scrape = Sys.info()[["user"]]) {
   # collect super API token if one exists
   super_credentials <- dplyr::tbl(conn, "redcap_user_information") %>%
     dplyr::filter(.data$username == username_to_scrape) %>%
