@@ -29,18 +29,11 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
     log_con <- get_package_scope_var("log_con")
     con <- connect_to_db(drv)
     table_name <- "sample_data"
-    df <- tibble::tribble(
-        ~colA, ~colB,
-        "a", 1,
-        "b", 2,
-        "c", 3
-    )
 
-    # pass invalid reference for df_to_write
     write_to_sql_db(
         conn = con,
         table_name = table_name,
-        df_to_write = d,
+        df_to_write = NULL, # pass invalid reference for df_to_write
         db_name = ":memory",
         overwrite = TRUE,
         continue_on_error = TRUE
@@ -73,18 +66,11 @@ test_that("on error, write_to_sql_db does log a failure when continue_on_error =
     log_con <- get_package_scope_var("log_con")
     con <- connect_to_db(drv)
     table_name <- "sample_data"
-    df <- tibble::tribble(
-        ~colA, ~colB,
-        "a", 1,
-        "b", 2,
-        "c", 3
-    )
-
-    # pass invalid reference for df_to_write
+   
     write_to_sql_db(
         conn = con,
         table_name = table_name,
-        df_to_write = d,
+        df_to_write = NULL, # pass invalid reference for df_to_write
         db_name = ":memory",
         overwrite = TRUE,
         continue_on_error = FALSE,
@@ -117,18 +103,11 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
     log_con <- get_package_scope_var("log_con")
     con <- connect_to_db(drv)
     table_name <- "sample_data"
-    df <- tibble::tribble(
-        ~colA, ~colB,
-        "a", 1,
-        "b", 2,
-        "c", 3
-    )
 
-    # pass invalid reference for df_to_write
     write_to_sql_db(
         conn = con,
         table_name = table_name,
-        df_to_write = d,
+        df_to_write = NULL, # pass invalid reference for df_to_write
         db_name = ":memory",
         overwrite = TRUE,
         continue_on_error = FALSE,
