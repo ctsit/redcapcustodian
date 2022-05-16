@@ -16,3 +16,4 @@ make_host.sh
 docs/*
 ^.github/.*
 ^hosts/.*
+^data-raw$
