@@ -5,7 +5,7 @@ WORKDIR /home/rocker
 RUN apt update -y && apt install -y libmariadb-dev libmariadbclient-dev
 
 # install necessary libraries
-RUN R -e "install.packages(c('sendmailR', 'dotenv', 'RCurl', 'checkmate', 'janitor', 'sqldf', 'DBI', 'RMariaDB', 'digest','rjson'))"
+RUN R -e "install.packages(c('sendmailR', 'dotenv', 'RCurl', 'checkmate', 'janitor', 'sqldf', 'DBI', 'RMariaDB', 'digest','rjson', 'dbx'))"
 RUN R -e "install.packages(c('REDCapR', 'mRpostman', 'writexl'))"
 
 # build and install this package
