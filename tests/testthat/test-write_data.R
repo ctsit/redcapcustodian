@@ -136,3 +136,43 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
     DBI::dbDisconnect(con)
     expect_false(result)
 })
+
+testthat::test_that(
+  "sync_table can do an update",
+  {
+
+    df = dataset_diff_test_user_data
+
+    # Set up target table
+    drv <- RSQLite::SQLite()
+    con <- connect_to_db(drv)
+    table_name <- "target"
+
+    DBI::dbWriteTable(
+      conn = con,
+      name = table_name,
+      value = df$target,
+      schema = table_name,
+      overwrite = T
+    )
+
+    # determine what we want to update
+    diff_output <- dataset_diff(
+      source = df$source,
+      source_pk = df$source_pk,
+      target = df$target,
+      target_pk = df$target_pk
+    )
+
+    # update the data
+    sync_table(
+      conn = con,
+      table_name = table_name,
+      primary_key = df$target_pk,
+      data_diff_output = diff_output
+    )
+
+    # test that the target was updated
+    testthat::expect_true(dplyr::all_equal(tbl(con, "target") %>% dplyr::collect(), sync_table_test_user_data_result))
+  }
+)

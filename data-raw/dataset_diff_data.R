@@ -107,3 +107,11 @@ dataset_diff_test_user_data <- list(
 )
 
 usethis::use_data(dataset_diff_test_user_data, overwrite = TRUE)
+
+# create sync_table test data for user data
+sync_table_test_user_data_result <- target %>%
+  left_join(source, by = c("username")) %>%
+  mutate(user_email = coalesce(user_email.y, user_email.x)) %>%
+  select(-ends_with(c(".x", ".y")))
+
+usethis::use_data(sync_table_test_user_data_result, overwrite = TRUE)
