@@ -14,17 +14,20 @@ connect_to_redcap_db <- function() {
   # and that the DB connection is still valid
   # before disconnecting
   if (exists("redcapcustodian.env") &&
-      "conn" %in% names(redcapcustodian.env) &&
-      DBI::dbIsValid(redcapcustodian.env$conn)
-      ) {
+    "conn" %in% names(redcapcustodian.env) &&
+    DBI::dbIsValid(redcapcustodian.env$conn)
+  ) {
     conn <- redcapcustodian.env$conn
     warning(glue::glue("Disconnecting from REDCap database {dbGetInfo(conn)$host}:{dbGetInfo(conn)$dbname}, before reconnect"))
     DBI::dbDisconnect(conn)
   }
 
-  if (Sys.getenv("REDCAP_DB_PORT") == '') port = "3306" else
-    { port = Sys.getenv("REDCAP_DB_PORT") }
-  conn = DBI::dbConnect(
+  if (Sys.getenv("REDCAP_DB_PORT") == "") {
+    port <- "3306"
+  } else {
+    port <- Sys.getenv("REDCAP_DB_PORT")
+  }
+  conn <- DBI::dbConnect(
     RMariaDB::MariaDB(),
     dbname = Sys.getenv("REDCAP_DB_NAME"),
     host = Sys.getenv("REDCAP_DB_HOST"),
@@ -87,9 +90,10 @@ get_redcap_emails <- function(conn) {
   redcap_email_query <- "select ui_id, username, user_email, user_email2, user_email3 from redcap_user_information"
   redcap_emails <- DBI::dbGetQuery(conn, statement = redcap_email_query) %>%
     tidyr::pivot_longer(dplyr::starts_with("user_email"),
-                 names_to="email_field_name",
-                 values_to="email",
-                 values_drop_na = TRUE) %>%
+      names_to = "email_field_name",
+      values_to = "email",
+      values_drop_na = TRUE
+    ) %>%
     dplyr::filter(.data$email != "")
 
   return(redcap_emails)
@@ -158,9 +162,9 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
 #' bad_emails <- get_bad_emails_from_listserv_digest(
 #'   username = "jdoe",
 #'   password = "jane_does_password",
-#'   url ="imaps://outlook.office365.com",
+#'   url = "imaps://outlook.office365.com",
 #'   messages_since_date = as.Date("2022-01-01", format = "%Y-%m-%d")
-#'   )
+#' )
 #' bad_redcap_user_emails <- get_redcap_emails(conn) %>%
 #'   filter(email %in% bad_emails)
 #'
@@ -224,7 +228,7 @@ update_redcap_email_addresses <- function(conn, redcap_email_revisions) {
 suspend_users_with_no_primary_email <- function(conn) {
   # TODO: include TZ in user_comments
 
-  count_of_users_suspended <- dbExecute(
+  count_of_users_suspended <- DBI::dbExecute(
     conn,
     paste0(
       "UPDATE redcap_user_information ",

@@ -6,6 +6,8 @@
 #' @param schema database we will write to
 #' @param overwrite a logical that controls whether we will overwrite the table
 #' @param db_name the name of the database written to
+#' @param is_log_con if FALSE then log failures, if TRUE then do not attempt to log errors
+#' @param continue_on_error if TRUE then continue execution on error, if FALSE then quit non interactive sessions on error
 #' @param ... Additional parameters that will be passed to DBI::dbWriteTable
 #'
 #' @return No value is returned
@@ -30,6 +32,8 @@ write_to_sql_db <- function(
   schema,
   overwrite,
   db_name,
+  is_log_con = FALSE,
+  continue_on_error = FALSE,
   ...) {
 
   # CTSIT team specific check.
@@ -39,7 +43,7 @@ write_to_sql_db <- function(
   #  print("write_to_prod not set to True, appending '_test' to table_name before write")
   #}
 
-  tryCatch(
+  result <- tryCatch(
     expr = {
       DBI::dbWriteTable(
         conn = conn,
@@ -61,8 +65,110 @@ write_to_sql_db <- function(
         Sys.getenv("INSTANCE"), "|", get_script_run_time()
       )
 
-      print(paste0(message, email_subject))
       #send_upload_email(message, email_subject)
+
+      if (interactive()) {
+        # write_to_sql_db is called from log_job_debug
+        # calling log_job_failure on a log connection will result in and endless function call loop
+        if (!is_log_con) {
+          log_job_failure(message)
+        }
+        warning(message)
+      } else if (!continue_on_error) {
+        # write_to_sql_db is called from log_job_failure
+        # calling log_job_failure on a log connection will result in and endless function call loop
+        if (!is_log_con) {
+          log_job_failure(message)
+        }
+        quit_non_interactive_run()
+      }
     }
   )
+}
+
+
+#' Write to a MySQL Database using the result of \code{\link{dataset_diff}}
+#'
+#' @param conn a DBI database connection
+#' @param table_name name of the table to write to
+#' @param primary_key name of the primary key (or vector of multiple keys) of the table to write to
+#' @param data_diff_output list of dataframes returned by \code{\link{dataset_diff}}
+#' @param insert boolean toggle to use the insert dataframe to insert rows in \code{table_name}
+#' @param update boolean toggle to use the updates dataframe to update rows in \code{table_name}
+#' @param delete boolean toggle to use the delete dataframe to delete rows in \code{table_name}
+#'
+#' @return a named list with these values:
+#' \itemize{
+#'   \item insert_n - the number of rows inserted to \code{table_name}
+#'   \item update_n - the number of rows updated in \code{table_name}
+#'   \item delete_n - the number of rows deleted in \code{table_name}
+#' }
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' conn <- connect_to_redcap_db()
+#'
+#'  ...
+#'
+#' diff_output <- dataset_diff(
+#'   source = updates,
+#'   source_pk = "id",
+#'   target = original_table,
+#'   target_pk = "id"
+#' )
+#'
+#' sync_table(
+#'   conn = con,
+#'   table_name = table_name,
+#'   primary_key = primary_key,
+#'   data_diff_output = diff_output
+#' )
+#' }
+sync_table <- function(
+  conn,
+  table_name,
+  primary_key,
+  data_diff_output,
+  insert = F,
+  update = T,
+  delete = F
+) {
+  # TODO: consider exporting target_pk from dataset_diff
+  # TODO: integrate logging
+  insert_n <- 0
+  update_n <- 0
+  delete_n <- 0
+
+  # TODO: detect "created/updated" and adjust values where appropriate
+
+  if (insert) {
+    insert_n <- DBI::dbAppendTable(conn, table_name, data_diff_output$insert_records)
+  }
+
+  if (update)  {
+    dbx::dbxUpdate(
+      conn = conn,
+      table = table_name,
+      records = data_diff_output$update_records,
+      where_cols = primary_key
+    )
+    update_n <- nrow(data_diff_output$update_records)
+  }
+
+  if (delete) {
+    dbx::dbxDelete(
+      conn = conn,
+      table = table_name,
+      where = data_diff_output$delete_records
+    )
+    delete_n <- nrow(data_diff_output$delete_records)
+  }
+
+  result <- list(
+    inserts = insert_n,
+    updates = update_n,
+    deletes = delete_n
+  )
+  return(result)
 }

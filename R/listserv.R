@@ -27,13 +27,10 @@
 #'   messages_since_date = as.Date("2022-01-01", format = "%Y-%m-%d")
 #'   )
 #' }
-
 get_bad_emails_from_listserv_digest <- function(username,
                                                 password,
                                                 url = "imaps://outlook.office365.com",
                                                 messages_since_date) {
-  utils::globalVariables(c("."))
-
   imap_con <- mRpostman::configure_imap(
     url = url,
     username = username,

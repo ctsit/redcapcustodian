@@ -1,34 +1,21 @@
 # REDCap Custodian
 
-This project automates data grooming activities that support the business of running a REDCap service. It detects, corrects, and reports on data issues with scheduled processes. It provides an extensible set of R functions and an automation framework upon which a REDCap team can build data grooming tasks that serve their REDCap system.
+This package simplifies data management activities on REDCap systems. It provides a framework for automating data extraction, transformation, and loading work (ETL). It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, and against the REDCap own database. It provides an extensible set of R functions upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.
 
 ## Operating environment
 
-Each ETL job in this system is an Rscript run via Docker. The design assumes the Docker containers are hosted on a Linux host with access to the REDCap's MySQL server and a mail server. 
+`redcapcustodian` is an R package than can be referenced in any R script that needs to do ETL work against REDCap. To facilitate automation, this repository also provides a Dockerfile with R, redcapcustodian, and its required packages. The `Dockerfile` and `build.sh` can be used to build a Docker image named _redcapcustodian_ that can serve as the foundation for containers that serve your specific tasks.
 
-A shared Docker image, _redcapcustodian_, is the foundation for host-specific Docker images used to run the scripts. Each container is instantiated via a cron job as documented in the files in [`examples/crons/`](examples/crons/). Each file in that folder runs a single job. To run a job, its cron script must be copied to the `/etc/cron.d/` folder on the Linux host. The `build.sh` script builds the containers and optionally deploys the environment files and cron scripts.
+In such an automated environment, each ETL job in this system is an Rscript run via Docker. The design assumes the Docker containers are hosted on a Linux host with API access to open or more REDCap systems, a mail server, a MySQL database, and, optionally, the REDCap database itself.
 
-
-## Release and Deployment
-
-This project uses the Git Flow workflow for releases. Every release should be versioned and have a ChangeLog entry that describes the new features and bug fixes. Every release should also be accompanied by an updated `VERSION` and a manual revision to the version number in [`DESCRIPTION`](./DESCRIPTION). The latter tells devtools about version number changes. The former allows image builds to be tagged as they are built by the `build.sh`
-
-To deploy a new release on the Linux host, execute this series of commands or an equivalent from your home directory on that host:
-
-```bash
-git clone git@github.com:ctsit/redcapcustodian.git
-cd redcapcustodian
-git pull
-sudo ./build.sh -d <hostname>
-```
-
+For sites without container infrastructure, each image can be instantiated into a container via a cron job as documented in the files in [`examples/crons/`](examples/crons/). Each file in that folder runs a single job. To run a job, its cron script must be copied to the `/etc/cron.d/` folder on the Linux host. The `build.sh` script builds the containers and optionally deploys the environment files and cron scripts.
 
 # Testing in Docker
 
-To build an updated `redcapcustodian` image for an _example_ host, create a host folder from the template:
+First setup a `./site` folder by copying the contents of [`site_template`](../site_template/) to the `site` folder.
 
-```bash
-./make_host.sh example
+```sh
+cp -r site_template/* site/
 ```
 
 Build `redcapcustodian` and the `rcc.site` image:
@@ -55,4 +42,4 @@ docker run --env-file .env --rm redcapcustodian Rscript report/hello.R
 
 ## Writing your own redcapcustodian Rscripts
 
-redcapcustodian supports custom code to address the specific needs of REDCap teams and projects. For details see [Writing your own redcapcustodian Rscripts](./docs/custom_rscript.md)
+redcapcustodian supports custom code to address the specific needs of REDCap teams and projects. For details see [Writing your own redcapcustodian Rscripts](./docs/custom_rscript.md). It might also help to look at the [Developer Notes](./docs/developer_notes.md)

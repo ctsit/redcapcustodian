@@ -18,6 +18,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
   DBI,
+  dbx,
   RMariaDB,
   dplyr,
   glue,
@@ -44,3 +45,5 @@ Suggests:
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.1.2
+Depends: 
+    R (>= 2.10)
