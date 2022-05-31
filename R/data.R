@@ -30,7 +30,29 @@
 #' \describe{
 #'   \item{\code{ui_id}}{double primary key}
 #'   \item{\code{username}}{character redcap username}
-#'   \item{\code{user_email}}{character primnary email address}
+#'   \item{\code{user_email}}{character primary email address}
 #'}
 #' @details DETAILS
 "sync_table_test_user_data_result"
+
+#' @title get_bad_emails_from_listserv_digest_test_output
+#' @description example output from get_bad_emails_from_listserv_digest that aligns with the related tests
+#' @format A data frame with 7 rows and 1 variables:
+#' \describe{
+#'   \item{\code{email}}{character bad email address found by querying listserv error digests}
+#'}
+#' @details DETAILS
+"get_bad_emails_from_listserv_digest_test_output"
+
+#' @title get_redcap_emails_output
+#' @description user email addresses from the table redcap_user_information.
+#' Addresses have been pivoted taller into a single `email` column.
+#' @format A data frame with 10 rows and 4 variables:
+#' \describe{
+#'   \item{\code{ui_id}}{double primary key}
+#'   \item{\code{username}}{character redcap username}
+#'   \item{\code{email_field_name}}{character column name in redcap_user_information}
+#'   \item{\code{email}}{character email value in the column named in `email_field_name`}
+#'}
+#' @details DETAILS
+"get_redcap_emails_output"
