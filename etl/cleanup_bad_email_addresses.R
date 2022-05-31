@@ -25,8 +25,7 @@ bounce_data <- get_bad_emails_from_listserv_digest(
 )
 
 bad_redcap_user_emails <- redcap_emails %>%
-  left_join(bounce_data, by = c("email")) %>%
-  filter(!address_is_ok)
+  inner_join(bounce_data, by = c("email"))
 
 person <- get_institutional_person_data()
 redcap_email_revisions <- get_redcap_email_revisions(bad_redcap_user_emails, person)
