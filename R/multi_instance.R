@@ -38,13 +38,13 @@ sync_metadata <- function(source_credentials, target_credentials, strip_action_t
   if (strip_action_tags) {
     # Remove annoyances like @HIDDEN and @READONLY
     source_metadata$data <- source_metadata$data %>%
-      mutate(field_note = if_else(
-        !is.na(field_annotation),
-        paste(field_note, "Removed action tags: ", field_annotation),
-        field_note
+      dplyr::mutate(field_note = dplyr::if_else(
+        !is.na(.data$field_annotation),
+        paste(.data$field_note, "Removed action tags: ", .data$field_annotation),
+        .data$field_note
       )
       ) %>%
-      mutate(field_annotation = NA_character_)
+      dplyr::mutate(field_annotation = NA_character_)
   }
 
   ## identical is unreliable in this context
