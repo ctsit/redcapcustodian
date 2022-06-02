@@ -56,24 +56,6 @@ scrape_user_api_tokens <- function(conn, username_to_scrape = Sys.info()[["user"
   return(credentials)
 }
 
-
-#' Store credentials in a local SQLite db
-#'
-#' @param credential_df a dataframe containing user credentials, such as that from \code{\link{scrape_user_api_tokens}}
-#' @param local_conn a dataframe containing user credentials, such as that from \code{\link{scrape_user_api_tokens}}
-#'
-#' @return The newly created super token
-#'
-#' @export
-#' @examples
-#' \dontrun{
-#'   conn <- get_redcap_db_connection()
-#'   my_new_super_token <- set_super_api_token(conn, "admin")
-#' }
-set_super_api_token <- function(credential_df, local_conn) {
-  cred_conn <- DBI::dbConnect(RSQLite::SQLite(), "credentials/credentials.db")
-}
-
 ###############################################################################
 #                         Creation of new credentials                         #
 ###############################################################################

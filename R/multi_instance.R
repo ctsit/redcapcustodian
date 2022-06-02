@@ -1,9 +1,17 @@
-#' Sync data dictionary of a source project to a target project, using REDCapR credentials
+#' Sync data dictionary of a source project to a target project using credential objects
 #'
-#' @param source_credentials A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}} \cr
-#' contains credentials for the project you wish to copy from
-#' @param target_credentials A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}} \cr
-#' contains credentials for the project you wish to overwrite
+#' @param source_credentials A dataframe containing the following columns:
+#' \itemize{
+#'   \item redcap_uri - The uri for the API endpoint of a REDCap host
+#'   \item token - The REDCap API token for a specific project
+#' }
+#' This dataframe should contain credentials for the project you wish to copy from
+#' @param target_credentials A dataframe containing the following columns:
+#' \itemize{
+#'   \item redcap_uri - The uri for the API endpoint of a REDCap host
+#'   \item token - The REDCap API token for a specific project
+#' }
+#' This dataframe should contain credentials for the project you wish to overwrite
 #' @param strip_action_tags Optional toggle to remove action tags, useful for porting to a development environment; defaults to FALSE
 #'
 #' @return nothing
@@ -24,6 +32,9 @@
 #'
 #'   sync_metadata(source_credentials, target_credentials)
 #' }
+#' @seealso
+#'  \code{\link[REDCapR]{retrieve_credential}}, \code{\link{scrape_user_api_tokens}}
+#'  \code{vignette("credential-scraping", package = "redcapcustodian")}
 sync_metadata <- function(source_credentials, target_credentials, strip_action_tags = FALSE) {
   # TODO: repeating instrument and event metadata may be insufficient, can be gathered with RCurl::postForm
   source_metadata <- REDCapR::redcap_metadata_read(

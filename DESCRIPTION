@@ -20,6 +20,7 @@ Imports:
   DBI,
   dbx,
   RMariaDB,
+  REDCapR,
   dplyr,
   glue,
   lubridate,
@@ -39,6 +40,7 @@ Imports:
   vctrs
 Suggests:
     testthat (>= 3.0.0),
+    digest,
     RSQLite,
     knitr (>= 1.18),
     rmarkdown (>= 2.0)
