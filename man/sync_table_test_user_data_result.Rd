@@ -9,7 +9,7 @@ A data frame with 4 rows and 3 variables:
 \describe{
   \item{\code{ui_id}}{double primary key}
   \item{\code{username}}{character redcap username}
-  \item{\code{user_email}}{character primnary email address}
+  \item{\code{user_email}}{character primary email address}
 }
 }
 \usage{
