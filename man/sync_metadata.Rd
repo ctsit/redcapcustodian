@@ -2,7 +2,7 @@
 % Please edit documentation in R/multi_instance.R
 \name{sync_metadata}
 \alias{sync_metadata}
-\title{Sync data dictionary of a source project to a target project, using REDCapR credentials}
+\title{Sync data dictionary of a source project to a target project using credential objects}
 \usage{
 sync_metadata(
   source_credentials,
@@ -11,11 +11,19 @@ sync_metadata(
 )
 }
 \arguments{
-\item{source_credentials}{A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}} \cr
-contains credentials for the project you wish to copy from}
+\item{source_credentials}{A dataframe containing the following columns:
+\itemize{
+  \item redcap_uri - The uri for the API endpoint of a REDCap host
+  \item token - The REDCap API token for a specific project
+}
+This dataframe should contain credentials for the project you wish to copy from}
 
-\item{target_credentials}{A dataframe returned from \code{\link{REDCapR::retrieve_credentials_local}} \cr
-contains credentials for the project you wish to overwrite}
+\item{target_credentials}{A dataframe containing the following columns:
+\itemize{
+  \item redcap_uri - The uri for the API endpoint of a REDCap host
+  \item token - The REDCap API token for a specific project
+}
+This dataframe should contain credentials for the project you wish to overwrite}
 
 \item{strip_action_tags}{Optional toggle to remove action tags, useful for porting to a development environment; defaults to FALSE}
 }
@@ -23,7 +31,7 @@ contains credentials for the project you wish to overwrite}
 nothing
 }
 \description{
-Sync data dictionary of a source project to a target project, using REDCapR credentials
+Sync data dictionary of a source project to a target project using credential objects
 }
 \examples{
 \dontrun{
@@ -39,4 +47,8 @@ Sync data dictionary of a source project to a target project, using REDCapR cred
 
   sync_metadata(source_credentials, target_credentials)
 }
+}
+\seealso{
+\code{\link[REDCapR]{retrieve_credential}}, \code{\link{scrape_user_api_tokens}}
+ \code{vignette("credential-scraping", package = "redcapcustodian")}
 }
