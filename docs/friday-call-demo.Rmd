@@ -1,0 +1,187 @@
+---
+title: "REDCap Custodian Friday Call Demo"
+author: "Philip Chase & Kyle Chesney"
+date: '2022-06-15'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+This is a demonstration of some features of the REDCap Custodian R package. 
+
+We will demonstrate how to:
+
+2. Fetch and store you API tokens in a database
+3. Get some data from a REDCap project
+4. Transform your data
+5. Write it to another project
+6. Review the logs of what the job
+
+Then we'll talk about how to automate that whole process.
+
+## Prequisites
+
+If you want to do this yourself, we recommend you do these things to setup your development and testing environment:
+
+1. Install R, Rstudio, and the tidyverse packages
+2. Install redcapcustodian from github
+3. Clone the [redcap-docker-compose](https://github.com/123andy/redcap-docker-compose/) git repo
+4. Create a local REDCap with redcap-docker-compose
+5. Create an new project in Rstudio.  Note this is an _R_ project, not a _REDCap_ project,
+6. Copy [local.env](./local.env) to .env in the root of your new project folder.
+
+You also need some REDCap projects to play with. If you have your own, that's great. for our demo, we need two REDCap projects to exist. Please make those projects with these XML files: [main](./main.xml) [biospecimen](./biospecimen.xml).
+
+To talk to those projects from code, they'll need API tokens. Add those to the main and biospecimen projects. Do the same for any other project you want to play with. 
+
+With those changes in place, you can start developing scripts that use REDCap custodian.
+
+## Fetch API Tokens
+
+First, load some R packages:
+
+```{r packages}
+library(redcapcustodian)
+library(DBI)
+library(tidyverse)
+library(dotenv)
+```
+
+
+Then, make a database to to hold the credentials:
+
+```{r make_credentials_db}
+
+# fetching all extant API tokens and adding them to storage #################
+
+dir.create("credentials")
+
+# creates file if one does not exist
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), "credentials/credentials.db")
+
+# SQLite friendly schema
+credentials_sql <- "CREATE TABLE IF NOT EXISTS `credentials` (
+  `redcap_uri` TEXT NOT NULL,
+  `server_short_name` varchar(128) NOT NULL,
+  `username` varchar(191) NOT NULL,
+  `project_id` int(10) NOT NULL,
+  `project_display_name` TEXT NOT NULL,
+  `project_short_name` varchar(128) DEFAULT NULL,
+  `token` varchar(64) NOT NULL,
+  `comment` varchar(256) DEFAULT NULL
+);
+"
+
+dbExecute(file_conn, credentials_sql)
+```
+
+Now, fetch all of your API tokens:
+
+```{r get_api_tokens}
+# fetching all extant API tokens and adding them to storage #################
+load_dot_env("local.env")
+
+username <- "admin"
+source_conn <- connect_to_redcap_db()
+source_credentials <- scrape_user_api_tokens(source_conn, username)
+
+# alter credentials to match local schema
+source_credentials_upload <- source_credentials %>%
+  mutate(
+    redcap_uri = Sys.getenv("URI"),
+    server_short_name = tolower(Sys.getenv("INSTANCE"))
+  ) %>%
+  # remove duplicates
+  anti_join(
+    tbl(file_conn, "credentials") %>%
+      collect()
+  )
+
+dbAppendTable(file_conn, "credentials", source_credentials_upload)
+```
+
+## Get some data from a REDCap project
+
+First, get your credentials to the REDCap project you want to read from.
+
+```{r read_source_credentials_from_db}
+source_credentials <- tbl(file_conn, "credentials") %>%
+  filter(username) %>%
+  collect() %>%
+  filter(str_detect(project_display_name, "Demo Main")) %>%
+  unnest()
+```
+
+At this point it's time to read the portions of the project data that interest you. We use Will Beasley's REDCapR library to do that job. It allows you to specify the forms, fields, event names, and time frames of interest. It even allows REDCap filtering. 
+
+For our task, we want to read identifiers for collected data so we can write them into the Biospecimen tracking project
+
+```{r read data}
+
+fields_to_read <- c(
+  "record_id",
+  "redcap_event_name",
+  "sample_collected_date"
+)
+
+source_project_data <- REDCapR::redcap_read(
+  redcap_uri = source_credentials$redcap_uri,
+  token = source_credentials$token,
+  fields = fields_to_read
+)
+
+```
+
+Our customer's requirements for the biorepository require us to do some transformations before writing. That's easy with the `dplyr` library
+
+```{r transform_source}
+
+new_target_project_data <- source_project_data
+
+```
+
+Now write that data to the target project
+
+```{r write_to_target}
+target_credentials <- tbl(file_conn, "credentials") %>%
+  filter(username) %>%
+  collect() %>%
+  filter(str_detect(project_display_name, "Demo Biospecimen")) %>%
+  unnest()
+
+# Want to know exactly what is getting updated in the target project? Fetch that data then anti-join with the new data set
+target_fields_to_read <- c(
+  "record_id",
+  "redcap_event_name",
+  "sample_collected_date"
+)
+
+old_target_project_data <- REDCapR::redcap_read(
+  redcap_uri = target_credentials$redcap_uri,
+  token = target_credentials$token,
+  fields = target_fields_to_read
+)
+
+target_project_data <- new_target_project_data %>%
+  dplyr::anti_join(old_target_project_data)
+
+# now write that small dataset
+REDCapR::redcap_write(
+  ds_to_write = target_project_data,
+  redcap_uri = target_credentials$redcap_uri,
+  token = target_credentials$token
+)
+```
+
+## Review the logs of what the job
+
+When doing automated jobs, it's important to have a record of what happened. REDCap Custodian writes logs so you can review its actions later.
+
+```{r read_logs}
+
+
+```
