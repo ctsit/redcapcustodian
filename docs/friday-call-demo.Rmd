@@ -52,7 +52,7 @@ library(dotenv)
 ```
 
 
-Then, make a database to to hold the credentials:
+Then, make a database to hold the credentials:
 
 ```{r make_credentials_db}
 
@@ -85,9 +85,9 @@ Now, fetch all of your API tokens:
 # fetching all extant API tokens and adding them to storage #################
 load_dot_env("local.env")
 
-username <- "admin"
+my_username <- "admin"
 source_conn <- connect_to_redcap_db()
-source_credentials <- scrape_user_api_tokens(source_conn, username)
+source_credentials <- scrape_user_api_tokens(source_conn, my_username)
 
 # alter credentials to match local schema
 source_credentials_upload <- source_credentials %>%
@@ -110,7 +110,7 @@ First, get your credentials to the REDCap project you want to read from.
 
 ```{r read_source_credentials_from_db}
 source_credentials <- tbl(file_conn, "credentials") %>%
-  filter(username) %>%
+  filter(username == my_username) %>%
   collect() %>%
   filter(str_detect(project_display_name, "Demo Main")) %>%
   unnest()
@@ -148,7 +148,7 @@ Now write that data to the target project
 
 ```{r write_to_target}
 target_credentials <- tbl(file_conn, "credentials") %>%
-  filter(username) %>%
+  filter(username == my_username) %>%
   collect() %>%
   filter(str_detect(project_display_name, "Demo Biospecimen")) %>%
   unnest()
