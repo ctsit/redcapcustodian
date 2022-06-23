@@ -3,6 +3,24 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.5.0] - 2022-06-23
+### Added
+- Add first version of a demonstration script (Philip Chase)
+- Add sync_table (Kyle Chesney)
+- Add dataset_diff (Philip Chase)
+- Add multi_instance.R (Kyle Chesney)
+- Add sync_metadata using credentials (Kyle Chesney)
+- Add scrape_user_api_tokens (Kyle Chesney)
+- Add set_super_api_token (Kyle Chesney)
+- Add set_project_api_token (Kyle Chesney)
+- Add ETL job logging(Michael Bentz)
+- Add cleanup_bad_email_addresses (Laurence James-Woodley)
+
+### Changed
+- Ignore site_template in build (Philip Chase)
+- Ignore ./output/ (Philip Chase)
+
+
 ## [0.4.1] - 2022-03-04
 ### Changed
 - Fix build.sh deployment bugs (Philip Chase)
