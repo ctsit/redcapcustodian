@@ -15,3 +15,10 @@ site
 *.env
 !host_template/*.env
 !host_template/.env
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.R
+vignettes/*.pdf
+doc
+Meta

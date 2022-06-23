@@ -1,7 +1,7 @@
 Package: redcapcustodian
 Type: Package
 Title: System data cleaning for REDCap
-Version: 0.4.1
+Version: 0.5.0
 Authors@R: c(
   person("Philip", "Chase", email = "pbc@ufl.edu", role = c("aut", "cre")),
   person("Laurence", "James-Woodley", email = "lawjames1@ufl.edu", role = "aut"),
@@ -18,7 +18,9 @@ Encoding: UTF-8
 LazyData: true
 Imports:
   DBI,
+  dbx,
   RMariaDB,
+  REDCapR,
   dplyr,
   glue,
   lubridate,
@@ -35,10 +37,15 @@ Imports:
   tidyr,
   tidyverse,
   readr,
-  knitr,
   vctrs
 Suggests:
     testthat (>= 3.0.0),
-    RSQLite
+    digest,
+    RSQLite,
+    knitr (>= 1.18),
+    rmarkdown (>= 2.0)
+VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
+Depends: 
+    R (>= 2.10)
