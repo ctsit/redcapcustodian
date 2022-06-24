@@ -3,6 +3,11 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.5.1] - 2022-06-24
+### Changed
+- Export email-fixing functions (Philip Chase)
+
+
 ## [0.5.0] - 2022-06-23
 ### Added
 - Add first version of a demonstration script (Philip Chase)
