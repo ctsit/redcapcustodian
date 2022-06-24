@@ -156,6 +156,10 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
 #' @param conn A DBI Connection object
 #' @param redcap_email_revisions a df returned by \code{\link{get_redcap_email_revisions}}
 #'
+#' @export
+#' @importFrom magrittr "%>%"
+#' @importFrom rlang .data
+#'
 #' @examples
 #' \dontrun{
 #' conn <- connect_to_redcap_db()
@@ -220,6 +224,8 @@ update_redcap_email_addresses <- function(conn, redcap_email_revisions) {
 #' Suspends users with no primary email in redcap_user_information
 #'
 #' @param conn A DBI Connection object
+#'
+#' @export
 #'
 #' @examples
 #' \dontrun{
