@@ -32,13 +32,20 @@ If you want to do this yourself, we recommend you do these things to setup your 
 3. Clone the [redcap-docker-compose](https://github.com/123andy/redcap-docker-compose/) git repo
 4. Create a local REDCap with redcap-docker-compose
 5. Create an new project in Rstudio.  Note this is an _R_ project, not a _REDCap_ project,
-6. Copy [local.env](./local.env) to .env in the root of your new project folder.
+6. Copy [local.env.txt](./local.env.txt) to .env in the root of your new project folder.
 
 You also need some REDCap projects to play with. If you have your own, that's great. for our demo, we need two REDCap projects to exist. Please make those projects with these XML files: [main](./main.xml) [biospecimen](./biospecimen.xml).
+
+Name the project from `main.xml`: "Demo Main"
+Name the project from `biospecimen.xml`: "Demo Biospecimen"
 
 To talk to those projects from code, they'll need API tokens. Add those to the main and biospecimen projects. Do the same for any other project you want to play with. 
 
 With those changes in place, you can start developing scripts that use REDCap custodian.
+
+## Premise
+
+You have a big important project with many rows of data and many more rows coming in every week, a researcher asks you to build them a biorepository project for the biospecimens collected for this protocol. We do not want anyone to transcribe existing data, so we will _automatically_ copy it for them every day. No transcription, no typos, no overtime.
 
 ## Fetch API Tokens
 
@@ -104,9 +111,9 @@ source_credentials_upload <- source_credentials %>%
 dbAppendTable(file_conn, "credentials", source_credentials_upload)
 ```
 
-## Get some data from a REDCap project
+## Create some data for your REDCap project
 
-First, get your credentials to the REDCap project you want to read from.
+We will generate some records for your main project for you to port over. First, get your credentials to the REDCap project you want to read from.
 
 ```{r read_source_credentials_from_db}
 source_credentials <- tbl(file_conn, "credentials") %>%
@@ -116,7 +123,82 @@ source_credentials <- tbl(file_conn, "credentials") %>%
   unnest()
 ```
 
-At this point it's time to read the portions of the project data that interest you. We use Will Beasley's REDCapR library to do that job. It allows you to specify the forms, fields, event names, and time frames of interest. It even allows REDCap filtering. 
+We use Will Beasley's REDCapR library to interact with REDCap via its API. REDCapR allows you to specify the forms, fields, event names, and time frames of interest. It even allows REDCap filtering.
+
+It isn't entirely necessary to understand most the following block as you typically won't be populating a project with random data.
+
+```{r create data}
+rows_to_simulate <- 100
+collection_events <- 5
+tubes_per_collection <- 30
+
+record_columns <- c(
+  "record_id",
+  "redcap_event_name",
+  "sample_collected_date",
+  "tmp_event_id",
+  paste0("tube_id", 1:tubes_per_collection),
+  paste0("tube_specimen_type", 1:tubes_per_collection),
+  paste0("tube_volume", 1:tubes_per_collection)
+  )
+
+# create empty dataframe and set column names
+simulated_data <- data.frame(
+  matrix(ncol = length(record_columns), nrow = 0)
+) %>%
+  mutate(across(everything(), as.character))
+colnames(simulated_data) <- record_columns
+
+# create base entries for each event
+# NOTE: may be a bit slow as for-loops are not generally used in R
+for (record_id in 1:rows_to_simulate) {
+  for (event_id in 1:collection_events) {
+    simulated_data <- simulated_data %>%
+      add_row(
+        record_id = as.character(record_id),
+        redcap_event_name = paste0("event_", event_id, "_arm_1"),
+        tmp_event_id = as.character(event_id), # used to generate tube IDs later
+        sample_collected_date = sample(
+          seq(ymd("2020-03-01"), ymd("2022-06-01"), by = "day"), size = 1, replace = T
+        ) %>% as.character()
+      )
+  }
+}
+
+# group to ensure simulated data is consistent with a single collection event
+simulated_data <- simulated_data %>%
+  group_by(record_id, redcap_event_name)
+
+# simulate individual samples
+for (tube in 1:30) {
+  simulated_data <- simulated_data %>%
+    mutate(
+      "tube_id{tube}" := paste0(
+        record_id, "-",
+        str_pad(tmp_event_id, width = 2, side = "left", pad = "0"), "-",
+        str_pad(tube, width = 2, side = "left", pad = "0")
+      ),
+      "tube_specimen_type{tube}" := sample(1:4, size = 1),
+      "tube_volume{tube}" := sample(1:30, size = 1)
+    )
+}
+
+# remove temporary column used in simulation
+simulated_data <- simulated_data %>%
+  ungroup() %>%
+  select(-tmp_event_id)
+
+# upload data to REDCap
+REDCapR::redcap_write(
+  redcap_uri = source_credentials$redcap_uri,
+  token = source_credentials$token,
+  ds_to_write = simulated_data
+)
+```
+
+## Get some data from a REDCap project
+
+At this point it's time to read the portions of the project data that interest you.
 
 For our task, we want to read identifiers for collected data so we can write them into the Biospecimen tracking project
 
@@ -125,7 +207,10 @@ For our task, we want to read identifiers for collected data so we can write the
 fields_to_read <- c(
   "record_id",
   "redcap_event_name",
-  "sample_collected_date"
+  "sample_collected_date",
+  paste0("tube_id", 1:tubes_per_collection),
+  paste0("tube_specimen_type", 1:tubes_per_collection),
+  paste0("tube_volume", 1:tubes_per_collection)
 )
 
 source_project_data <- REDCapR::redcap_read(
@@ -134,6 +219,10 @@ source_project_data <- REDCapR::redcap_read(
   fields = fields_to_read
 )
 
+# Validate that data was retrieved and alert regarding issues
+if (!source_project_data$success) {
+  warning("Data was not successfully read from REDCap")
+}
 ```
 
 Our customer's requirements for the biorepository require us to do some transformations before writing. That's easy with the `dplyr` library
