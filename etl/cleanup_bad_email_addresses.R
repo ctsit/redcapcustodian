@@ -10,8 +10,8 @@ library(redcapcustodian)
 library(DBI)
 library(RMariaDB)
 
-set_script_name("cleanup_bad_email_addresses")
-set_script_run_time()
+init_etl("cleanup_bad_email_addresses")
+
 conn <- connect_to_redcap_db()
 
 redcap_emails <- get_redcap_emails(conn)

@@ -46,14 +46,14 @@ get_package_scope_var  <- function(key) {
 #' @param script_name name passed to \code{\link{set_script_name}}
 #' @param fake_runtime An optional asserted script run time passed to \code{\link{set_script_run_time}}, defaults to the time this function is called
 #' @param log_db_drv, an object that inherits from DBIDriver (e.g. RMariaDB::MariaDB()), or an existing DBIConnection object (in order to clone an existing connection).
-#' 
+#'
 #' @export
 #' @examples
 #' \dontrun{
 #'   init_etl("name_of_file")
 #' }
 #'
-init_etl <- function(script_name = "", fake_runtime = NULL, log_db_drv = NULL) {
+init_etl <- function(script_name = "", fake_runtime = NULL, log_db_drv = RMariaDB::MariaDB()) {
   set_script_name(script_name)
   if (!is.null(fake_runtime)) {
     set_script_run_time(fake_runtime)
