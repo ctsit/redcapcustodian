@@ -69,7 +69,7 @@ Then, make a database to hold the credentials:
 dir.create("credentials")
 
 # creates file if one does not exist
-file_conn <- DBI::dbConnect(RSQLite::SQLite(), "credentials/credentials.db")
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), here::here("credentials/credentials.db"))
 
 # SQLite friendly schema
 credentials_sql <- "CREATE TABLE IF NOT EXISTS `credentials` (
@@ -230,8 +230,14 @@ Our customer's requirements for the biorepository require us to do some transfor
 
 ```{r transform_source}
 
-new_target_project_data <- source_project_data
-
+# Append the event number to the subject_id to make the record_id needed in the biorepository
+new_target_project_data <- source_project_data$data %>%
+  rename(subject_id = record_id) %>%
+  mutate(record_id = paste0(
+    subject_id, "-",
+    str_replace(redcap_event_name, "event_", "") %>% str_replace(., "_arm_1", ""))) %>%
+  select(record_id, everything()) %>%
+  rename(date_draw = sample_collected_date)
 ```
 
 Now write that data to the target project
@@ -257,11 +263,11 @@ old_target_project_data <- REDCapR::redcap_read(
 )
 
 target_project_data <- new_target_project_data %>%
-  dplyr::anti_join(old_target_project_data)
+  dplyr::anti_join(old_target_project_data$data)
 
 # now write that small dataset
 REDCapR::redcap_write(
-  ds_to_write = target_project_data,
+  ds_to_write = slice_head(target_project_data, prop= 0.5),
   redcap_uri = target_credentials$redcap_uri,
   token = target_credentials$token
 )
