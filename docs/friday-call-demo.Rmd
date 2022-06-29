@@ -56,6 +56,7 @@ library(redcapcustodian)
 library(DBI)
 library(tidyverse)
 library(dotenv)
+library(lubridate)
 ```
 
 
@@ -90,14 +91,14 @@ Now, fetch all of your API tokens:
 
 ```{r get_api_tokens}
 # fetching all extant API tokens and adding them to storage #################
-load_dot_env("local.env")
+load_dot_env(here::here("local.env.txt"))
 
 my_username <- "admin"
 source_conn <- connect_to_redcap_db()
-source_credentials <- scrape_user_api_tokens(source_conn, my_username)
+scraped_credentials <- scrape_user_api_tokens(source_conn, my_username)
 
 # alter credentials to match local schema
-source_credentials_upload <- source_credentials %>%
+source_credentials_upload <- scraped_credentials %>%
   mutate(
     redcap_uri = Sys.getenv("URI"),
     server_short_name = tolower(Sys.getenv("INSTANCE"))
@@ -113,7 +114,7 @@ dbAppendTable(file_conn, "credentials", source_credentials_upload)
 
 ## Create some data for your REDCap project
 
-We will generate some records for your main project for you to port over. First, get your credentials to the REDCap project you want to read from.
+We will generate some records for your main project for you to port over to the Biospecimen project. First, access the credential database to get your credentials to the REDCap project you want to read from.
 
 ```{r read_source_credentials_from_db}
 source_credentials <- tbl(file_conn, "credentials") %>%
@@ -128,7 +129,7 @@ We use Will Beasley's REDCapR library to interact with REDCap via its API. REDCa
 It isn't entirely necessary to understand most the following block as you typically won't be populating a project with random data.
 
 ```{r create data}
-rows_to_simulate <- 100
+record_count_to_create <- 50
 collection_events <- 5
 tubes_per_collection <- 30
 
@@ -151,7 +152,7 @@ colnames(simulated_data) <- record_columns
 
 # create base entries for each event
 # NOTE: may be a bit slow as for-loops are not generally used in R
-for (record_id in 1:rows_to_simulate) {
+for (record_id in 1:record_count_to_create) {
   for (event_id in 1:collection_events) {
     simulated_data <- simulated_data %>%
       add_row(
@@ -170,7 +171,7 @@ simulated_data <- simulated_data %>%
   group_by(record_id, redcap_event_name)
 
 # simulate individual samples
-for (tube in 1:30) {
+for (tube in 1:tubes_per_collection) {
   simulated_data <- simulated_data %>%
     mutate(
       "tube_id{tube}" := paste0(
@@ -179,7 +180,7 @@ for (tube in 1:30) {
         str_pad(tube, width = 2, side = "left", pad = "0")
       ),
       "tube_specimen_type{tube}" := sample(1:4, size = 1),
-      "tube_volume{tube}" := sample(1:30, size = 1)
+      "tube_volume{tube}" := sample(2:4, size = 1)
     )
 }
 
