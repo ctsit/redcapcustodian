@@ -30,12 +30,9 @@ Imports:
   rjson,
   rlang,
   rstudioapi,
-  sendmailR,
   stringr,
-  sqldf,
   tibble,
   tidyr,
-  tidyverse,
   readr,
   vctrs
 Suggests:
@@ -46,6 +43,6 @@ Suggests:
     rmarkdown (>= 2.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Depends: 
     R (>= 2.10)
