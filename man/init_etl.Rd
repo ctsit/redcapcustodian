@@ -4,7 +4,11 @@
 \alias{init_etl}
 \title{Initialize all etl dependencies}
 \usage{
-init_etl(script_name = "", fake_runtime = NULL, log_db_drv = NULL)
+init_etl(
+  script_name = "",
+  fake_runtime = NULL,
+  log_db_drv = RMariaDB::MariaDB()
+)
 }
 \arguments{
 \item{script_name}{name passed to \code{\link{set_script_name}}}
