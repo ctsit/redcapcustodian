@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:redcap="https://projectredcap.org" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.3 schema/odm/ODM1-3-1.xsd" ODMVersion="1.3.1" FileOID="000-00-0000" FileType="Snapshot" Description="demo - main" AsOfDateTime="2022-06-27T14:19:15" CreationDateTime="2022-06-27T14:19:15" SourceSystem="REDCap" SourceSystemVersion="11.3.4">
+<Study OID="Project.DemoMain">
+<GlobalVariables>
+	<StudyName>demo - main</StudyName>
+	<StudyDescription>This file contains the metadata, events, and data for REDCap project "demo - main".</StudyDescription>
+	<ProtocolName>demo - main</ProtocolName>
+	<redcap:RecordAutonumberingEnabled>1</redcap:RecordAutonumberingEnabled>
+	<redcap:CustomRecordLabel></redcap:CustomRecordLabel>
+	<redcap:SecondaryUniqueField></redcap:SecondaryUniqueField>
+	<redcap:SchedulingEnabled>0</redcap:SchedulingEnabled>
+	<redcap:SurveysEnabled>0</redcap:SurveysEnabled>
+	<redcap:SurveyInvitationEmailField></redcap:SurveyInvitationEmailField>
+	<redcap:Purpose>0</redcap:Purpose>
+	<redcap:PurposeOther></redcap:PurposeOther>
+	<redcap:ProjectNotes></redcap:ProjectNotes>
+	<redcap:MissingDataCodes></redcap:MissingDataCodes>
+</GlobalVariables>
+<MetaDataVersion OID="Metadata.DemoMain_2022-06-27_1419" Name="demo - main" redcap:RecordIdField="record_id">
+	<Protocol>
+		<StudyEventRef StudyEventOID="Event.event_1_arm_1" OrderNumber="1" Mandatory="No"/>
+		<StudyEventRef StudyEventOID="Event.event_2_arm_1" OrderNumber="2" Mandatory="No"/>
+		<StudyEventRef StudyEventOID="Event.event_3_arm_1" OrderNumber="3" Mandatory="No"/>
+		<StudyEventRef StudyEventOID="Event.event_4_arm_1" OrderNumber="4" Mandatory="No"/>
+		<StudyEventRef StudyEventOID="Event.event_5_arm_1" OrderNumber="5" Mandatory="No"/>
+	</Protocol>
+	<StudyEventDef OID="Event.event_1_arm_1" Name="Event 1" Type="Common" Repeating="No" redcap:EventName="Event 1" redcap:CustomEventLabel="" redcap:UniqueEventName="event_1_arm_1" redcap:ArmNum="1" redcap:ArmName="Arm 1" redcap:DayOffset="1" redcap:OffsetMin="0" redcap:OffsetMax="0">
+		<FormRef FormOID="Form.demographics" OrderNumber="1" Mandatory="No" redcap:FormName="demographics"/>
+		<FormRef FormOID="Form.biosample" OrderNumber="2" Mandatory="No" redcap:FormName="biosample"/>
+	</StudyEventDef>
+	<StudyEventDef OID="Event.event_2_arm_1" Name="Event 2" Type="Common" Repeating="No" redcap:EventName="Event 2" redcap:CustomEventLabel="" redcap:UniqueEventName="event_2_arm_1" redcap:ArmNum="1" redcap:ArmName="Arm 1" redcap:DayOffset="2" redcap:OffsetMin="0" redcap:OffsetMax="0">
+		<FormRef FormOID="Form.biosample" OrderNumber="1" Mandatory="No" redcap:FormName="biosample"/>
+	</StudyEventDef>
+	<StudyEventDef OID="Event.event_3_arm_1" Name="Event 3" Type="Common" Repeating="No" redcap:EventName="Event 3" redcap:CustomEventLabel="" redcap:UniqueEventName="event_3_arm_1" redcap:ArmNum="1" redcap:ArmName="Arm 1" redcap:DayOffset="3" redcap:OffsetMin="0" redcap:OffsetMax="0">
+		<FormRef FormOID="Form.biosample" OrderNumber="1" Mandatory="No" redcap:FormName="biosample"/>
+	</StudyEventDef>
+	<StudyEventDef OID="Event.event_4_arm_1" Name="Event 4" Type="Common" Repeating="No" redcap:EventName="Event 4" redcap:CustomEventLabel="" redcap:UniqueEventName="event_4_arm_1" redcap:ArmNum="1" redcap:ArmName="Arm 1" redcap:DayOffset="4" redcap:OffsetMin="0" redcap:OffsetMax="0">
+		<FormRef FormOID="Form.biosample" OrderNumber="1" Mandatory="No" redcap:FormName="biosample"/>
+	</StudyEventDef>
+	<StudyEventDef OID="Event.event_5_arm_1" Name="Event 5" Type="Common" Repeating="No" redcap:EventName="Event 5" redcap:CustomEventLabel="" redcap:UniqueEventName="event_5_arm_1" redcap:ArmNum="1" redcap:ArmName="Arm 1" redcap:DayOffset="5" redcap:OffsetMin="0" redcap:OffsetMax="0">
+		<FormRef FormOID="Form.biosample" OrderNumber="1" Mandatory="No" redcap:FormName="biosample"/>
+	</StudyEventDef>
+	<FormDef OID="Form.demographics" Name="Basic Demography Form" Repeating="No" redcap:FormName="demographics">
+		<ItemGroupRef ItemGroupOID="demographics.record_id" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="demographics.first_name" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="demographics.last_name" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="demographics.comments" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="demographics.demographics_complete" Mandatory="No"/>
+	</FormDef>
+	<FormDef OID="Form.biosample" Name="biosample" Repeating="No" redcap:FormName="biosample">
+		<ItemGroupRef ItemGroupOID="biosample.sample_collected_date" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id1" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type1" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id2" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type2" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id3" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type3" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id4" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type4" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id5" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type5" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id6" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type6" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id7" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type7" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id8" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type8" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id9" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type9" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id10" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type10" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id11" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type11" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id12" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type12" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id13" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type13" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id14" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type14" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id15" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type15" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id16" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type16" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id17" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type17" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id18" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type18" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id19" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type19" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id20" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type20" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id21" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type21" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id22" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type22" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id23" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type23" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id24" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type24" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id25" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type25" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id26" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type26" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id27" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type27" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id28" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type28" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id29" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type29" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_id30" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.tube_specimen_type30" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="biosample.biosample_complete" Mandatory="No"/>
+	</FormDef>
+	<ItemGroupDef OID="demographics.record_id" Name="Basic Demography Form" Repeating="No">
+		<ItemRef ItemOID="record_id" Mandatory="No" redcap:Variable="record_id"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="demographics.first_name" Name="Contact Information" Repeating="No">
+		<ItemRef ItemOID="first_name" Mandatory="No" redcap:Variable="first_name"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="demographics.last_name" Name="Basic Demography Form" Repeating="No">
+		<ItemRef ItemOID="last_name" Mandatory="No" redcap:Variable="last_name"/>
+		<ItemRef ItemOID="address" Mandatory="No" redcap:Variable="address"/>
+		<ItemRef ItemOID="telephone" Mandatory="No" redcap:Variable="telephone"/>
+		<ItemRef ItemOID="email" Mandatory="No" redcap:Variable="email"/>
+		<ItemRef ItemOID="dob" Mandatory="No" redcap:Variable="dob"/>
+		<ItemRef ItemOID="age" Mandatory="No" redcap:Variable="age"/>
+		<ItemRef ItemOID="ethnicity" Mandatory="No" redcap:Variable="ethnicity"/>
+		<ItemRef ItemOID="race" Mandatory="No" redcap:Variable="race"/>
+		<ItemRef ItemOID="gender" Mandatory="No" redcap:Variable="gender"/>
+		<ItemRef ItemOID="height" Mandatory="No" redcap:Variable="height"/>
+		<ItemRef ItemOID="weight" Mandatory="No" redcap:Variable="weight"/>
+		<ItemRef ItemOID="bmi" Mandatory="No" redcap:Variable="bmi"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="demographics.comments" Name="General Comments" Repeating="No">
+		<ItemRef ItemOID="comments" Mandatory="No" redcap:Variable="comments"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="demographics.demographics_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="demographics_complete" Mandatory="No" redcap:Variable="demographics_complete"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.sample_collected_date" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="sample_collected_date" Mandatory="No" redcap:Variable="sample_collected_date"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id1" Name="Sample 1" Repeating="No">
+		<ItemRef ItemOID="tube_id1" Mandatory="No" redcap:Variable="tube_id1"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type1" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type1" Mandatory="No" redcap:Variable="tube_specimen_type1"/>
+		<ItemRef ItemOID="tube_volume1" Mandatory="No" redcap:Variable="tube_volume1"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id2" Name="Sample 2" Repeating="No">
+		<ItemRef ItemOID="tube_id2" Mandatory="No" redcap:Variable="tube_id2"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type2" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type2" Mandatory="No" redcap:Variable="tube_specimen_type2"/>
+		<ItemRef ItemOID="tube_volume2" Mandatory="No" redcap:Variable="tube_volume2"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id3" Name="Sample 3" Repeating="No">
+		<ItemRef ItemOID="tube_id3" Mandatory="No" redcap:Variable="tube_id3"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type3" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type3" Mandatory="No" redcap:Variable="tube_specimen_type3"/>
+		<ItemRef ItemOID="tube_volume3" Mandatory="No" redcap:Variable="tube_volume3"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id4" Name="Sample 4" Repeating="No">
+		<ItemRef ItemOID="tube_id4" Mandatory="No" redcap:Variable="tube_id4"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type4" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type4" Mandatory="No" redcap:Variable="tube_specimen_type4"/>
+		<ItemRef ItemOID="tube_volume4" Mandatory="No" redcap:Variable="tube_volume4"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id5" Name="Sample 5" Repeating="No">
+		<ItemRef ItemOID="tube_id5" Mandatory="No" redcap:Variable="tube_id5"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type5" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type5" Mandatory="No" redcap:Variable="tube_specimen_type5"/>
+		<ItemRef ItemOID="tube_volume5" Mandatory="No" redcap:Variable="tube_volume5"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id6" Name="Sample 6" Repeating="No">
+		<ItemRef ItemOID="tube_id6" Mandatory="No" redcap:Variable="tube_id6"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type6" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type6" Mandatory="No" redcap:Variable="tube_specimen_type6"/>
+		<ItemRef ItemOID="tube_volume6" Mandatory="No" redcap:Variable="tube_volume6"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id7" Name="Sample 7" Repeating="No">
+		<ItemRef ItemOID="tube_id7" Mandatory="No" redcap:Variable="tube_id7"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type7" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type7" Mandatory="No" redcap:Variable="tube_specimen_type7"/>
+		<ItemRef ItemOID="tube_volume7" Mandatory="No" redcap:Variable="tube_volume7"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id8" Name="Sample 8" Repeating="No">
+		<ItemRef ItemOID="tube_id8" Mandatory="No" redcap:Variable="tube_id8"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type8" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type8" Mandatory="No" redcap:Variable="tube_specimen_type8"/>
+		<ItemRef ItemOID="tube_volume8" Mandatory="No" redcap:Variable="tube_volume8"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id9" Name="Sample 9" Repeating="No">
+		<ItemRef ItemOID="tube_id9" Mandatory="No" redcap:Variable="tube_id9"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type9" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type9" Mandatory="No" redcap:Variable="tube_specimen_type9"/>
+		<ItemRef ItemOID="tube_volume9" Mandatory="No" redcap:Variable="tube_volume9"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id10" Name="Sample 10" Repeating="No">
+		<ItemRef ItemOID="tube_id10" Mandatory="No" redcap:Variable="tube_id10"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type10" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type10" Mandatory="No" redcap:Variable="tube_specimen_type10"/>
+		<ItemRef ItemOID="tube_volume10" Mandatory="No" redcap:Variable="tube_volume10"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id11" Name="Sample 11" Repeating="No">
+		<ItemRef ItemOID="tube_id11" Mandatory="No" redcap:Variable="tube_id11"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type11" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type11" Mandatory="No" redcap:Variable="tube_specimen_type11"/>
+		<ItemRef ItemOID="tube_volume11" Mandatory="No" redcap:Variable="tube_volume11"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id12" Name="Sample 12" Repeating="No">
+		<ItemRef ItemOID="tube_id12" Mandatory="No" redcap:Variable="tube_id12"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type12" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type12" Mandatory="No" redcap:Variable="tube_specimen_type12"/>
+		<ItemRef ItemOID="tube_volume12" Mandatory="No" redcap:Variable="tube_volume12"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id13" Name="Sample 13" Repeating="No">
+		<ItemRef ItemOID="tube_id13" Mandatory="No" redcap:Variable="tube_id13"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type13" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type13" Mandatory="No" redcap:Variable="tube_specimen_type13"/>
+		<ItemRef ItemOID="tube_volume13" Mandatory="No" redcap:Variable="tube_volume13"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id14" Name="Sample 14" Repeating="No">
+		<ItemRef ItemOID="tube_id14" Mandatory="No" redcap:Variable="tube_id14"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type14" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type14" Mandatory="No" redcap:Variable="tube_specimen_type14"/>
+		<ItemRef ItemOID="tube_volume14" Mandatory="No" redcap:Variable="tube_volume14"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id15" Name="Sample 15" Repeating="No">
+		<ItemRef ItemOID="tube_id15" Mandatory="No" redcap:Variable="tube_id15"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type15" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type15" Mandatory="No" redcap:Variable="tube_specimen_type15"/>
+		<ItemRef ItemOID="tube_volume15" Mandatory="No" redcap:Variable="tube_volume15"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id16" Name="Sample 16" Repeating="No">
+		<ItemRef ItemOID="tube_id16" Mandatory="No" redcap:Variable="tube_id16"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type16" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type16" Mandatory="No" redcap:Variable="tube_specimen_type16"/>
+		<ItemRef ItemOID="tube_volume16" Mandatory="No" redcap:Variable="tube_volume16"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id17" Name="Sample 17" Repeating="No">
+		<ItemRef ItemOID="tube_id17" Mandatory="No" redcap:Variable="tube_id17"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type17" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type17" Mandatory="No" redcap:Variable="tube_specimen_type17"/>
+		<ItemRef ItemOID="tube_volume17" Mandatory="No" redcap:Variable="tube_volume17"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id18" Name="Sample 18" Repeating="No">
+		<ItemRef ItemOID="tube_id18" Mandatory="No" redcap:Variable="tube_id18"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type18" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type18" Mandatory="No" redcap:Variable="tube_specimen_type18"/>
+		<ItemRef ItemOID="tube_volume18" Mandatory="No" redcap:Variable="tube_volume18"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id19" Name="Sample 19" Repeating="No">
+		<ItemRef ItemOID="tube_id19" Mandatory="No" redcap:Variable="tube_id19"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type19" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type19" Mandatory="No" redcap:Variable="tube_specimen_type19"/>
+		<ItemRef ItemOID="tube_volume19" Mandatory="No" redcap:Variable="tube_volume19"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id20" Name="Sample 20" Repeating="No">
+		<ItemRef ItemOID="tube_id20" Mandatory="No" redcap:Variable="tube_id20"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type20" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type20" Mandatory="No" redcap:Variable="tube_specimen_type20"/>
+		<ItemRef ItemOID="tube_volume20" Mandatory="No" redcap:Variable="tube_volume20"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id21" Name="Sample 21" Repeating="No">
+		<ItemRef ItemOID="tube_id21" Mandatory="No" redcap:Variable="tube_id21"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type21" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type21" Mandatory="No" redcap:Variable="tube_specimen_type21"/>
+		<ItemRef ItemOID="tube_volume21" Mandatory="No" redcap:Variable="tube_volume21"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id22" Name="Sample 22" Repeating="No">
+		<ItemRef ItemOID="tube_id22" Mandatory="No" redcap:Variable="tube_id22"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type22" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type22" Mandatory="No" redcap:Variable="tube_specimen_type22"/>
+		<ItemRef ItemOID="tube_volume22" Mandatory="No" redcap:Variable="tube_volume22"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id23" Name="Sample 23" Repeating="No">
+		<ItemRef ItemOID="tube_id23" Mandatory="No" redcap:Variable="tube_id23"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type23" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type23" Mandatory="No" redcap:Variable="tube_specimen_type23"/>
+		<ItemRef ItemOID="tube_volume23" Mandatory="No" redcap:Variable="tube_volume23"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id24" Name="Sample 24" Repeating="No">
+		<ItemRef ItemOID="tube_id24" Mandatory="No" redcap:Variable="tube_id24"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type24" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type24" Mandatory="No" redcap:Variable="tube_specimen_type24"/>
+		<ItemRef ItemOID="tube_volume24" Mandatory="No" redcap:Variable="tube_volume24"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id25" Name="Sample 25" Repeating="No">
+		<ItemRef ItemOID="tube_id25" Mandatory="No" redcap:Variable="tube_id25"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type25" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type25" Mandatory="No" redcap:Variable="tube_specimen_type25"/>
+		<ItemRef ItemOID="tube_volume25" Mandatory="No" redcap:Variable="tube_volume25"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id26" Name="Sample 26" Repeating="No">
+		<ItemRef ItemOID="tube_id26" Mandatory="No" redcap:Variable="tube_id26"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type26" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type26" Mandatory="No" redcap:Variable="tube_specimen_type26"/>
+		<ItemRef ItemOID="tube_volume26" Mandatory="No" redcap:Variable="tube_volume26"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id27" Name="Sample 27" Repeating="No">
+		<ItemRef ItemOID="tube_id27" Mandatory="No" redcap:Variable="tube_id27"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type27" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type27" Mandatory="No" redcap:Variable="tube_specimen_type27"/>
+		<ItemRef ItemOID="tube_volume27" Mandatory="No" redcap:Variable="tube_volume27"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id28" Name="Sample 28" Repeating="No">
+		<ItemRef ItemOID="tube_id28" Mandatory="No" redcap:Variable="tube_id28"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type28" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type28" Mandatory="No" redcap:Variable="tube_specimen_type28"/>
+		<ItemRef ItemOID="tube_volume28" Mandatory="No" redcap:Variable="tube_volume28"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id29" Name="Sample 29" Repeating="No">
+		<ItemRef ItemOID="tube_id29" Mandatory="No" redcap:Variable="tube_id29"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type29" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type29" Mandatory="No" redcap:Variable="tube_specimen_type29"/>
+		<ItemRef ItemOID="tube_volume29" Mandatory="No" redcap:Variable="tube_volume29"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_id30" Name="Sample 30" Repeating="No">
+		<ItemRef ItemOID="tube_id30" Mandatory="No" redcap:Variable="tube_id30"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.tube_specimen_type30" Name="biosample" Repeating="No">
+		<ItemRef ItemOID="tube_specimen_type30" Mandatory="No" redcap:Variable="tube_specimen_type30"/>
+		<ItemRef ItemOID="tube_volume30" Mandatory="No" redcap:Variable="tube_volume30"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="biosample.biosample_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="biosample_complete" Mandatory="No" redcap:Variable="biosample_complete"/>
+	</ItemGroupDef>
+	<ItemDef OID="record_id" Name="record_id" DataType="text" Length="999" redcap:Variable="record_id" redcap:FieldType="text">
+		<Question><TranslatedText>Study ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="first_name" Name="first_name" DataType="text" Length="999" redcap:Variable="first_name" redcap:FieldType="text" redcap:SectionHeader="Contact Information" redcap:Identifier="y">
+		<Question><TranslatedText>First Name</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="last_name" Name="last_name" DataType="text" Length="999" redcap:Variable="last_name" redcap:FieldType="text" redcap:Identifier="y">
+		<Question><TranslatedText>Last Name</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="address" Name="address" DataType="text" Length="999" redcap:Variable="address" redcap:FieldType="textarea" redcap:Identifier="y">
+		<Question><TranslatedText>Street, City, State, ZIP</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="telephone" Name="telephone" DataType="text" Length="999" redcap:Variable="telephone" redcap:FieldType="text" redcap:TextValidationType="phone" redcap:FieldNote="Include Area Code" redcap:Identifier="y">
+		<Question><TranslatedText>Phone number</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="email" Name="email" DataType="text" Length="999" redcap:Variable="email" redcap:FieldType="text" redcap:TextValidationType="email" redcap:Identifier="y">
+		<Question><TranslatedText>E-mail</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="dob" Name="dob" DataType="date" Length="999" redcap:Variable="dob" redcap:FieldType="text" redcap:TextValidationType="date_ymd" redcap:Identifier="y">
+		<Question><TranslatedText>Date of birth</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="age" Name="age" DataType="float" Length="999" redcap:Variable="age" redcap:FieldType="calc" redcap:Calculation="rounddown(datediff([dob],&#039;today&#039;,&#039;y&#039;))">
+		<Question><TranslatedText>Age (years)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="ethnicity" Name="ethnicity" DataType="text" Length="1" redcap:Variable="ethnicity" redcap:FieldType="radio" redcap:CustomAlignment="LH">
+		<Question><TranslatedText>Ethnicity</TranslatedText></Question>
+		<CodeListRef CodeListOID="ethnicity.choices"/>
+	</ItemDef>
+	<ItemDef OID="race" Name="race" DataType="text" Length="1" redcap:Variable="race" redcap:FieldType="select">
+		<Question><TranslatedText>Race</TranslatedText></Question>
+		<CodeListRef CodeListOID="race.choices"/>
+	</ItemDef>
+	<ItemDef OID="gender" Name="gender" DataType="text" Length="1" redcap:Variable="gender" redcap:FieldType="radio">
+		<Question><TranslatedText>Gender</TranslatedText></Question>
+		<CodeListRef CodeListOID="gender.choices"/>
+	</ItemDef>
+	<ItemDef OID="height" Name="height" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="height" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>Height (cm)</TranslatedText></Question>
+		<RangeCheck Comparator="GE" SoftHard="Soft">
+			<CheckValue>130</CheckValue>
+			<ErrorMessage><TranslatedText>The value you provided is outside the suggested range. (130 - 215). This value is admissible, but you may wish to double check it.</TranslatedText></ErrorMessage>
+		</RangeCheck>
+		<RangeCheck Comparator="LE" SoftHard="Soft">
+			<CheckValue>215</CheckValue>
+			<ErrorMessage><TranslatedText>The value you provided is outside the suggested range. (130 - 215). This value is admissible, but you may wish to double check it.</TranslatedText></ErrorMessage>
+		</RangeCheck>
+	</ItemDef>
+	<ItemDef OID="weight" Name="weight" DataType="integer" Length="999" redcap:Variable="weight" redcap:FieldType="text" redcap:TextValidationType="int">
+		<Question><TranslatedText>Weight (kilograms)</TranslatedText></Question>
+		<RangeCheck Comparator="GE" SoftHard="Soft">
+			<CheckValue>35</CheckValue>
+			<ErrorMessage><TranslatedText>The value you provided is outside the suggested range. (35 - 200). This value is admissible, but you may wish to double check it.</TranslatedText></ErrorMessage>
+		</RangeCheck>
+		<RangeCheck Comparator="LE" SoftHard="Soft">
+			<CheckValue>200</CheckValue>
+			<ErrorMessage><TranslatedText>The value you provided is outside the suggested range. (35 - 200). This value is admissible, but you may wish to double check it.</TranslatedText></ErrorMessage>
+		</RangeCheck>
+	</ItemDef>
+	<ItemDef OID="bmi" Name="bmi" DataType="float" Length="999" redcap:Variable="bmi" redcap:FieldType="calc" redcap:Calculation="round(([weight]*10000)/(([height])^(2)),1)">
+		<Question><TranslatedText>BMI</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="comments" Name="comments" DataType="text" Length="999" redcap:Variable="comments" redcap:FieldType="textarea" redcap:SectionHeader="General Comments">
+		<Question><TranslatedText>Comments</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="demographics_complete" Name="demographics_complete" DataType="text" Length="1" redcap:Variable="demographics_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="demographics_complete.choices"/>
+	</ItemDef>
+	<ItemDef OID="sample_collected_date" Name="sample_collected_date" DataType="date" Length="999" redcap:Variable="sample_collected_date" redcap:FieldType="text" redcap:TextValidationType="date_ymd">
+		<Question><TranslatedText>Samples collected date</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id1" Name="tube_id1" DataType="text" Length="999" redcap:Variable="tube_id1" redcap:FieldType="text" redcap:SectionHeader="Sample 1">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type1" Name="tube_specimen_type1" DataType="text" Length="1" redcap:Variable="tube_specimen_type1" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type1.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume1" Name="tube_volume1" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume1" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id2" Name="tube_id2" DataType="text" Length="999" redcap:Variable="tube_id2" redcap:FieldType="text" redcap:SectionHeader="Sample 2">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type2" Name="tube_specimen_type2" DataType="text" Length="1" redcap:Variable="tube_specimen_type2" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type2.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume2" Name="tube_volume2" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume2" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id3" Name="tube_id3" DataType="text" Length="999" redcap:Variable="tube_id3" redcap:FieldType="text" redcap:SectionHeader="Sample 3">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type3" Name="tube_specimen_type3" DataType="text" Length="1" redcap:Variable="tube_specimen_type3" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type3.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume3" Name="tube_volume3" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume3" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id4" Name="tube_id4" DataType="text" Length="999" redcap:Variable="tube_id4" redcap:FieldType="text" redcap:SectionHeader="Sample 4">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type4" Name="tube_specimen_type4" DataType="text" Length="1" redcap:Variable="tube_specimen_type4" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type4.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume4" Name="tube_volume4" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume4" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id5" Name="tube_id5" DataType="text" Length="999" redcap:Variable="tube_id5" redcap:FieldType="text" redcap:SectionHeader="Sample 5">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type5" Name="tube_specimen_type5" DataType="text" Length="1" redcap:Variable="tube_specimen_type5" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type5.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume5" Name="tube_volume5" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume5" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id6" Name="tube_id6" DataType="text" Length="999" redcap:Variable="tube_id6" redcap:FieldType="text" redcap:SectionHeader="Sample 6">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type6" Name="tube_specimen_type6" DataType="text" Length="1" redcap:Variable="tube_specimen_type6" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type6.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume6" Name="tube_volume6" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume6" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id7" Name="tube_id7" DataType="text" Length="999" redcap:Variable="tube_id7" redcap:FieldType="text" redcap:SectionHeader="Sample 7">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type7" Name="tube_specimen_type7" DataType="text" Length="1" redcap:Variable="tube_specimen_type7" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type7.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume7" Name="tube_volume7" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume7" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id8" Name="tube_id8" DataType="text" Length="999" redcap:Variable="tube_id8" redcap:FieldType="text" redcap:SectionHeader="Sample 8">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type8" Name="tube_specimen_type8" DataType="text" Length="1" redcap:Variable="tube_specimen_type8" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type8.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume8" Name="tube_volume8" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume8" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id9" Name="tube_id9" DataType="text" Length="999" redcap:Variable="tube_id9" redcap:FieldType="text" redcap:SectionHeader="Sample 9">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type9" Name="tube_specimen_type9" DataType="text" Length="1" redcap:Variable="tube_specimen_type9" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type9.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume9" Name="tube_volume9" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume9" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id10" Name="tube_id10" DataType="text" Length="999" redcap:Variable="tube_id10" redcap:FieldType="text" redcap:SectionHeader="Sample 10">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type10" Name="tube_specimen_type10" DataType="text" Length="1" redcap:Variable="tube_specimen_type10" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type10.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume10" Name="tube_volume10" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume10" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id11" Name="tube_id11" DataType="text" Length="999" redcap:Variable="tube_id11" redcap:FieldType="text" redcap:SectionHeader="Sample 11">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type11" Name="tube_specimen_type11" DataType="text" Length="1" redcap:Variable="tube_specimen_type11" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type11.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume11" Name="tube_volume11" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume11" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id12" Name="tube_id12" DataType="text" Length="999" redcap:Variable="tube_id12" redcap:FieldType="text" redcap:SectionHeader="Sample 12">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type12" Name="tube_specimen_type12" DataType="text" Length="1" redcap:Variable="tube_specimen_type12" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type12.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume12" Name="tube_volume12" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume12" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id13" Name="tube_id13" DataType="text" Length="999" redcap:Variable="tube_id13" redcap:FieldType="text" redcap:SectionHeader="Sample 13">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type13" Name="tube_specimen_type13" DataType="text" Length="1" redcap:Variable="tube_specimen_type13" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type13.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume13" Name="tube_volume13" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume13" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id14" Name="tube_id14" DataType="text" Length="999" redcap:Variable="tube_id14" redcap:FieldType="text" redcap:SectionHeader="Sample 14">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type14" Name="tube_specimen_type14" DataType="text" Length="1" redcap:Variable="tube_specimen_type14" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type14.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume14" Name="tube_volume14" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume14" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id15" Name="tube_id15" DataType="text" Length="999" redcap:Variable="tube_id15" redcap:FieldType="text" redcap:SectionHeader="Sample 15">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type15" Name="tube_specimen_type15" DataType="text" Length="1" redcap:Variable="tube_specimen_type15" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type15.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume15" Name="tube_volume15" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume15" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id16" Name="tube_id16" DataType="text" Length="999" redcap:Variable="tube_id16" redcap:FieldType="text" redcap:SectionHeader="Sample 16">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type16" Name="tube_specimen_type16" DataType="text" Length="1" redcap:Variable="tube_specimen_type16" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type16.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume16" Name="tube_volume16" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume16" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id17" Name="tube_id17" DataType="text" Length="999" redcap:Variable="tube_id17" redcap:FieldType="text" redcap:SectionHeader="Sample 17">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type17" Name="tube_specimen_type17" DataType="text" Length="1" redcap:Variable="tube_specimen_type17" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type17.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume17" Name="tube_volume17" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume17" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id18" Name="tube_id18" DataType="text" Length="999" redcap:Variable="tube_id18" redcap:FieldType="text" redcap:SectionHeader="Sample 18">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type18" Name="tube_specimen_type18" DataType="text" Length="1" redcap:Variable="tube_specimen_type18" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type18.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume18" Name="tube_volume18" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume18" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id19" Name="tube_id19" DataType="text" Length="999" redcap:Variable="tube_id19" redcap:FieldType="text" redcap:SectionHeader="Sample 19">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type19" Name="tube_specimen_type19" DataType="text" Length="1" redcap:Variable="tube_specimen_type19" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type19.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume19" Name="tube_volume19" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume19" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id20" Name="tube_id20" DataType="text" Length="999" redcap:Variable="tube_id20" redcap:FieldType="text" redcap:SectionHeader="Sample 20">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type20" Name="tube_specimen_type20" DataType="text" Length="1" redcap:Variable="tube_specimen_type20" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type20.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume20" Name="tube_volume20" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume20" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id21" Name="tube_id21" DataType="text" Length="999" redcap:Variable="tube_id21" redcap:FieldType="text" redcap:SectionHeader="Sample 21">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type21" Name="tube_specimen_type21" DataType="text" Length="1" redcap:Variable="tube_specimen_type21" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type21.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume21" Name="tube_volume21" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume21" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id22" Name="tube_id22" DataType="text" Length="999" redcap:Variable="tube_id22" redcap:FieldType="text" redcap:SectionHeader="Sample 22">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type22" Name="tube_specimen_type22" DataType="text" Length="1" redcap:Variable="tube_specimen_type22" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type22.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume22" Name="tube_volume22" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume22" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id23" Name="tube_id23" DataType="text" Length="999" redcap:Variable="tube_id23" redcap:FieldType="text" redcap:SectionHeader="Sample 23">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type23" Name="tube_specimen_type23" DataType="text" Length="1" redcap:Variable="tube_specimen_type23" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type23.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume23" Name="tube_volume23" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume23" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id24" Name="tube_id24" DataType="text" Length="999" redcap:Variable="tube_id24" redcap:FieldType="text" redcap:SectionHeader="Sample 24">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type24" Name="tube_specimen_type24" DataType="text" Length="1" redcap:Variable="tube_specimen_type24" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type24.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume24" Name="tube_volume24" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume24" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id25" Name="tube_id25" DataType="text" Length="999" redcap:Variable="tube_id25" redcap:FieldType="text" redcap:SectionHeader="Sample 25">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type25" Name="tube_specimen_type25" DataType="text" Length="1" redcap:Variable="tube_specimen_type25" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type25.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume25" Name="tube_volume25" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume25" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id26" Name="tube_id26" DataType="text" Length="999" redcap:Variable="tube_id26" redcap:FieldType="text" redcap:SectionHeader="Sample 26">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type26" Name="tube_specimen_type26" DataType="text" Length="1" redcap:Variable="tube_specimen_type26" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type26.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume26" Name="tube_volume26" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume26" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id27" Name="tube_id27" DataType="text" Length="999" redcap:Variable="tube_id27" redcap:FieldType="text" redcap:SectionHeader="Sample 27">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type27" Name="tube_specimen_type27" DataType="text" Length="1" redcap:Variable="tube_specimen_type27" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type27.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume27" Name="tube_volume27" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume27" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id28" Name="tube_id28" DataType="text" Length="999" redcap:Variable="tube_id28" redcap:FieldType="text" redcap:SectionHeader="Sample 28">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type28" Name="tube_specimen_type28" DataType="text" Length="1" redcap:Variable="tube_specimen_type28" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type28.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume28" Name="tube_volume28" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume28" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id29" Name="tube_id29" DataType="text" Length="999" redcap:Variable="tube_id29" redcap:FieldType="text" redcap:SectionHeader="Sample 29">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type29" Name="tube_specimen_type29" DataType="text" Length="1" redcap:Variable="tube_specimen_type29" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type29.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume29" Name="tube_volume29" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume29" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_id30" Name="tube_id30" DataType="text" Length="999" redcap:Variable="tube_id30" redcap:FieldType="text" redcap:SectionHeader="Sample 30">
+		<Question><TranslatedText>Sample ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="tube_specimen_type30" Name="tube_specimen_type30" DataType="text" Length="1" redcap:Variable="tube_specimen_type30" redcap:FieldType="select">
+		<Question><TranslatedText>Specimen type</TranslatedText></Question>
+		<CodeListRef CodeListOID="tube_specimen_type30.choices"/>
+	</ItemDef>
+	<ItemDef OID="tube_volume30" Name="tube_volume30" DataType="float" Length="999" SignificantDigits="1" redcap:Variable="tube_volume30" redcap:FieldType="text" redcap:TextValidationType="float">
+		<Question><TranslatedText>volume (mL)</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="biosample_complete" Name="biosample_complete" DataType="text" Length="1" redcap:Variable="biosample_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="biosample_complete.choices"/>
+	</ItemDef>
+	<CodeList OID="ethnicity.choices" Name="ethnicity" DataType="text" redcap:Variable="ethnicity">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Hispanic or Latino</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>NOT Hispanic or Latino</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Unknown / Not Reported</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="race.choices" Name="race" DataType="text" redcap:Variable="race">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>American Indian/Alaska Native</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Asian</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Native Hawaiian or Other Pacific Islander</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Black or African American</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>White</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="5"><Decode><TranslatedText>More Than One Race</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="6"><Decode><TranslatedText>Unknown / Not Reported</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="gender.choices" Name="gender" DataType="text" redcap:Variable="gender">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Female</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Male</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Other</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Prefer not to say</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="demographics_complete.choices" Name="demographics_complete" DataType="text" redcap:Variable="demographics_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type1.choices" Name="tube_specimen_type1" DataType="text" redcap:Variable="tube_specimen_type1">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type2.choices" Name="tube_specimen_type2" DataType="text" redcap:Variable="tube_specimen_type2">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type3.choices" Name="tube_specimen_type3" DataType="text" redcap:Variable="tube_specimen_type3">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type4.choices" Name="tube_specimen_type4" DataType="text" redcap:Variable="tube_specimen_type4">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type5.choices" Name="tube_specimen_type5" DataType="text" redcap:Variable="tube_specimen_type5">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type6.choices" Name="tube_specimen_type6" DataType="text" redcap:Variable="tube_specimen_type6">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type7.choices" Name="tube_specimen_type7" DataType="text" redcap:Variable="tube_specimen_type7">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type8.choices" Name="tube_specimen_type8" DataType="text" redcap:Variable="tube_specimen_type8">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type9.choices" Name="tube_specimen_type9" DataType="text" redcap:Variable="tube_specimen_type9">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type10.choices" Name="tube_specimen_type10" DataType="text" redcap:Variable="tube_specimen_type10">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type11.choices" Name="tube_specimen_type11" DataType="text" redcap:Variable="tube_specimen_type11">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type12.choices" Name="tube_specimen_type12" DataType="text" redcap:Variable="tube_specimen_type12">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type13.choices" Name="tube_specimen_type13" DataType="text" redcap:Variable="tube_specimen_type13">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type14.choices" Name="tube_specimen_type14" DataType="text" redcap:Variable="tube_specimen_type14">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type15.choices" Name="tube_specimen_type15" DataType="text" redcap:Variable="tube_specimen_type15">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type16.choices" Name="tube_specimen_type16" DataType="text" redcap:Variable="tube_specimen_type16">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type17.choices" Name="tube_specimen_type17" DataType="text" redcap:Variable="tube_specimen_type17">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type18.choices" Name="tube_specimen_type18" DataType="text" redcap:Variable="tube_specimen_type18">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type19.choices" Name="tube_specimen_type19" DataType="text" redcap:Variable="tube_specimen_type19">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type20.choices" Name="tube_specimen_type20" DataType="text" redcap:Variable="tube_specimen_type20">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type21.choices" Name="tube_specimen_type21" DataType="text" redcap:Variable="tube_specimen_type21">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type22.choices" Name="tube_specimen_type22" DataType="text" redcap:Variable="tube_specimen_type22">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type23.choices" Name="tube_specimen_type23" DataType="text" redcap:Variable="tube_specimen_type23">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type24.choices" Name="tube_specimen_type24" DataType="text" redcap:Variable="tube_specimen_type24">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type25.choices" Name="tube_specimen_type25" DataType="text" redcap:Variable="tube_specimen_type25">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type26.choices" Name="tube_specimen_type26" DataType="text" redcap:Variable="tube_specimen_type26">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type27.choices" Name="tube_specimen_type27" DataType="text" redcap:Variable="tube_specimen_type27">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type28.choices" Name="tube_specimen_type28" DataType="text" redcap:Variable="tube_specimen_type28">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type29.choices" Name="tube_specimen_type29" DataType="text" redcap:Variable="tube_specimen_type29">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="tube_specimen_type30.choices" Name="tube_specimen_type30" DataType="text" redcap:Variable="tube_specimen_type30">
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Plasma</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Serum</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="3"><Decode><TranslatedText>Buffy Coat</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="4"><Decode><TranslatedText>PaxGene</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+	<CodeList OID="biosample_complete.choices" Name="biosample_complete" DataType="text" redcap:Variable="biosample_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+</MetaDataVersion>
+</Study>
+</ODM>
