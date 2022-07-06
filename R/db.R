@@ -23,6 +23,11 @@ connect_to_db <- function(drv, prefix = "", continue_on_error = FALSE) {
     host <- Sys.getenv(paste0(prefix, "_DB_HOST"))
     user <- Sys.getenv(paste0(prefix, "_DB_USER"))
     password <- Sys.getenv(paste0(prefix, "_DB_PASSWORD"))
+    if (Sys.getenv(paste0(prefix, "_DB_PORT")) == "") {
+        port <- "3306"
+    } else {
+        port <- Sys.getenv(paste0(prefix, "_DB_PORT"))
+    }
 
     result <- tryCatch(
         expr = {
@@ -32,6 +37,7 @@ connect_to_db <- function(drv, prefix = "", continue_on_error = FALSE) {
                 host = host,
                 user = user,
                 password = password,
+                port = port
             )
         },
         error = function(error_message) {
