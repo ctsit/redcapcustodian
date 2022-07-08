@@ -22,3 +22,5 @@ vignettes/*.R
 vignettes/*.pdf
 doc
 Meta
+/doc/
+/Meta/

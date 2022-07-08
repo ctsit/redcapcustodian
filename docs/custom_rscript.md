@@ -25,7 +25,7 @@ Then you can open the new project in Rstudio.
 open my.study.Rproj
 ```
 
-If this is your first redcapcustodian project, it might help to follow open the [Friday Call Demo](../docs/friday-call-demo.Rmd) in RStudio. That example was created to present REDCap Custodian to the REDCap community. 
+If this is your first redcapcustodian project, it might help to follow the [Friday Call Demo](../docs/friday-call-demo.Rmd) in RStudio. That example was created to present REDCap Custodian to the REDCap community. 
 
 If this is not your first REDCap Custodian rodeo, you might remember what you need to do, but we offer this guide to help avoid some mis-steps.
 
@@ -74,7 +74,7 @@ ETL_DB_SCHEMA=
 ETL_DB_PORT=
 ```
 
-The task or study you are working on might need its own database tables. They might hold data that does not need to be in REDCap or data that does not fit well in the REDCap data model. If your REDCap projects are very large (think 30K records or more) you might want to mirror some or all of your REDCap project into MySQL to run more performant queries. If any of that describes your need, its best to not mix those tables with the REDCap tables. That second MySQL table will have its own credentials and you scripts will need accessto those secrets. The "ETL" prefix is nothing special, it means "Extract, Transform, and Load"--a common term in databae management. You can use any prefix you like, but you _will_ want to use a prefix. The database connection functions depend on it.
+The task or study you are working on might need its own database tables. They might hold data that does not need to be in REDCap or data that does not fit well in the REDCap data model. If your REDCap projects are very large (think 30K records or more) you might want to mirror some or all of your REDCap project into MySQL to run more performant queries. If any of that describes your need, its best to not mix those tables with the REDCap tables. That second MySQL table will have its own credentials and you scripts will need accessto those secrets. The "ETL" prefix is nothing special, it means "Extract, Transform, and Load"--a common term in database management. You can use any prefix you like, but you _will_ want to use a prefix. The database connection functions depend on it.
 
 ```sh
 # Log DB Credentials
@@ -88,13 +88,21 @@ LOG_DB_PORT=
 
 REDCap Custodian provides a rich framework for logging both success and failure of automated processes. By default, it logs activity to a MySQL databse of your choosing. This should _not_ be your REDCap database. It's completely reasonable to log a study's activity into your study database, but if you don't have a study database, a shared logging database is a good thing. Make sure to set `LOG_DB_` values.
 
+## REDCap API credential management
+
+It's possible to do credential management with environment variables, but it quickly gets tedious. It get's very tedious if you have to manage multiple API tokens. To address that, REDCap custodian provides a few credential management functions to help you make an use a local dataset of REDCAp API credentials.  See [Credential Scraping](./credential-scraping.html) for an example of how to do it. Read down through _Scraping a server’s API tokens and putting them in a local sqlite DB_ 
+
 ## Create your scripts in the right folder
 
 Create scripts that will move or clean data in the `etl` folder. Create reports in the `reports` folder. These aren't rules, but they are useful conventions. Each of these has been excluded from the package build process so _if_ you make a package the code in these folders won't cause warnings in the build.
 
+## Tiny script example
+
+REDCap custodian includes an example report script to describe your REDCap users at [REDCap User Lifecycle](../report/redcap_user_lifecycle.Rmd). It provides an example of a report you could run against your own REDCap system. We also have an example of the [report output](./redcap_user_lifecycle.pdf) from the University of Florida CTSI REDCap system with annotations that explain what it tells you about the history and activity of the UF system.
+
 ## Logging
 
-REDCap Custodian provides valuable logging that reduce the stress of running unattended jobs writing data to important things. TO use the logging you need to create a MySQL/Maria DB, put its credentials in your environment file as described above, load the redcapcustodian package in your script, and initialize the logging. You can and should also log success at the end of the script and log warnings or failure where your script can detect them.  Here's an actual script that makes some changes in the redcap backend and logs what is did:
+REDCap Custodian provides valuable logging that reduce the stress of running unattended jobs writing data to important things. To use the logging you need to create a MySQL/Maria DB, put its credentials in your environment file as described above, load the redcapcustodian package in your script, and initialize the logging. You can and should also log success at the end of the script and log warnings or failure where your script can detect them.  Here's an actual script that makes some changes in the redcap backend and logs what is did:
 
 ```r
 library(tidyverse)
@@ -134,21 +142,78 @@ INSERT INTO `rcc_job_log` (`job_duration`, `job_summary_data`, `level`, `log_dat
 
 `job_summary_data` is a JSON object of all of the data updated. It's hard for humans to read but 100% machine parsable.
 
+To query the job log, use your favorite DB client. If you are a Tidyverse developer, dplyr::tbl() is a fantastic DB client.
 
-## Cron entries
+## Writing good data management code
 
-To run your custom `etl/cleanup_bad_email_addresses.R` script regularly on a host you call 'prod', create a cron entry for it:
+This is too big a topic to cover here but it is central to the entire effort so it can't entirely be ignored. The best favor you can do for yourself and your customers, is to use good tools. At CTS-IT, we have identified a toolset that allows us to be efficient in our programming. We strongly recommend these tools:
+
+* R for 99% of our data programming.
+* RStudio as the easiest possible integrated development environment for R programming.
+* Tidyverse as the most effective dialect of R to code in.
+* REDCapR for 99% of REDCap API access.
+* DBI and dplyr::tbl() for access to SQL tables.
+
+It's also wise to have a good software development workflow. At CTS-IT we use these tools and rules:
+
+* Use version control for all code.
+* If you have more than one developer, do code review of _everything_.
+* If you have more than one developer, use the Github workflow of pull requests, review, and merges to manage code review.
+* Never put secrets in your code. Put secrets environment variables, datasets, or other systems.
+* Never put secrets in version control.
+* Don't put configuration in code. Instead put it in the environment variables or datasets.
+
+Stop and think about architecture and study lifecycle.
+
+* Don't mix two studies in on git repository.
+* Don't be afraid to make an R package just for one study. 
+* Think about names of things. Pick good names. Don't be afraid to rename poorly named things.
+
+
+## Automation with container infrastructure
+
+If you need something to run periodically, you need to make it easy to run with all of its dependencies packaged up and you need to schedule it. The modern way to package dependencies is to put them all into a container, add your application and run the container. REDCap Custodian supports containerization with Docker. The [`./study_template/Dockerfile`](./study_template/Dockerfile) is template you can use to containerize your RScript and RMarkdown. Adapt it to your needs and build the container with [./build.sh](./build.sh). If you have good container infrastructure, use it to build and deploy your containers. 
+
+
+## Automation with Linux and cron
+
+If you have no container management infrastructure available to you, but your IT support provides Linux hosts, have them build one for you, install Docker on it, and give you `sudo su` access. That will allow you to build and run docker images on the host. 
+
+Login, git clone redcapcustodian's git repository, cd into the repository and build the image:
 
 ```sh
-cat <<END>> prod/cron/cleanup_bad_email_addresses
-# Clean up bad email addresses daily at 6:07 a.m.
-7 6 * * * root /usr/bin/docker run --rm --env-file /rcc/prod.env rcc.site Rscript redcapcustodian/etl/cleanup_bad_email_addresses.R
+git clone git@github.com:ctsit/redcapcustodian.git
+cd redcapcustodian
+sudo ./build.sh
+```
+
+Do the same for your own study repository:
+
+```sh
+git clone git@github.com:ctsit/rcc.billing.git
+cd rcc.billing
+sudo ./build.sh
+```
+
+To clone a private repository, you'll need a deployment key.  See [Deploy Keys](https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys) for instructions.
+
+
+Once you've built the study container on your Docker host, create a cron entry to run it with the right parameters and secrets. To run the above script, `etl/update_project_billable_attribute.R` regularly on a host you call 'prod', create a cron entry for it:
+
+```sh
+sudo su
+cat <<END>> prod/cron/update_project_billable_attribute
+# run update_project_billable_attribute at 6:07 a.m.
+7 6 * * * root /usr/bin/docker run --rm --env-file /rcc/rcc.billing/prod.env rcc.billing Rscript rcc.billing/etl/update_project_billable_attribute.R
 END
 ```
 
+The build script has a `-d` option to automatically deploy the cron file and build time. If you place your cron file in the `./cron/` folder at the root of the repository, and build with `./build.sh -d`, the build script will copy the file to `/etc/cron.d` and give it a guaranteed unique name.
+
+
 ## Using version control
 
-Once you go down this road of writing your own scripts, you should be very concerned about preserving them. One of the best ways to do this is via git version control. Initialize a new software repository in your `./my.study` folder. Then add a remote pointin at a new empty repository at GitHub, GitLab, BitBucket or your favorite Git repository hosting service, and push to that new repo.
+Once you go down this road of writing your own scripts, you should be very concerned about preserving them. One of the best ways to do this is via git version control. Initialize a new software repository in your `./my.study` folder. Then add a remote pointing at a new empty repository at GitHub, GitLab, BitBucket or your favorite Git repository hosting service, and push to that new repo.
 
 
 ## Adding a custom package

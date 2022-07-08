@@ -1,0 +1,87 @@
+---
+title: "REDCap User Lifecycle"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, message = FALSE)
+```
+
+The report is an example of how you could charcaterize your REDCap users using data from the redcap_user_information. The data is easy to access using a few R packages that manage configuration data (dotenv), database connections (DBI and redcapcustodian), dates (lubridate), and data transformation (tidyverse)
+
+```{r get_the_data, echo = TRUE}
+library(dotenv)
+library(DBI)
+library(redcapcustodian)
+library(lubridate)
+library(tidyverse)
+
+rc_conn <- connect_to_redcap_db()
+
+# get the data
+redcap_user_information <- tbl(rc_conn, "redcap_user_information")
+```
+
+We need to select the columns we care about and transform them to meet our needs:
+
+```{r transform, echo = TRUE}
+user_life_cycle <- redcap_user_information %>%
+  select(username, user_creation, user_lastlogin, user_suspended_time) %>%
+  collect() %>%
+  filter(!username %in% c("site_admin", "master")) %>% # these accounts are junk
+  mutate(
+    lifespan = if_else(is.na(user_suspended_time),
+                       today() - as.Date(user_creation),
+                       user_suspended_time - user_creation),
+    dormancy = today() - as.Date(user_lastlogin),
+    creation = as.Date(user_creation),
+    lastlogin = as.Date(user_lastlogin),
+    suspension = as.Date(user_suspended_time)
+  ) %>%
+  select(
+    lifespan,
+    dormancy,
+    creation,
+    lastlogin,
+    suspension
+  )
+```
+
+
+```{r dormancy, echo = FALSE, warning = FALSE, fig.cap="This plot shows how long user accounts have remained dormant with no login activity. With the binwidth set to 30 days, each bar represents about one month."}
+ggplot(user_life_cycle, aes(dormancy)) +
+  geom_histogram(binwidth = 30)
+```
+
+ 
+
+```{r lifespan, echo = FALSE, warning = FALSE, fig.cap="This plot shows the lifespan of the redcap accounts on the system where lifespan is expressed in days."}
+ggplot(user_life_cycle, aes(lifespan)) +
+  geom_histogram(binwidth = 30)
+```
+
+\newpage
+
+For the last plot we want to see three events in a REDCap account's lifecycle over time. To do that, we need to pivot the data, combining the dates of those events into a single column `event_date`.  We use the column names to populate the `event` column which will serve as a grouping variable and label for the dates in `event_date`.
+
+```{r pivot_data, echo = TRUE}
+
+lifecycle <- user_life_cycle %>%
+  pivot_longer(
+    cols = c("creation",
+             "lastlogin",
+             "suspension"
+             ),
+    names_to = "event",
+    values_to = "event_date"
+  )
+```
+
+Now the data can be easily plotted. 
+
+```{r plot_events, echo = FALSE, warning = FALSE, fig.cap="The first graph shows account creation since system creation. The last login graph tells a similar story as the dormancy graph. The suspension graph shows when users were suspended if your system implements."}
+ggplot(lifecycle, aes(event_date)) +
+  geom_histogram(binwidth = 30) +
+  facet_grid(event ~ .)
+```
