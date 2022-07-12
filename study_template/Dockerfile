@@ -16,7 +16,7 @@ WORKDIR /home/rocker
 ## Stop using cache to ensure latest private package is always installed
 ## https://stackoverflow.com/a/49772666/7418735
 # ARG TIMESTAMP=1611761435
-# RUN R -e "devtools::install_github('ctsit/stp', auth_token = '$GITHUB_PAT')"
+# RUN R -e "devtools::install_github('ctsit/rcc.billing', auth_token = '$GITHUB_PAT')"
 
 ## e.g. pin to a specific version of an R package
 # RUN R -e "devtools::install_github('OuhscBbmc/REDCapR', ref='c5bce6a')"
