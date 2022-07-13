@@ -15,6 +15,7 @@ site
 *.env
 !host_template/*.env
 !host_template/.env
+local.env.txt
 
 # produced vignettes
 vignettes/*.html
