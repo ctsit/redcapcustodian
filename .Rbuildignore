@@ -11,11 +11,13 @@
 ^output/.*
 ^site/.*
 ^schema/.*
-site_template/
+study_template/
 make_host.sh
 docs/*
 ^doc$
 ^Meta$
 ^.github/.*
+.zenodo.json
+local.env.txt
 ^hosts/.*
 ^data-raw$
