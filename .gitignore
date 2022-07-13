@@ -15,6 +15,7 @@ site
 *.env
 !host_template/*.env
 !host_template/.env
+local.env.txt
 
 # produced vignettes
 vignettes/*.html
@@ -22,3 +23,5 @@ vignettes/*.R
 vignettes/*.pdf
 doc
 Meta
+/doc/
+/Meta/

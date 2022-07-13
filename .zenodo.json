@@ -1,0 +1,45 @@
+{
+    "title": "REDCap Custodian",
+    "upload_type": "software",
+    "publication_date": "2022-07-13",
+    "creators": [{
+            "name": "Chase, Philip B",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0002-5318-9420"
+        },
+        {
+            "name": "James-Woodley, Laurence",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0002-6418-2742"
+        },
+        {
+            "name": "Chesney, Kyle",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0002-0479-7251"
+        },
+        {
+            "name": "Stoffs, Taryn L",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0002-0830-8179"
+        },
+        {
+            "name": "Bentz, Michael",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0002-5790-4268"
+        },
+        {
+            "name": "Barnes, Christopher P",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0001-7114-1992"
+        }
+    ],
+    "description": "REDCap Custodian simplifies data management activities on REDCap systems. It provides a framework for automating data extraction, transformation, and loading work (ETL). It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, and against the REDCap own database. It provides an extensible set of R functions, a Docker image, and an Rstudio Project template upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.",
+    "access_right": "open",
+    "license": "Apache-2.0",
+    "keywords": [
+        "redcap",
+        "clinical science",
+        "data management",
+        "R"
+    ]
+}

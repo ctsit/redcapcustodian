@@ -1,14 +1,33 @@
 Package: redcapcustodian
 Type: Package
 Title: System data cleaning for REDCap
-Version: 0.5.1
-Authors@R: c(
-  person("Philip", "Chase", email = "pbc@ufl.edu", role = c("aut", "cre")),
-  person("Laurence", "James-Woodley", email = "lawjames1@ufl.edu", role = "aut"),
-  person("Kyle", "Chesney", email = "kyle.chesney@ufl.edu", role = "aut"),
-  person("Taryn", "Stoffs", email = "tls@ufl.edu", role = "ctb"),
-  person("Christopher", "Barnes", email = "cpb@ufl.edu", role = "ctb")
-  )
+Version: 0.6.0
+Authors@R:c(
+  person("Philip", "Chase",
+        email = "pbc@ufl.edu",
+        role = c("aut", "cre"),
+        comment=c(ORCID = "http://orcid.org/0000-0002-5318-9420")),
+  person("Laurence", "James-Woodley",
+        email = "lawjames1@ufl.edu",
+        role = "aut",
+        comment=c(ORCID = "http://orcid.org/0000-0002-6418-2742")),
+  person("Kyle", "Chesney",
+        email = "kyle.chesney@ufl.edu",
+        role = "aut",
+        comment=c(ORCID = "http://orcid.org/0000-0002-0479-7251")),
+  person("Taryn", "Stoffs",
+        email = "tls@ufl.edu",
+        role = "ctb",
+        comment=c(ORCID = "http://orcid.org/0000-0002-0830-8179")),
+  person("Michael", "Bentz",
+        email = "mbentz@ufl.edu",
+        role = "aut",
+        comment=c(ORCID = "http://orcid.org/0000-0002-5790-4268")),
+  person("Christopher", "Barnes",
+        email = "cpb@ufl.edu",
+        role = "ctb",
+        comment=c(ORCID = "http://orcid.org/0000-0001-7114-1992"))
+        )
 Maintainer: Philip B Chase <pbc@ufl.edu>
 Description: Automates data grooming activities that support the 
     business of running a REDCap service. Detects, corrects, and 
@@ -30,12 +49,9 @@ Imports:
   rjson,
   rlang,
   rstudioapi,
-  sendmailR,
   stringr,
-  sqldf,
   tibble,
   tidyr,
-  tidyverse,
   readr,
   vctrs
 Suggests:
@@ -46,6 +62,6 @@ Suggests:
     rmarkdown (>= 2.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Depends: 
     R (>= 2.10)
