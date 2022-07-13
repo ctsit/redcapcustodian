@@ -3,6 +3,25 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.6.0] - 2022-07-13
+### Added
+- Add resources for publication (Philip Chase)
+- Add friday-call-demo.Rmd (Kyle Chesney, Philip Chase)
+
+### Changed
+- Update ignore files to respect new features (Philip Chase)
+- Replace reference to stp with rcc.billing (Kyle Chesney)
+- Enlarge the job_summary_data field in rcc_job_log (Philip Chase)
+- Add new content to custom_rscript (Philip Chase)
+- Make docs study-centric (Philip Chase)
+- Update DESCRIPTION and init_etl.Rd to satisfy R 4.2.1 (Philip Chase)
+- Use *_PORT_DB in connect_to_db, defaulting to 3306 (Kyle Chesney)
+- Move credentials DB (Philip Chase)
+- Reduce earliest_date in cleanup_bad_email_addresses.R (Philip Chase)
+- Use MariaDB as default driver in init_etl (Philip Chase)
+- Update username to my_username to avoid tautological filter in credential gathering (Kyle Chesney)
+
+
 ## [0.5.1] - 2022-06-24
 ### Changed
 - Export email-fixing functions (Philip Chase)
