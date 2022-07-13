@@ -1,6 +1,6 @@
 # REDCap Custodian
 
-This package simplifies data management activities on REDCap systems. It provides a framework for automating data extraction, transformation, and loading work (ETL). It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, and against the REDCap own database. It provides an extensible set of R functions, a Docker image, and an Rstudio Project template upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.
+This package simplifies data management activities on REDCap systems. It provides a framework for automating data extraction, transformation, and loading work (ETL). It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, and with the REDCap database. It provides an extensible set of R functions, a Docker image, and an Rstudio Project template upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.
 
 ## Operating environment
 
