@@ -3,6 +3,11 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.6.1] - 2022-07-13
+### Changed
+- Fix typo in description (Philip Chase)
+
+
 ## [0.6.0] - 2022-07-13
 ### Added
 - Add resources for publication (Philip Chase)
