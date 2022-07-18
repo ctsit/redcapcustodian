@@ -22,7 +22,7 @@ WORKDIR /home/rocker
 # RUN R -e "devtools::install_github('OuhscBbmc/REDCapR', ref='c5bce6a')"
 
 # Add, build, and install this study's package
-# ADD .. /home/rocker/my.study
+# ADD . /home/rocker/my.study
 # RUN R CMD build my.study
 # RUN R CMD INSTALL my.study*.tar.gz
 # RUN rm -rf my.study
