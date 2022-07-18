@@ -23,7 +23,7 @@ done
 shift $((OPTIND -1))
 
 sitepath='.'
-image_name=$(ls -1 rcc.*.Rproj | cut -d. -f1-2)
+export image_name=$(ls -1 rcc.*.Rproj | cut -d. -f1-2)
 
 if [ $deploy ]; then
   echo Deploying ${image_name}
@@ -34,8 +34,9 @@ if [ $deploy ]; then
     cd $sitepath
     find . -type d -iname cron -exec ls -d {} \; | \
     xargs -i find {} -type f | sed "s/.\{2\}//;" | \
-    perl -n -e 'chop(); $src=$_; $target=$_; $target =~ s/\//-/g; $cmd = "cp $src /etc/cron.d/rcc-$target\n"; print $cmd; system($cmd);'
-    ls -ltr /etc/cron.d/rcc-*
+    grep -v dummy | \
+    perl -n -e 'chop(); $src=$_; $target=$_; $target =~ s/\//-/g; $cmd = "cp $src /etc/cron.d/rcc-$ENV{image_name}-$target\n"; print $cmd; system($cmd);'
+    ls -ltr /etc/cron.d/rcc-$image_name*
     cd $old_pwd
   fi
 
