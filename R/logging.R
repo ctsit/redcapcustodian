@@ -563,3 +563,48 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
     print(paste0("Failed to write info log entry:", missing_dependencies))
   })
 }
+
+#' A wrapper function that sends an email (via sendmailR) reporting the outcome of another function
+#'
+#' @param email_body The contents of the email
+#' @param email_subject The subject line of the email
+#' @param email_to The email addresses
+#' @return No returned value
+#' @examples
+#'
+#' \dontrun{
+#' message <- paste("Failed REDCap data import to", project_title,
+#'                   "\nThe reason given was:", error_message)
+#'
+#' email_subject <- paste("FAILED |", script_name, "|",
+#'                         Sys.getenv("INSTANCE"), "|", script_run_time)
+#'
+#' send_email(message, email_subject)
+#' }
+#' @importFrom sendmailR "sendmail"
+#' @export
+send_email <- function(email_body, email_subject = "", email_to = "") {
+  # email credentials
+  email_server <- list(smtpServer = Sys.getenv("SMTP_SERVER"))
+  email_from <- Sys.getenv("EMAIL_FROM")
+  email_cc <- unlist(strsplit(Sys.getenv("EMAIL_CC"), " "))
+  if (email_subject == "") {
+    email_subject <- paste(Sys.getenv("EMAIL_SUBJECT"), get_script_run_time())
+  }
+
+  if (email_to == "") {
+    email_to <- unlist(strsplit(Sys.getenv("EMAIL_TO"), " "))
+  } else {
+    email_to <- unlist(strsplit(email_to, " "))
+  }
+
+  ## TODO: consider toggling bypass of printing if interactive and local env detected
+  ## if (interactive()) {
+  ##   print(email_body)
+  ##   return(email_body)
+  ## }
+  # TODO: consider replacing sendmailR with mRpostman
+  sendmailR::sendmail(from = email_from, to = email_to, cc = email_cc,
+                      subject = email_subject, msg = email_body,
+                      control = email_server)
+}

@@ -1,7 +1,7 @@
 Package: redcapcustodian
 Type: Package
 Title: System data cleaning for REDCap
-Version: 0.6.1
+Version: 0.7.0
 Authors@R:c(
   person("Philip", "Chase",
         email = "pbc@ufl.edu",
@@ -47,6 +47,7 @@ Imports:
   rjson,
   rlang,
   rstudioapi,
+  sendmailR,
   stringr,
   tibble,
   tidyr,

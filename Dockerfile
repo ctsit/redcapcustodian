@@ -6,7 +6,7 @@ RUN apt update -y && apt install -y libmariadb-dev libmariadbclient-dev
 
 # install necessary libraries
 RUN R -e "install.packages(c('sendmailR', 'dotenv', 'RCurl', 'checkmate', 'janitor', 'sqldf', 'DBI', 'RMariaDB', 'digest','rjson', 'dbx'))"
-RUN R -e "install.packages(c('REDCapR', 'mRpostman', 'writexl'))"
+RUN R -e "install.packages(c('REDCapR', 'mRpostman', 'writexl', 'here'))"
 
 # build and install this package
 ADD . /home/rocker/redcapcustodian
