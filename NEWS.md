@@ -3,6 +3,13 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.7.0] - 2022-07-17
+### Changed
+- Add here package to Dockerfile (Philip Chase)
+- Add send_email function adapted from stp (Kyle Chesney)
+- Add DOI badge to README (Philip Chase)
+
+
 ## [0.6.1] - 2022-07-13
 ### Changed
 - Fix typo in description (Philip Chase)
