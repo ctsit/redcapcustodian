@@ -11,14 +11,11 @@
 ^report/.*
 ^output/.*
 ^docs/*
-^local/*
-^prod/*
-^redcap-phone/*
-^warrior/*
-^rcc\.billing\.Rproj$
 ^LICENSE\.md$
 .github
 .vscode
 ^data-raw$
 wip.*
 .lintr
+^cron/
+^env/
