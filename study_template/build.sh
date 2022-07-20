@@ -32,11 +32,13 @@ if [ $deploy ]; then
     echo Copying cron files
     old_pwd=$(pwd)
     cd $sitepath
+    export image_name_cron=$(echo $image_name | sed 's/\./_/g;')
+    rm -f /etc/cron.d/rcc-$image_name_cron*
     find . -type d -iname cron -exec ls -d {} \; | \
     xargs -i find {} -type f | sed "s/.\{2\}//;" | \
     grep -v dummy | \
-    perl -n -e 'chop(); $src=$_; $target=$_; $target =~ s/\//-/g; $cmd = "cp $src /etc/cron.d/rcc-$ENV{image_name}-$target\n"; print $cmd; system($cmd);'
-    ls -ltr /etc/cron.d/rcc-$image_name*
+    perl -n -e 'chop(); $src=$_; $target=$_; $target =~ s/\//-/g; $cmd = "cp $src /etc/cron.d/rcc-$ENV{image_name_cron}-$target\n"; print $cmd; system($cmd);'
+    ls -ltr /etc/cron.d/rcc-$image_name_cron*
     cd $old_pwd
   fi
 
