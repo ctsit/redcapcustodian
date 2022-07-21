@@ -1,0 +1,152 @@
+---
+title: "expire_user_project_rights"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{expire_user_project_rights}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  eval = FALSE,
+  comment = "#>"
+)
+```
+
+When a study that uses REDCap closes out, you might need to do a bit of clean up. One important task is to expire people's access to the REDCap project(s) used in the study. If it was a bug study with multiple projects and a large data entry team, that might be a difficult task. `expire_user_project_rights()` was written to address that exact problem.
+
+If you need to do the same, write an RScript something like this to get the job done.
+
+First, load the required packages:
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(dotenv)
+library(redcapcustodian)
+library(DBI)
+library(RMariaDB)
+```
+
+You'll need to read credentials for your REDCap database from an environment file. There's no API call do do this kind of user manipulation, so you'll need to to write directly to the backend. The config block you'll need in the environment file looks like this:
+
+```
+URI=http://localhost:11203/api/
+REDCAP_DB_PORT=21203
+REDCAP_DB_NAME=redcap
+REDCAP_DB_HOST=127.0.0.1
+REDCAP_DB_USER=redcap
+REDCAP_DB_PASSWORD=redcap123
+```
+
+When you are writing to REDCap, you should log your work. REDCap Custodian can do that for you with just a little effort on your part. To make that possible you'll need database credentials for logging in your environment file as well. They look like this:
+
+```
+LOG_DB_NAME=rcc_log
+LOG_DB_HOST=127.0.0.1
+LOG_DB_USER=rcc_log
+LOG_DB_PASSWORD=password
+LOG_DB_PORT=3306
+```
+
+```{r}
+load_dot_env("redcap_server.env")
+```
+
+With the your REDCap and logging database parameters avaiable, you can connect to the those DBs. `init_etl` will create a connection to the logging database so you are prepared to log your work--or failure of that happens.
+
+`connect_to_redcap_db()` Does just that uses the parameters from the environment file.
+
+
+```{r}
+init_etl("expire_stp_users")
+
+conn <- connect_to_redcap_db()
+```
+
+`expire_user_project_rights()` allows you to exclude a lit of usernames from its expiration work. These might be your REDCap admins, the statistician, or someone else who still needs to work with the project.
+
+```{r}
+all_users_except = c(
+  "pbc",
+  "tls",
+  "cpb",
+  "mbentz",
+  "kyle.chesney",
+  "lawjames1"
+)
+```
+
+Make sure to specify a list of project IDs whose users rights need to be expired. It can be 1 or many. You don't need to specify and expiration date. If you omit it, the script defaults today, revoking access at midnight.
+
+```{r}
+result <- expire_user_project_rights(
+  conn = conn,
+  project_ids = c(25, 26, 31, 34, 45, 62, 65, 27, 33, 40, 41, 73),
+  all_users_except = all_users_except,
+  expiration_date = today() - ddays(1)
+)
+
+```
+
+`expire_user_project_rights` returns a list with the number of records revised and the dataframe of updates that was applied to the redcap_user_rights table. 
+
+It is easy to transform that into a JSON object and then pass that to `log_job_success` which will put that JSON object into the summary field of the log record.
+
+```{r}
+log_job_success(jsonlite::toJSON(result))
+```
+
+Here's the entire script, but you'll need to use write your own user exclusions and list of project IDs. Be careful with those project IDs. There is no check that you typed the right ID. 
+
+```
+library(tidyverse)
+library(lubridate)
+library(dotenv)
+library(redcapcustodian)
+library(DBI)
+library(RMariaDB)
+
+load_dot_env("redcap_server.env")
+
+init_etl("expire_study_users")
+
+conn <- connect_to_redcap_db()
+
+all_users_except = c(
+  "pbc",
+  "tls",
+  "cpb",
+  "mbentz",
+  "kyle.chesney",
+  "lawjames1"
+)
+
+result <- expire_user_project_rights(
+  conn = conn,
+  project_ids = c(25, 26, 31, 34, 45, 62, 65, 27, 33, 40, 41, 73),
+  all_users_except = all_users_except,
+  expiration_date = today() - ddays(1)
+)
+
+log_job_success(jsonlite::toJSON(result))
+
+```
+
+And here's the entire `redcap_server.env` file, but make sure you adapt this to your environment:
+
+```
+REDCAP_DB_PORT=3306
+REDCAP_DB_NAME=redcap
+REDCAP_DB_HOST=127.0.0.1
+REDCAP_DB_USER=redcap
+REDCAP_DB_PASSWORD=redcap123
+
+LOG_DB_NAME=rcc_log
+LOG_DB_HOST=127.0.0.1
+LOG_DB_USER=rcc_log
+LOG_DB_PASSWORD=password
+LOG_DB_PORT=13306
+```
