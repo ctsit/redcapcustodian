@@ -56,3 +56,14 @@
 #'}
 #' @details DETAILS
 "get_redcap_emails_output"
+
+#' @title user_rights_test_data
+#' @description A named list of dataframes used to test the functions written to manage user rights
+#' @format A named list of 3 dataframes:
+#' \describe{
+#'   \item{\code{redcap_user_information}}{REDCap Core table}
+#'   \item{\code{redcap_user_rights}}{REDCap Core table}
+#'   \item{\code{redcap_user_roles}}{REDCap Core table}
+#' }
+#' @details DETAILS
+"user_rights_test_data"
