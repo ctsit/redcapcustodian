@@ -69,12 +69,10 @@ get_redcap_db_connection <- function() {
 #'
 #' @param conn A DBI Connection object
 #'
-#' @return a dataframe with these columns:
+#' @return a list of 2 dataframes:
 #' \itemize{
-#'   \item ui_id - ui_id for the associated user in REDCap's redcap_user_information table
-#'   \item username - REDCap username
-#'   \item email_field_name - the name of the column containing the email address
-#'   \item email - the email address in email_field_name
+#'   \item wide, relevant email columns from redcap_user_information
+#'   \item tall, wide data pivoted to include email_field_name and email columns
 #' }
 #'
 #' @export
@@ -87,8 +85,19 @@ get_redcap_db_connection <- function() {
 #' get_redcap_emails(conn)
 #' }
 get_redcap_emails <- function(conn) {
-  redcap_email_query <- "select ui_id, username, user_email, user_email2, user_email3 from redcap_user_information"
-  redcap_emails <- DBI::dbGetQuery(conn, statement = redcap_email_query) %>%
+  wide <- dplyr::tbl(conn, "redcap_user_information") %>%
+    dplyr::select(
+      .data$ui_id,
+      .data$username,
+      .data$user_suspended_time,
+      .data$user_email,
+      .data$user_email2,
+      .data$user_email3
+    ) %>%
+    dplyr::collect() %>%
+    dplyr::mutate(user_suspended_time = as.POSIXct(.data$user_suspended_time))
+
+  tall <- wide %>%
     tidyr::pivot_longer(dplyr::starts_with("user_email"),
       names_to = "email_field_name",
       values_to = "email",
@@ -96,7 +105,11 @@ get_redcap_emails <- function(conn) {
     ) %>%
     dplyr::filter(.data$email != "")
 
-  return(redcap_emails)
+  result <- list(
+    wide = wide,
+    tall = tall
+  )
+  return(result)
 }
 
 #' Get redcap user email revisions

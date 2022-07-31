@@ -1,7 +1,6 @@
 # Locate bad UF addresses in REDCap replace them if possible, erase them if not,
 # then disable accounts with no primary email address
 
-# library(furrr)
 library(tidyverse)
 library(lubridate)
 library(REDCapR)
@@ -24,7 +23,7 @@ bounce_data <- get_bad_emails_from_listserv_digest(
   messages_since_date = earliest_date
 )
 
-bad_redcap_user_emails <- redcap_emails %>%
+bad_redcap_user_emails <- redcap_emails$tall %>%
   inner_join(bounce_data, by = c("email"))
 
 person <- get_institutional_person_data()
