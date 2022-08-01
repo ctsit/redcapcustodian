@@ -176,3 +176,39 @@ testthat::test_that(
     testthat::expect_true(dplyr::all_equal(tbl(con, "target") %>% dplyr::collect(), sync_table_test_user_data_result))
   }
 )
+
+testthat::test_that(
+  "sync_table_2 can do an update",
+  {
+
+    df = dataset_diff_test_user_data
+
+    # Set up target table
+    drv <- RSQLite::SQLite()
+    con <- connect_to_db(drv)
+    table_name <- "target"
+
+    DBI::dbWriteTable(
+      conn = con,
+      name = table_name,
+      value = df$target,
+      schema = table_name,
+      overwrite = T
+    )
+
+    # update the data
+    result <- sync_table_2(
+      conn = con,
+      table_name = table_name,
+      source = df$source,
+      source_pk = df$source_pk,
+      target = df$target,
+      target_pk = df$target_pk
+    )
+
+    # test that the target was updated
+    testthat::expect_true(dplyr::all_equal(tbl(con, "target") %>% dplyr::collect(), sync_table_test_user_data_result))
+    # test that the number of rows updated matches record count of the update dataframe
+    testthat::expect_equal(nrow(result$update_records), result$update_n)
+  }
+)
