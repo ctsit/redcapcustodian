@@ -54,14 +54,14 @@ testthat::test_that("get_redcap_email_revisions properly updates alice's email",
   testthat::expect_equal(alice_new_email, alice_correct_email)
 })
 
-test_that("update_redcap_email_addresses properly updates email addresses in redcap_user_information", {
+testthat::test_that("update_redcap_email_addresses properly updates email addresses in redcap_user_information", {
 
   redcap_email_revisions <- get_redcap_email_revisions(
     get_redcap_email_revisions_test_data$bad_redcap_user_emails,
     get_redcap_email_revisions_test_data$person
   )
 
-  update_redcap_email_addresses(conn, redcap_email_revisions)
+  update_n = update_redcap_email_addresses(conn, redcap_email_revisions, get_redcap_emails_test_data$wide)
 
   result <- DBI::dbGetQuery(
     conn,
@@ -69,5 +69,6 @@ test_that("update_redcap_email_addresses properly updates email addresses in red
   ) %>%
     tibble::tibble()
 
-  expect_equal(update_redcap_email_addresses_test_data$output, result)
+  testthat::expect_equal(nrow(redcap_email_revisions), update_n)
+  testthat::expect_equal(update_redcap_email_addresses_test_data$output, result)
 })
