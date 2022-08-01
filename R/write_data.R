@@ -172,3 +172,113 @@ sync_table <- function(
   )
   return(result)
 }
+
+#' Write to a MySQL Database based on the diff of source and target datasets.
+#'
+#' @param conn a DBI database connection
+#' @param table_name name of the table to write to
+#' @param source - a dataframe with content that needs to be reflected in target
+#' @param source_pk - the primary key of source
+#' @param target - a data frame that needs to reflect source
+#' @param target_pk - the primary key of target
+#' @param insert boolean toggle to use the insert dataframe to insert rows in \code{table_name}
+#' @param update boolean toggle to use the updates dataframe to update rows in \code{table_name}
+#' @param delete boolean toggle to use the delete dataframe to delete rows in \code{table_name}
+#'
+#' @return a named list with these values:
+#' \itemize{
+#'   \item insert_records - a dataframe of inserts
+#'   \item update_records - a dataframe of updates
+#'   \item delete_records - a dataframe of deletions
+#'   \item insert_n - the number of rows inserted to \code{table_name}
+#'   \item update_n - the number of rows updated in \code{table_name}
+#'   \item delete_n - the number of rows deleted in \code{table_name}
+#' }
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' conn <- connect_to_redcap_db()
+#'
+#'  ...
+#'
+#' sync_table_2(
+#'   conn = con,
+#'   table_name = table_name,
+#'   source = updates,
+#'   source_pk = "id",
+#'   target = original_table,
+#'   target_pk = "id"
+#' )
+#' }
+sync_table_2 <- function(
+    conn,
+    table_name,
+    source,
+    source_pk,
+    target,
+    target_pk,
+    insert = F,
+    update = T,
+    delete = F
+) {
+  # TODO: integrate logging
+  # TODO: detect "created/updated" and adjust values where appropriate
+  update_records <- source %>%
+    dplyr::anti_join(target) %>%
+    dplyr::inner_join(target, by=source_pk) %>%
+    dplyr::select(dplyr::any_of(target_pk), dplyr::any_of(names(source)), dplyr::ends_with(".x")) %>%
+    dplyr::rename_with(., ~ gsub(".x", "", .x), dplyr::ends_with(".x"))
+
+  ids_of_update_records <- update_records %>% dplyr::pull({{target_pk}})
+
+  if (insert) {
+    insert_records <- source %>%
+      dplyr::anti_join(target) %>%
+      dplyr::anti_join(update_records)
+    insert_n <- DBI::dbAppendTable(conn, table_name, insert_records)
+  } else {
+    insert_records = NA
+    insert_n <- 0
+  }
+
+  if (update)  {
+    dbx::dbxUpdate(
+      conn = conn,
+      table = table_name,
+      records = update_records,
+      where_cols = target_pk
+    )
+    update_n <- nrow(update_records)
+  } else {
+    update_n <- 0
+    update_records = NA
+  }
+
+  if (delete) {
+    delete_records <-
+      target %>%
+      dplyr::anti_join(source) %>%
+      dplyr::filter(! (!!as.symbol(target_pk)) %in% ids_of_update_records)
+
+    dbx::dbxDelete(
+      conn = conn,
+      table = table_name,
+      where = delete_records
+    )
+    delete_n <- nrow(delete_records)
+  } else {
+    delete_records <- NA
+    delete_n <- 0
+  }
+
+  result <- list(
+    insert_records = insert_records,
+    update_records = update_records,
+    delete_records = delete_records,
+    insert_n = insert_n,
+    update_n = update_n,
+    delete_n = delete_n
+  )
+  return(result)
+}
