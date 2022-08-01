@@ -72,3 +72,27 @@ testthat::test_that("update_redcap_email_addresses properly updates email addres
   testthat::expect_equal(nrow(redcap_email_revisions), update_n)
   testthat::expect_equal(update_redcap_email_addresses_test_data$output, result)
 })
+
+testthat::test_that(
+  "suspend_users_with_no_primary_email suspends the correct users",
+  {
+
+    conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+    create_test_table(conn, "redcap_user_information")
+    set_script_run_time()
+
+    count_of_modified_users <- DBI::dbExecute(
+          conn,
+          paste0(
+              "UPDATE redcap_user_information ",
+              "SET user_suspended_time = NULL, ",
+              "user_email = NULL ",
+              "WHERE ui_id in (1,3,5,7,9,11,13,15)")
+    )
+
+    result <- suspend_users_with_no_primary_email(conn = conn)
+
+    # test that the number of rows updated matches matches the number we modified
+    testthat::expect_equal(count_of_modified_users, nrow(result))
+  }
+)

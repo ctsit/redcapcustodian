@@ -35,11 +35,12 @@ update_n <- update_redcap_email_addresses(
   redcap_email_original = redcap_email$wide
 )
 
-number_users_suspended <- suspend_users_with_no_primary_email(conn)
+user_suspensions <- suspend_users_with_no_primary_email(conn)
 
 summary_data <- list(
   update_n = update_n,
   email_updates = redcap_email_revisions,
+  user_suspensions = user_suspensions
 )
 
 log_job_success(jsonlite::toJSON(summary_data))

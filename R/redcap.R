@@ -232,6 +232,8 @@ update_redcap_email_addresses <- function(conn,
 #' @param conn A DBI Connection object
 #'
 #' @export
+#' @importFrom magrittr "%>%"
+#' @importFrom rlang .data
 #'
 #' @examples
 #' \dontrun{
@@ -240,15 +242,32 @@ update_redcap_email_addresses <- function(conn,
 suspend_users_with_no_primary_email <- function(conn) {
   # TODO: include TZ in user_comments
 
-  count_of_users_suspended <- DBI::dbExecute(
-    conn,
-    paste0(
-      "UPDATE redcap_user_information ",
-      "SET user_suspended_time = now(), ",
-      "user_comments = 'Account suspended on ", lubridate::now(), " due to no valid email address' ",
-      "WHERE user_email IS NULL and user_suspended_time is NULL"
-    )
+  redcap_user_information <-
+    dplyr::tbl(conn, "redcap_user_information") %>%
+    dplyr::filter(is.na(.data$user_suspended_time) & is.na(.data$user_email)) %>%
+    dplyr::collect() %>%
+    dplyr::mutate(user_suspended_time = as.POSIXct(.data$user_suspended_time))
+
+  suspension_changes <-
+    redcap_user_information %>%
+    dplyr::collect() %>%
+    dplyr::mutate(
+      user_suspended_time = redcapcustodian::get_script_run_time(),
+      user_comments = paste("Account suspended on", lubridate::now(), "due to no valid email address")
+    ) %>%
+    dplyr::select(.data$ui_id,
+           .data$user_suspended_time,
+           .data$user_comments
+           )
+
+  result <- sync_table_2(
+    conn = conn,
+    table_name = "redcap_user_information",
+    source = suspension_changes,
+    source_pk = "ui_id",
+    target = redcap_user_information,
+    target_pk = "ui_id"
   )
 
-  return(count_of_users_suspended)
+  return(result$update_records)
 }
