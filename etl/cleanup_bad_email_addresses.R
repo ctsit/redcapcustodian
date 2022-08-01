@@ -32,13 +32,13 @@ redcap_email_revisions <- get_redcap_email_revisions(bad_redcap_user_emails, per
 update_n <- update_redcap_email_addresses(
   conn = conn,
   redcap_email_revisions = redcap_email_revisions,
-  redcap_email_original = redcap_email$wide
+  redcap_email_original = redcap_emails$wide
 )
 
 user_suspensions <- suspend_users_with_no_primary_email(conn)
 
 summary_data <- list(
-  update_n = update_n,
+  email_updates_n = update_n,
   email_updates = redcap_email_revisions,
   user_suspensions = user_suspensions
 )

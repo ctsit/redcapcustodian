@@ -250,15 +250,16 @@ suspend_users_with_no_primary_email <- function(conn) {
 
   suspension_changes <-
     redcap_user_information %>%
-    dplyr::collect() %>%
     dplyr::mutate(
-      user_suspended_time = redcapcustodian::get_script_run_time(),
-      user_comments = paste("Account suspended on", lubridate::now(), "due to no valid email address")
+      user_suspended_time = get_script_run_time(),
+      user_comments = paste("Account suspended on", get_script_run_time(), "due to no valid email address")
     ) %>%
-    dplyr::select(.data$ui_id,
-           .data$user_suspended_time,
-           .data$user_comments
-           )
+    dplyr::select(
+      .data$ui_id,
+      .data$username,
+      .data$user_suspended_time,
+      .data$user_comments
+    )
 
   result <- sync_table_2(
     conn = conn,
