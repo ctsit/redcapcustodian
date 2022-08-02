@@ -3,6 +3,21 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.0.0] - 2022-08-02
+### Added
+- Add logging to suspend_users_with_no_primary_email (Philip Chase)
+- Add sync_table2 a merge of dataset_diff and sync_table (Philip Chase)
+- Add expire_user_project_rights (Philip Chase)
+
+### Changed
+- Use sync_table_2 in update_redcap_email_addresses (Philip Chase)
+- Refactor tests and test data related to cleanup_bad_email_addresses.R (Philip Chase)
+- Remove credentials for public image (mbentz-uf)
+- Fix deployment of cron file (Philip Chase)
+- Add common directories to template ignore files (Philip Chase)
+- Fix ADD of my.study (Philip Chase)
+
+
 ## [0.7.0] - 2022-07-17
 ### Changed
 - Add here package to Dockerfile (Philip Chase)
