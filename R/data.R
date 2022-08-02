@@ -44,15 +44,43 @@
 #' @details DETAILS
 "get_bad_emails_from_listserv_digest_test_output"
 
-#' @title get_redcap_emails_output
-#' @description user email addresses from the table redcap_user_information.
-#' Addresses have been pivoted taller into a single `email` column.
-#' @format A data frame with 10 rows and 4 variables:
+#' @title get_redcap_emails_test_data
+#' @description test data to mock get_redcap_emails
+#' @return a list of 2 dataframes:
+#' \itemize{
+#'   \item wide, relevant email columns from redcap_user_information
+#'   \item tall, wide data pivoted to include email_field_name and email columns
+#' }
+#' @details DETAILS
+"get_redcap_emails_test_data"
+
+#' @title user_rights_test_data
+#' @description A named list of dataframes used to test the functions written to manage user rights
+#' @format A named list of 3 dataframes:
 #' \describe{
-#'   \item{\code{ui_id}}{double primary key}
-#'   \item{\code{username}}{character redcap username}
-#'   \item{\code{email_field_name}}{character column name in redcap_user_information}
-#'   \item{\code{email}}{character email value in the column named in `email_field_name`}
+#'   \item{\code{redcap_user_information}}{REDCap Core table}
+#'   \item{\code{redcap_user_rights}}{REDCap Core table}
+#'   \item{\code{redcap_user_roles}}{REDCap Core table}
+#' }
+#' @details DETAILS
+"user_rights_test_data"
+
+#' @title update_redcap_email_addresses_test_data
+#' @description A list of test inputs and outputs for update_redcap_email_addresses
+#' @format A list of 1 variables:
+#' \describe{
+#'   \item{\code{output}}{tibble of email data read backfrom redcap_user_information}
 #'}
 #' @details DETAILS
-"get_redcap_emails_output"
+"update_redcap_email_addresses_test_data"
+
+#' @title get_redcap_email_revisions_test_data
+#' @description A list of test inputs and outputs for get_redcap_email_revisions
+#' @format A list of 3 tibbles:
+#' \describe{
+#'   \item{\code{bad_redcap_user_emails}}{tibble of bad email address and redcap usernames}
+#'   \item{\code{person}}{tibble of corrected email addresses and the corresponding usernames}
+#'   \item{\code{output}}{tibble of output from get_redcap_email_revisions}
+#'}
+#' @details DETAILS
+"get_redcap_email_revisions_test_data"

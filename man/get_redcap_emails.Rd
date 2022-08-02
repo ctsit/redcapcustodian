@@ -10,12 +10,10 @@ get_redcap_emails(conn)
 \item{conn}{A DBI Connection object}
 }
 \value{
-a dataframe with these columns:
+a list of 2 dataframes:
 \itemize{
-  \item ui_id - ui_id for the associated user in REDCap's redcap_user_information table
-  \item username - REDCap username
-  \item email_field_name - the name of the column containing the email address
-  \item email - the email address in email_field_name
+  \item wide, relevant email columns from redcap_user_information
+  \item tall, wide data pivoted to include email_field_name and email columns
 }
 }
 \description{

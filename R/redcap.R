@@ -69,12 +69,10 @@ get_redcap_db_connection <- function() {
 #'
 #' @param conn A DBI Connection object
 #'
-#' @return a dataframe with these columns:
+#' @return a list of 2 dataframes:
 #' \itemize{
-#'   \item ui_id - ui_id for the associated user in REDCap's redcap_user_information table
-#'   \item username - REDCap username
-#'   \item email_field_name - the name of the column containing the email address
-#'   \item email - the email address in email_field_name
+#'   \item wide, relevant email columns from redcap_user_information
+#'   \item tall, wide data pivoted to include email_field_name and email columns
 #' }
 #'
 #' @export
@@ -87,8 +85,19 @@ get_redcap_db_connection <- function() {
 #' get_redcap_emails(conn)
 #' }
 get_redcap_emails <- function(conn) {
-  redcap_email_query <- "select ui_id, username, user_email, user_email2, user_email3 from redcap_user_information"
-  redcap_emails <- DBI::dbGetQuery(conn, statement = redcap_email_query) %>%
+  wide <- dplyr::tbl(conn, "redcap_user_information") %>%
+    dplyr::select(
+      .data$ui_id,
+      .data$username,
+      .data$user_suspended_time,
+      .data$user_email,
+      .data$user_email2,
+      .data$user_email3
+    ) %>%
+    dplyr::collect() %>%
+    dplyr::mutate(user_suspended_time = as.POSIXct(.data$user_suspended_time))
+
+  tall <- wide %>%
     tidyr::pivot_longer(dplyr::starts_with("user_email"),
       names_to = "email_field_name",
       values_to = "email",
@@ -96,7 +105,11 @@ get_redcap_emails <- function(conn) {
     ) %>%
     dplyr::filter(.data$email != "")
 
-  return(redcap_emails)
+  result <- list(
+    wide = wide,
+    tall = tall
+  )
+  return(result)
 }
 
 #' Get redcap user email revisions
@@ -155,6 +168,7 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
 #'
 #' @param conn A DBI Connection object
 #' @param redcap_email_revisions a df returned by \code{\link{get_redcap_email_revisions}}
+#' @param redcap_email_original a df of original redcap_user_information email data
 #'
 #' @export
 #' @importFrom magrittr "%>%"
@@ -169,56 +183,48 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
 #'   url = "imaps://outlook.office365.com",
 #'   messages_since_date = as.Date("2022-01-01", format = "%Y-%m-%d")
 #' )
-#' bad_redcap_user_emails <- get_redcap_emails(conn) %>%
+#' bad_redcap_user_emails <- get_redcap_emails(conn)$tall %>%
 #'   filter(email %in% bad_emails)
 #'
 #' person_data <- get_institutional_person_data()
 #' redcap_email_revisions <- get_redcap_email_revisions(bad_redcap_email_output, person_data)
 #'
-#' update_redcap_email_addresses(conn, redcap_email_revisions)
+#' update_redcap_email_addresses(
+#'   conn,
+#'   redcap_email_revisions,
+#'   redcap_email_original = get_redcap_emails(conn)$wide
+#' )
 #' }
-update_redcap_email_addresses <- function(conn, redcap_email_revisions) {
-  # break down updated emails by field
-  # columns (e.g. user_email<n>) cannot be parameterized
-  # pivot_wider cannot be used as NAs in non-replacement fields result in overwrites
-  # the solution is to create a list of lists, one list for each email_field_name
-  redcap_email_change_groups <- redcap_email_revisions %>%
-    dplyr::select(.data$email_field_name, .data$corrected_email, .data$ui_id) %>%
-    dplyr::group_split(.data$email_field_name, .key = "email_field_name", .keep = FALSE) %>%
-    # RMySQL prepared statements do not allow named parameters
-    lapply(as.list) %>%
-    lapply(unname) %>%
-    purrr::set_names(nm = c(paste0("user_email", seq_along(.))))
+update_redcap_email_addresses <- function(conn,
+                                          redcap_email_revisions,
+                                          redcap_email_original) {
+  update_n = 0
+  if (nrow(redcap_email_revisions) > 0) {
+    email_fields <- redcap_email_revisions %>%
+      dplyr::distinct(.data$email_field_name) %>%
+      dplyr::pull(.data$email_field_name)
 
-  DBI::dbExecute(
-    conn,
-    paste0(
-      "UPDATE redcap_user_information ",
-      "SET user_email = ? ",
-      "WHERE ui_id = ?"
-    ),
-    redcap_email_change_groups$user_email1
-  )
+    for (email_field in email_fields) {
+      wide_revisions <- redcap_email_revisions %>%
+        dplyr::select(-.data$email) %>%
+        dplyr::filter(.data$email_field_name == email_field) %>%
+        tidyr::pivot_wider(
+          names_from = "email_field_name",
+          values_from = "corrected_email"
+        )
 
-  DBI::dbExecute(
-    conn,
-    paste0(
-      "UPDATE redcap_user_information ",
-      "SET user_email2 = ? ",
-      "WHERE ui_id = ?"
-    ),
-    redcap_email_change_groups$user_email2
-  )
-
-  DBI::dbExecute(
-    conn,
-    paste0(
-      "UPDATE redcap_user_information ",
-      "SET user_email3 = ? ",
-      "WHERE ui_id = ?"
-    ),
-    redcap_email_change_groups$user_email3
-  )
+      result <- sync_table_2(
+        conn = conn,
+        table_name = "redcap_user_information",
+        source = wide_revisions,
+        source_pk = "ui_id",
+        target = redcap_email_original,
+        target_pk = "ui_id"
+      )
+      update_n = update_n + result$update_n
+    }
+  }
+  return(update_n)
 }
 
 #' Suspends users with no primary email in redcap_user_information
@@ -226,6 +232,8 @@ update_redcap_email_addresses <- function(conn, redcap_email_revisions) {
 #' @param conn A DBI Connection object
 #'
 #' @export
+#' @importFrom magrittr "%>%"
+#' @importFrom rlang .data
 #'
 #' @examples
 #' \dontrun{
@@ -234,15 +242,33 @@ update_redcap_email_addresses <- function(conn, redcap_email_revisions) {
 suspend_users_with_no_primary_email <- function(conn) {
   # TODO: include TZ in user_comments
 
-  count_of_users_suspended <- DBI::dbExecute(
-    conn,
-    paste0(
-      "UPDATE redcap_user_information ",
-      "SET user_suspended_time = now(), ",
-      "user_comments = 'Account suspended on ", lubridate::now(), " due to no valid email address' ",
-      "WHERE user_email IS NULL and user_suspended_time is NULL"
+  redcap_user_information <-
+    dplyr::tbl(conn, "redcap_user_information") %>%
+    dplyr::filter(is.na(.data$user_suspended_time) & is.na(.data$user_email)) %>%
+    dplyr::collect() %>%
+    dplyr::mutate(user_suspended_time = as.POSIXct(.data$user_suspended_time))
+
+  suspension_changes <-
+    redcap_user_information %>%
+    dplyr::mutate(
+      user_suspended_time = get_script_run_time(),
+      user_comments = paste("Account suspended on", get_script_run_time(), "due to no valid email address")
+    ) %>%
+    dplyr::select(
+      .data$ui_id,
+      .data$username,
+      .data$user_suspended_time,
+      .data$user_comments
     )
+
+  result <- sync_table_2(
+    conn = conn,
+    table_name = "redcap_user_information",
+    source = suspension_changes,
+    source_pk = "ui_id",
+    target = redcap_user_information,
+    target_pk = "ui_id"
   )
 
-  return(count_of_users_suspended)
+  return(result$update_records)
 }
