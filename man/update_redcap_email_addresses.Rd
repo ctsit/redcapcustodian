@@ -4,12 +4,18 @@
 \alias{update_redcap_email_addresses}
 \title{Updates bad redcap email addresses in redcap_user_information}
 \usage{
-update_redcap_email_addresses(conn, redcap_email_revisions)
+update_redcap_email_addresses(
+  conn,
+  redcap_email_revisions,
+  redcap_email_original
+)
 }
 \arguments{
 \item{conn}{A DBI Connection object}
 
 \item{redcap_email_revisions}{a df returned by \code{\link{get_redcap_email_revisions}}}
+
+\item{redcap_email_original}{a df of original redcap_user_information email data}
 }
 \description{
 Updates bad redcap email addresses in redcap_user_information
@@ -23,12 +29,16 @@ bad_emails <- get_bad_emails_from_listserv_digest(
   url = "imaps://outlook.office365.com",
   messages_since_date = as.Date("2022-01-01", format = "\%Y-\%m-\%d")
 )
-bad_redcap_user_emails <- get_redcap_emails(conn) \%>\%
+bad_redcap_user_emails <- get_redcap_emails(conn)$tall \%>\%
   filter(email \%in\% bad_emails)
 
 person_data <- get_institutional_person_data()
 redcap_email_revisions <- get_redcap_email_revisions(bad_redcap_email_output, person_data)
 
-update_redcap_email_addresses(conn, redcap_email_revisions)
+update_redcap_email_addresses(
+  conn,
+  redcap_email_revisions,
+  redcap_email_original = get_redcap_emails(conn)$wide
+)
 }
 }
