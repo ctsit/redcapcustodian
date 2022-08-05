@@ -67,6 +67,9 @@ At this point, it's time to read the portions of the project data that interest 
 For our task, we want to read identifiers for collected data so we can write them into the Biospecimen tracking project
 
 ```{r read data}
+record_count_to_create <- 50
+collection_events <- 5
+tubes_per_collection <- 30
 
 fields_to_read <- c(
   "record_id",
