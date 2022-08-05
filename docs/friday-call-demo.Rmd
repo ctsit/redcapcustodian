@@ -157,6 +157,6 @@ if (result$success) {
 When doing automated jobs, it's important to have a record of what happened. REDCap Custodian writes logs so you can review its actions later.
 
 ```{r read_logs}
-
-
+log_con <- get_package_scope_var("log_con")
+tbl(log_con, "rcc_job_log")
 ```
