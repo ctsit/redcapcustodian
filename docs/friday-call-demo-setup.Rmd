@@ -1,0 +1,115 @@
+---
+title: "REDCap Custodian Friday Call Demo Credentials Setup"
+author: "Philip Chase & Kyle Chesney"
+date: '2022-06-15'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+This is a demonstration of some features of the REDCap Custodian R package. 
+
+We will demonstrate how to:
+
+1. Fetch and store you API tokens in a database
+2. Get some data from a REDCap project
+3. Transform your data
+4. Write it to another project
+5. Review the logs of what the job
+
+Then we'll talk about how to automate that whole process.
+
+## Prequisites
+
+If you want to do this yourself, we recommend you do these things to setup your development and testing environment:
+
+1. Install R, Rstudio, and the tidyverse packages
+2. Install redcapcustodian from github
+3. Clone the [redcap-docker-compose](https://github.com/123andy/redcap-docker-compose/) git repo
+4. Create a local REDCap with redcap-docker-compose
+5. Create an new project in Rstudio.  Note this is an _R_ project, not a _REDCap_ project,
+6. Copy [local.env.txt](./local.env.txt) to .env in the root of your new project folder.
+
+You also need some REDCap projects to play with. If you have your own, that's great. for our demo, we need two REDCap projects to exist. Please make those projects with these XML files: [main](./main.xml) [biospecimen](./biospecimen.xml).
+
+Name the project from `main.xml`: "Demo Main"
+Name the project from `biospecimen.xml`: "Demo Biospecimen"
+
+To talk to those projects from code, they'll need API tokens. Add those to the main and biospecimen projects. Do the same for any other project you want to play with. 
+
+With those changes in place, you can start developing scripts that use REDCap custodian.
+
+## Premise
+
+You have a big important project with many rows of data and many more rows coming in every week, a researcher asks you to build them a biorepository project for the biospecimens collected for this protocol. We do not want anyone to transcribe existing data, so we will _automatically_ copy it for them every day. No transcription, no typos, no overtime.
+
+## Fetch API Tokens
+
+First, load some R packages:
+
+```{r packages}
+library(redcapcustodian)
+library(DBI)
+library(tidyverse)
+library(dotenv)
+library(lubridate)
+```
+
+
+Then, make a database to hold the credentials:
+
+```{r make_credentials_db}
+
+# fetching all extant API tokens and adding them to storage #################
+
+dir.create("credentials")
+
+# creates file if one does not exist
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), here::here("credentials/credentials.db"))
+
+# SQLite friendly schema
+credentials_sql <- "CREATE TABLE IF NOT EXISTS `credentials` (
+  `redcap_uri` TEXT NOT NULL,
+  `server_short_name` varchar(128) NOT NULL,
+  `username` varchar(191) NOT NULL,
+  `project_id` int(10) NOT NULL,
+  `project_display_name` TEXT NOT NULL,
+  `project_short_name` varchar(128) DEFAULT NULL,
+  `token` varchar(64) NOT NULL,
+  `comment` varchar(256) DEFAULT NULL
+);
+"
+
+dbExecute(file_conn, credentials_sql)
+```
+
+Now, fetch all of your API tokens:
+
+```{r get_api_tokens}
+# fetching all extant API tokens and adding them to storage #################
+load_dot_env(here::here("local.env.txt"))
+
+my_username <- "admin"
+source_conn <- connect_to_redcap_db()
+scraped_credentials <- scrape_user_api_tokens(source_conn, my_username)
+
+# alter credentials to match local schema
+source_credentials_upload <- scraped_credentials %>%
+  mutate(
+    redcap_uri = Sys.getenv("URI"),
+    server_short_name = tolower(Sys.getenv("INSTANCE"))
+  ) %>%
+  # remove duplicates
+  anti_join(
+    tbl(file_conn, "credentials") %>%
+      collect()
+  )
+
+dbAppendTable(file_conn, "credentials", source_credentials_upload)
+```
