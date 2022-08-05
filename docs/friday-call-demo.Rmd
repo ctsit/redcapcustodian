@@ -33,11 +33,25 @@ Follow the steps and run the code provided in friday-call-demo-setup.Rmd.
 
 You have a big important project with many rows of data and many more rows coming in every week, a researcher asks you to build them a biorepository project for the biospecimens collected for this protocol. We do not want anyone to transcribe existing data, so we will _automatically_ copy it for them every day. No transcription, no typos, no overtime.
 
-## Create some data for your REDCap project
 
-We will generate some records for your main project for you to port over to the Biospecimen project. First, access the credential database to get your credentials to the REDCap project you want to read from.
+## Get some data from a REDCap project
+
+First, load some R packages:
+
+```{r packages}
+library(redcapcustodian)
+library(DBI)
+library(tidyverse)
+library(dotenv)
+library(lubridate)
+```
+
+
+Next, connect to the credential database. Then read your credentials to the REDCap project you want to read from.
 
 ```{r read_source_credentials_from_db}
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), here::here("credentials/credentials.db"))
+
 source_credentials <- tbl(file_conn, "credentials") %>%
   filter(username == my_username) %>%
   collect() %>%
@@ -45,82 +59,7 @@ source_credentials <- tbl(file_conn, "credentials") %>%
   unnest()
 ```
 
-We use Will Beasley's REDCapR library to interact with REDCap via its API. REDCapR allows you to specify the forms, fields, event names, and time frames of interest. It even allows REDCap filtering.
-
-It isn't entirely necessary to understand most the following block as you typically won't be populating a project with random data.
-
-```{r create data}
-record_count_to_create <- 50
-collection_events <- 5
-tubes_per_collection <- 30
-
-record_columns <- c(
-  "record_id",
-  "redcap_event_name",
-  "sample_collected_date",
-  "tmp_event_id",
-  paste0("tube_id", 1:tubes_per_collection),
-  paste0("tube_specimen_type", 1:tubes_per_collection),
-  paste0("tube_volume", 1:tubes_per_collection)
-  )
-
-# create empty dataframe and set column names
-simulated_data <- data.frame(
-  matrix(ncol = length(record_columns), nrow = 0)
-) %>%
-  mutate(across(everything(), as.character))
-colnames(simulated_data) <- record_columns
-
-# create base entries for each event
-# NOTE: may be a bit slow as for-loops are not generally used in R
-for (record_id in 1:record_count_to_create) {
-  for (event_id in 1:collection_events) {
-    simulated_data <- simulated_data %>%
-      add_row(
-        record_id = as.character(record_id),
-        redcap_event_name = paste0("event_", event_id, "_arm_1"),
-        tmp_event_id = as.character(event_id), # used to generate tube IDs later
-        sample_collected_date = sample(
-          seq(ymd("2020-03-01"), ymd("2022-06-01"), by = "day"), size = 1, replace = T
-        ) %>% as.character()
-      )
-  }
-}
-
-# group to ensure simulated data is consistent with a single collection event
-simulated_data <- simulated_data %>%
-  group_by(record_id, redcap_event_name)
-
-# simulate individual samples
-for (tube in 1:tubes_per_collection) {
-  simulated_data <- simulated_data %>%
-    mutate(
-      "tube_id{tube}" := paste0(
-        record_id, "-",
-        str_pad(tmp_event_id, width = 2, side = "left", pad = "0"), "-",
-        str_pad(tube, width = 2, side = "left", pad = "0")
-      ),
-      "tube_specimen_type{tube}" := sample(1:4, size = 1),
-      "tube_volume{tube}" := sample(2:4, size = 1)
-    )
-}
-
-# remove temporary column used in simulation
-simulated_data <- simulated_data %>%
-  ungroup() %>%
-  select(-tmp_event_id)
-
-# upload data to REDCap
-REDCapR::redcap_write(
-  redcap_uri = source_credentials$redcap_uri,
-  token = source_credentials$token,
-  ds_to_write = simulated_data
-)
-```
-
-## Get some data from a REDCap project
-
-At this point it's time to read the portions of the project data that interest you.
+At this point, it's time to read the portions of the project data that interest you.
 
 For our task, we want to read identifiers for collected data so we can write them into the Biospecimen tracking project
 
@@ -183,8 +122,12 @@ old_target_project_data <- REDCapR::redcap_read(
   fields = target_fields_to_read
 )
 
-target_project_data <- new_target_project_data %>%
-  dplyr::anti_join(old_target_project_data$data)
+if (old_target_project_data$success) {
+  target_project_data <- new_target_project_data %>%
+    dplyr::anti_join(old_target_project_data$data)
+} else {
+  target_project_data <- new_target_project_data
+}
 
 # now write that small dataset
 REDCapR::redcap_write(
