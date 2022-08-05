@@ -44,6 +44,8 @@ library(DBI)
 library(tidyverse)
 library(dotenv)
 library(lubridate)
+
+init_etl("friday_call_demo")
 ```
 
 
@@ -130,11 +132,20 @@ if (old_target_project_data$success) {
 }
 
 # now write that small dataset
-REDCapR::redcap_write(
-  ds_to_write = slice_head(target_project_data, prop= 0.5),
+result <- REDCapR::redcap_write(
+  ds_to_write = slice_head(target_project_data, prop=0.5),
   redcap_uri = target_credentials$redcap_uri,
   token = target_credentials$token
 )
+
+# now log what we did
+if (result$success) {
+  log_job_success(jsonlite::toJSON(target_project_data))
+} else {
+  log_job_failure(jsonlite::toJSON(result))
+}
+
+
 ```
 
 ## Review the logs of what the job
