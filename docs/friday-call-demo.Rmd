@@ -1,7 +1,7 @@
 ---
 title: "REDCap Custodian Friday Call Demo"
 author: "Philip Chase & Kyle Chesney"
-date: '2022-06-15'
+date: '2022-08-05'
 output:
   pdf_document: default
   html_document: default
@@ -27,7 +27,7 @@ Then we'll talk about how to automate that whole process.
 
 ## Prequisites
 
-Follow the steps and run the code provided in friday-call-demo-setup.Rmd.
+Follow the steps and run the code provided in `friday-call-demo-setup.Rmd`.
 
 ## Premise
 
@@ -44,6 +44,8 @@ library(DBI)
 library(tidyverse)
 library(dotenv)
 library(lubridate)
+
+load_dot_env(here::here("local.env.txt"))
 
 init_etl("friday_call_demo")
 ```
@@ -158,5 +160,16 @@ When doing automated jobs, it's important to have a record of what happened. RED
 
 ```{r read_logs}
 log_con <- get_package_scope_var("log_con")
-tbl(log_con, "rcc_job_log")
+
+tbl(log_con, "rcc_job_log") %>%
+  view()
+
+tbl(log_con, "rcc_job_log") %>%
+  filter(script_name == "friday_call_demo") %>%
+  collect() %>%
+  arrange(desc(log_date)) %>%
+  head(n=1) %>%
+  pull(job_summary_data) %>%
+  jsonlite::fromJSON() %>%
+  view()
 ```
