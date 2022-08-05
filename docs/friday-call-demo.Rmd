@@ -53,6 +53,7 @@ Next, connect to the credential database. Then read your credentials to the REDC
 
 ```{r read_source_credentials_from_db}
 file_conn <- DBI::dbConnect(RSQLite::SQLite(), here::here("credentials/credentials.db"))
+my_username <- "admin"
 
 source_credentials <- tbl(file_conn, "credentials") %>%
   filter(username == my_username) %>%
