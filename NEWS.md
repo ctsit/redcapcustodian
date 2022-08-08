@@ -2,6 +2,15 @@
 All notable changes to the redcapcustodian package and its contained scripts will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.0] - 2022-08-08
+### Added
+- Add logging in Friday Call demo (Philip Chase)
+
+### Changed
+- Define username and tube count variables in friday call demo (Kyle Chesney)
+- Move fake data section to setup file in Friday Call Demo (Philip Chase)
+- Move credential creation and scraping from main friday call to auxiliary setup file (Kyle Chesney)
+
 
 ## [1.0.0] - 2022-08-02
 ### Added
