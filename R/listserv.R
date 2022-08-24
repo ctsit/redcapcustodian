@@ -38,12 +38,12 @@ get_bad_emails_from_listserv_digest <- function(username,
   )
 
   imap_con$select_folder("INBOX")
-  error_emails <- imap_con$search_string(expr = "Daily error monitoring report", where = "SUBJECT")
-  messages_since_date <- imap_con$search_since(date_char = format(messages_since_date, format = "%d-%b-%Y"))
-  digest_emails <- dplyr::intersect(error_emails, messages_since_date)
+  emails_by_subject_search <- imap_con$search_string(expr = "Daily error monitoring report", where = "SUBJECT")
+  emails_by_since_search <- imap_con$search_since(date_char = format(messages_since_date, format = "%d-%b-%Y"))
+  emails_found <- dplyr::intersect(emails_by_subject_search, emails_by_since_search)
 
-  if (!is.na(digest_emails)) {
-    bounced_email_addresses <- digest_emails %>%
+  if (length(emails_found) > 0) {
+    bounced_email_addresses <- emails_found %>%
       imap_con$fetch_body() %>%
       # key on Err First Last Address row
       stringr::str_extract_all("\\d{1} \\d{2}/\\d{2} \\d{2}/\\d{2}.*") %>%
