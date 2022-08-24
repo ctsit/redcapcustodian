@@ -2,6 +2,12 @@
 All notable changes to the redcapcustodian package and its contained scripts will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [1.1.1] - 2022-08-24
+### Changed
+- Fix test for search results in get_bad_emails_from_listserv_digest (Philip Chase)
+
+
 ## [1.1.0] - 2022-08-08
 ### Added
 - Add logging in Friday Call demo (Philip Chase)
