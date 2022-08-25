@@ -3,6 +3,11 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.2.0] - 2022-08-25
+### Added
+- Add email_from and email_cc params to send_email function, default to env value (Kyle Chesney)
+
+
 ## [1.1.1] - 2022-08-24
 ### Changed
 - Fix test for search results in get_bad_emails_from_listserv_digest (Philip Chase)
