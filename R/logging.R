@@ -594,7 +594,7 @@ send_email <- function(email_body, email_subject = "", email_to = "", email_cc =
   if (email_cc == "") {
     email_cc <- unlist(strsplit(Sys.getenv("EMAIL_CC"), " "))
   } else {
-    email_cc <- unlist(strsplit(email_to, " "))
+    email_cc <- unlist(strsplit(email_cc, " "))
   }
   if (email_subject == "") {
     email_subject <- paste(Sys.getenv("EMAIL_SUBJECT"), get_script_run_time())
