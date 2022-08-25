@@ -4,14 +4,24 @@
 \alias{send_email}
 \title{A wrapper function that sends an email (via sendmailR) reporting the outcome of another function}
 \usage{
-send_email(email_body, email_subject = "", email_to = "")
+send_email(
+  email_body,
+  email_subject = "",
+  email_to = "",
+  email_cc = "",
+  email_from = ""
+)
 }
 \arguments{
 \item{email_body}{The contents of the email}
 
 \item{email_subject}{The subject line of the email}
 
-\item{email_to}{The email addresses}
+\item{email_to}{The email addresses of the primary recipient(s), separate recipient addresses with spaces}
+
+\item{email_cc}{The email addresses of cc'd recipient(s), separate recipient addresses with spaces}
+
+\item{email_from}{The email addresses of the sender}
 }
 \value{
 No returned value
