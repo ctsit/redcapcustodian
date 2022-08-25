@@ -568,7 +568,9 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #'
 #' @param email_body The contents of the email
 #' @param email_subject The subject line of the email
-#' @param email_to The email addresses
+#' @param email_to The email addresses of the primary recipient(s), separate recipient addresses with spaces
+#' @param email_cc The email addresses of cc'd recipient(s), separate recipient addresses with spaces
+#' @param email_from The email addresses of the sender
 #' @return No returned value
 #' @examples
 #'
@@ -583,11 +585,17 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #' }
 #' @importFrom sendmailR "sendmail"
 #' @export
-send_email <- function(email_body, email_subject = "", email_to = "") {
+send_email <- function(email_body, email_subject = "", email_to = "", email_cc = "", email_from = "") {
   # email credentials
   email_server <- list(smtpServer = Sys.getenv("SMTP_SERVER"))
-  email_from <- Sys.getenv("EMAIL_FROM")
-  email_cc <- unlist(strsplit(Sys.getenv("EMAIL_CC"), " "))
+  if (email_from == "") {
+    email_from <- Sys.getenv("EMAIL_FROM")
+  }
+  if (email_cc == "") {
+    email_cc <- unlist(strsplit(Sys.getenv("EMAIL_CC"), " "))
+  } else {
+    email_cc <- unlist(strsplit(email_to, " "))
+  }
   if (email_subject == "") {
     email_subject <- paste(Sys.getenv("EMAIL_SUBJECT"), get_script_run_time())
   }
