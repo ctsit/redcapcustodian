@@ -115,14 +115,16 @@ get_bad_emails_from_individual_emails <- function(username,
     request = mRpostman::AND(
       # NOTE: "Undelivered Mail Returned to Sender" does not get hits due to SUBJECT being a vector
       # in instances where it appears, mRpostman doesn't want to read this
-      mRpostman::string(expr = "Undel", where = "SUBJECT"),
+      #mRpostman::string(expr = "Undelivered Mail Returned to Sender", where = "SUBJECT"),
+      mRpostman::string(expr = "Undeliverable", where = "SUBJECT"),
       # NOTE: using on(date_char = ...) with first of month may be most performant
       mRpostman::sent_since(date_char = format(messages_since_date, format = "%d-%b-%Y"))
     )
   )
 
   patterns <- c(
-    "Original-Recipient: rfc822;.*"
+    "Original-Recipient: rfc822;.*",
+    "Final-Recipient: rfc822;.*"
   )
 
   # remove literal ".*" for extraction
@@ -147,8 +149,9 @@ get_bad_emails_from_individual_emails <- function(username,
 
   bounced_email_addresses <- dplyr::tibble(email = data_from_emails %>%
                                           unlist() %>%
+                                          stringr::str_remove_all("rfc822;") %>%
                                           unique()
-                                        )
+                                          )
 
   return(bounced_email_addresses)
 }
