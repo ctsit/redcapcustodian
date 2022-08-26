@@ -2,7 +2,7 @@ Package: redcapcustodian
 Type: Package
 Title: System data cleaning for REDCap
 Version: 1.2.1
-Authors@R:c(
+Authors@R: c(
   person("Philip", "Chase",
         email = "pbc@ufl.edu",
         role = c("aut", "cre"),
@@ -61,6 +61,6 @@ Suggests:
     rmarkdown (>= 2.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Depends: 
     R (>= 2.10)
