@@ -3,6 +3,7 @@ FROM rocker/tidyverse:4.2.1
 WORKDIR /home/rocker
 
 RUN apt update -y && apt install -y libmariadb-dev libmariadbclient-dev
+RUN apt install -y --no-install-recommends libxt6
 
 # install necessary libraries
 RUN R -e "install.packages(c( \
@@ -16,7 +17,6 @@ RUN R -e "install.packages(c( \
   'dotenv', \
   'here', \
   'janitor', \
-  'mRpostman', \
   'rjson', \
   'sendmailR', \
   'sqldf', \
@@ -24,8 +24,6 @@ RUN R -e "install.packages(c( \
 ))"
 
 RUN R -e "devtools::install_github('allanvc/mRpostman')"
-
-RUN apt install -y --no-install-recommends libxt6
 
 # build and install this package
 ADD . /home/rocker/redcapcustodian
