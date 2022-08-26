@@ -1,12 +1,31 @@
-FROM rocker/tidyverse:4.1.0
+FROM rocker/tidyverse:4.2.1
 
 WORKDIR /home/rocker
 
 RUN apt update -y && apt install -y libmariadb-dev libmariadbclient-dev
 
 # install necessary libraries
-RUN R -e "install.packages(c('sendmailR', 'dotenv', 'RCurl', 'checkmate', 'janitor', 'sqldf', 'DBI', 'RMariaDB', 'digest','rjson', 'dbx'))"
-RUN R -e "install.packages(c('REDCapR', 'mRpostman', 'writexl', 'here'))"
+RUN R -e "install.packages(c( \
+  'DBI', \
+  'RCurl', \
+  'REDCapR', \
+  'RMariaDB', \
+  'checkmate', \
+  'dbx', \
+  'digest', \
+  'dotenv', \
+  'here', \
+  'janitor', \
+  'mRpostman', \
+  'rjson', \
+  'sendmailR', \
+  'sqldf', \
+  'writexl' \
+))"
+
+RUN R -e "devtools::install_github('allanvc/mRpostman')"
+
+RUN apt install -y --no-install-recommends libxt6
 
 # build and install this package
 ADD . /home/rocker/redcapcustodian
