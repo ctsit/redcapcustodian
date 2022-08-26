@@ -1,7 +1,7 @@
 Package: redcapcustodian
 Type: Package
 Title: System data cleaning for REDCap
-Version: 1.2.1
+Version: 1.2.2
 Authors@R:c(
   person("Philip", "Chase",
         email = "pbc@ufl.edu",
