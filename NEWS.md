@@ -3,6 +3,12 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.2.1] - 2022-08-26
+### Changed
+- Move schema files into package space (Philip Chase)
+- Correct send_email using email_to for email_cc (Kyle Chesney)
+
+
 ## [1.2.0] - 2022-08-25
 ### Added
 - Add email_from and email_cc params to send_email function, default to env value (Kyle Chesney)
