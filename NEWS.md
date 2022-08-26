@@ -3,6 +3,11 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.2.2] - 2022-08-26
+### Changed
+- Modernize container and add dependencies (Philip Chase)
+
+
 ## [1.2.1] - 2022-08-26
 ### Changed
 - Move schema files into package space (Philip Chase)
