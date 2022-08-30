@@ -13,7 +13,7 @@ To build upon that foundation, this repository also provides a folder, [`study_t
 
 In such an automated environment, each ETL job in this system is an Rscript run via Docker. Each report is an RMarkdown file again run via Docker. The design assumes the Docker containers are hosted on a Linux host with API access to one or more REDCap systems, a mail server, a MySQL database, and, optionally, the REDCap database itself.
 
-For sites without container infrastructure, each image can be instantiated into a container via a cron job as documented in the files in [`examples/crons/`](examples/crons/). Each file in that folder runs a single job. To run a job, its cron script must be copied to the `/etc/cron.d/` folder on the Linux host. The `build.sh` script builds the containers and optionally deploys the environment files and cron scripts.
+For sites without container infrastructure, each image can be instantiated into a container via a cron job as documented in the files in [`examples/crons/`](examples/crons/). Each file in that folder runs a single job. To run a job, its cron script must be copied to the `/etc/cron.d/` folder on the Linux host. The `build.sh` script builds the redcapcustodian container upon which containers built by the study template would depend.
 
 
 # How to use this project
