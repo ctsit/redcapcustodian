@@ -3,6 +3,11 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.3.1] - 2022-08-30
+### Added
+- Remove remants of the site concept (Philip Chase)
+
+
 ## [1.3.0] - 2022-08-29
 ### Added
 - Add get_bad_emails_from_individual_emails function (Kyle Chesney)
