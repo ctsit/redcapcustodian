@@ -48,7 +48,7 @@ dataset_diff <- function(source,
     dplyr::anti_join(target) %>%
     dplyr::inner_join(target, by=source_pk) %>%
     dplyr::select(dplyr::any_of(target_pk), dplyr::any_of(names(source)), dplyr::ends_with(".x")) %>%
-    dplyr::rename_with(., ~ gsub(".x", "", .x), dplyr::ends_with(".x"))
+    dplyr::rename_with(., ~ gsub("\\.x", "", .x), dplyr::ends_with(".x"))
 
   ids_of_update_records <- update_records %>% dplyr::pull({{target_pk}})
 

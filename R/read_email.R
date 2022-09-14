@@ -47,7 +47,7 @@ get_bad_emails_from_individual_emails <- function(username,
       mRpostman::sent_since(date_char = format(messages_since_date, format = "%d-%b-%Y"))
     )
   ) %>%
-    na.exclude()
+    stats::na.exclude()
 
   patterns <- c(
     "Original-Recipient: rfc822;.*",

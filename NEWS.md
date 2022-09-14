@@ -3,6 +3,12 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.3.2] - 2022-09-14
+### Changed
+- Specify package for na.exclude() (Philip Chase)
+- escape . to treat as literal character instead of wildcard in gsub statements (Kyle Chesney)
+
+
 ## [1.3.1] - 2022-08-30
 ### Added
 - Remove remants of the site concept (Philip Chase)
