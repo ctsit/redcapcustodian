@@ -1,0 +1,4 @@
+# Run the sample Rmd Hello World report
+05 8-17 * * * root /usr/bin/docker run --rm --env-file /rcc/study_template/.env rcc.site Rscript report/render_report.R script_name=sample_report.Rmd
+
+
