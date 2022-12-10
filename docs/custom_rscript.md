@@ -175,7 +175,7 @@ Stop and think about architecture and study lifecycle.
 If you need something to run periodically, you need to make it easy to run with all of its dependencies packaged up and you need to schedule it. The modern way to package dependencies is to put them all into a container, add your application and run the container. REDCap Custodian supports containerization with Docker. The [`./study_template/Dockerfile`](./study_template/Dockerfile) is template you can use to containerize your RScript and RMarkdown. Adapt it to your needs and build the container with [./build.sh](./build.sh). If you have good container infrastructure, use it to build and deploy your containers. 
 
 Running automated R Markdown reports from docker requires the use of an Rmd renderer.
-[render_report.R](./study_template/report/render_report.R) contains functionality to knit an Rmd, email it and then log the job run. The Rmd script name is passed as a command line argument to [render_report.R](./study_template/report/render_report.R) via cron. Refer to [sample_report](./study_template/cron/sample_report) for an example cron job.
+[render_report.R](../study_template/report/render_report.R) contains functionality to knit an Rmd, email it and then log the job run. The Rmd script name is passed as a command line argument to [render_report.R](../study_template/report/render_report.R) via cron. Refer to [sample_report](../study_template/cron/sample_report) for an example cron job.
  
 ## Automation with Linux and cron
 
