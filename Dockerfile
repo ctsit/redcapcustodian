@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:4.2.1
+FROM rocker/verse:4.2.1
 
 WORKDIR /home/rocker
 
@@ -20,10 +20,12 @@ RUN R -e "install.packages(c( \
   'rjson', \
   'sendmailR', \
   'sqldf', \
-  'writexl' \
+  'writexl', \
+  'kableExtra' \
 ))"
 
 RUN R -e "devtools::install_github('allanvc/mRpostman')"
+RUN wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
 
 # build and install this package
 ADD . /home/rocker/redcapcustodian
