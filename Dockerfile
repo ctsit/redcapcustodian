@@ -35,7 +35,7 @@ RUN R -e "tinytex::tlmgr_install(c(\
   'knuth-lib', 'kpathsea', 'l3kernel', 'l3packages', 'latex', 'latex-bin', \
   'latex-fonts', 'latexconfig', 'latexmk', 'lm', 'lualibs', 'luaotfload', \
   'luatex', 'makecell', 'makeindex', 'mathspec', 'metafont', 'mfware', \
-  'multirow', 'natbib', 'oberdiek', 'pdflscape', 'pdftex', 'plain', \
+  'mdwtools', 'multirow', 'natbib', 'oberdiek', 'pdflscape', 'pdftex', 'plain', \
   'scheme-infraonly', 'tabu', 'tetex', 'tex', 'tex-ini-files', 'texlive.infra', \
   'threeparttable', 'threeparttablex', 'times', 'tipa', 'titling', \
   'tools', 'trimspaces', 'ulem', 'unicode-data', 'upquote', 'url', \
