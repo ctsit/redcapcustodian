@@ -3,6 +3,11 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.4.1] - 2022-12-15
+### Changed
+- Install latex packages directly in Dockerfile (Laurence James-Woodley)
+
+
 ## [1.4.0] - 2022-12-13
 ### Added
 - Switch Dockerfile from tidyverse to verse (Laurence James-Woodley)
