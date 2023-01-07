@@ -39,4 +39,4 @@ email_body <- list(body, attachment_object)
 # send the email with the attached output file
 send_email(email_body, email_subject)
 
-# log_job_success(jsonlite::toJSON(script_name))
+log_job_success(jsonlite::toJSON(script_name))
