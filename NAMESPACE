@@ -3,6 +3,7 @@
 export(connect_to_db)
 export(connect_to_log_db)
 export(connect_to_redcap_db)
+export(convert_schema_to_sqlite)
 export(create_test_table)
 export(create_test_tables)
 export(dataset_diff)

@@ -83,3 +83,36 @@ create_test_tables <- function(conn, table_names = c()) {
   )
 
 }
+
+#' Converts a MySQL schema file to a sqlite schema.
+#' Facilitates easier creation of in-memory (i.e. sqlite) tables.
+#'
+#' @param schema_file_path, the path of the schema file to convert
+#'
+#' @importFrom magrittr "%>%"
+#'
+#' @return the translated schema as a character string
+#'
+#' @examples
+#' \dontrun{
+#' mem_conn <- DBI::dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+#' translated_schema <- convert_schema_to_sqlite("~/documents/my_cool_schema.sql")
+#' DBI::dbSendQuery(mem_conn, schema)
+#' }
+#' @export
+convert_schema_to_sqlite <- function(schema_file_path) {
+  pl_to_sqlite <- system.file("", "to_sqlite.pl", package = "redcapcustodian")
+
+  if (!file.exists(schema_file_path)) {
+    stop(paste("Schema file does not exist at", schema_file_path))
+  }
+  # TODO: consider supporting raw SQL input, assume raw sql given if file does not exist
+  # raw_sql <- readr::read_file(schema_file_path)
+  # cmd <- echo "${raw_sql}" | perl to_sqlite.pl
+
+  # convert to sqlite
+  cmd <- paste("cat", schema_file_path, "|", "perl", pl_to_sqlite)
+
+  result <- system(cmd, intern = TRUE) %>% paste(collapse = "")
+  return(result)
+}
