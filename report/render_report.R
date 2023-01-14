@@ -8,6 +8,10 @@ library(redcapcustodian)
 
 init_etl("render_report")
 
+if (!dir.exists("output")){
+  dir.create("output")
+}
+
 if (!interactive()) {
   args <- commandArgs(trailingOnly = T)
   script_name <- word(args, 2, sep = "=")
@@ -19,17 +23,20 @@ report_name <- word(script_name, 1, sep = "\\.")
 
 script_run_time <- set_script_run_time()
 
-output_file = paste0(report_name,
-                     "_",
-                     format(script_run_time, "%Y%m%d%H%M%S"))
+output_file <- here::here(
+  "output",
+  paste0(report_name,
+  "_",
+  format(script_run_time, "%Y%m%d%H%M%S"))
+)
 
 full_path_to_output_file <- render(
-  paste0("report/", script_name),
+  here::here("report", script_name),
   output_file = output_file
 )
 
 output_file_extension <- word(full_path_to_output_file, 2 , sep = "\\.")
-attachment_object <- mime_part(full_path_to_output_file, paste0(output_file, ".", output_file_extension))
+attachment_object <- mime_part(full_path_to_output_file, paste0(basename(output_file), ".", output_file_extension))
 
 email_subject <- paste(report_name, "|", script_run_time)
 body <- "Please see the attached report."
