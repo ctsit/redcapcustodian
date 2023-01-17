@@ -58,7 +58,8 @@ Suggests:
     digest,
     RSQLite,
     knitr (>= 1.18),
-    rmarkdown (>= 2.0)
+    rmarkdown (>= 2.0),
+    fs
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.2.1
