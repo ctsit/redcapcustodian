@@ -49,4 +49,5 @@ testthat::test_that("convert_schema_to_sqlite can convert a MySQL schema to vali
   # close result set to avoid warning
   DBI::dbClearResult(res)
   testthat::expect_equal(DBI::dbListTables(sqlite_conn), "redcap_entity_project_ownership")
+  DBI::dbDisconnect(sqlite_conn)
 })
