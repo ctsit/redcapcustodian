@@ -116,3 +116,33 @@ convert_schema_to_sqlite <- function(schema_file_path) {
   result <- system(cmd, intern = TRUE) %>% paste(collapse = "")
   return(result)
 }
+
+#' mutate_columns_to_posixct
+#'
+#' Mutates column data types to POSIXct.
+#' Especially useful when working with in-memory tables where dates are often converted to int.
+#'
+#' @param data - a dataframe to mutate
+#' @param column_names - a vector of column names to mutate
+#'
+#' @return The input dataframe with revised data types
+#' @export
+#'
+#' @importFrom magrittr "%>%"
+#' @importFrom rlang .data
+#'
+#' @examples
+#' \dontrun{
+#' time_columns <- c("created", "updated")
+#' mutate_columns_to_posixct(data, time_columns)
+#' }
+#' @export
+mutate_columns_to_posixct <- function(data, column_names) {
+  result <- data %>%
+    dplyr::mutate(dplyr::across(
+      dplyr::any_of(column_names),
+      ~ as.POSIXct(., origin = "1970-01-01 00:00.00 UTC", tz = "UTC")
+    ))
+
+  return(result)
+}
