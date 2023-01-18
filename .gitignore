@@ -17,6 +17,9 @@ site
 !host_template/.env
 local.env.txt
 
+# local credentials databases
+credentials/*
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.R
