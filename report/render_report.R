@@ -36,7 +36,7 @@ full_path_to_output_file <- render(
 )
 
 output_file_extension <- word(full_path_to_output_file, 2 , sep = "\\.")
-attachment_object <- mime_part(full_path_to_output_file, paste0(basename(output_file), ".", output_file_extension))
+attachment_object <- mime_part(full_path_to_output_file, basename(full_path_to_output_file))
 
 email_subject <- paste(report_name, "|", script_run_time)
 body <- "Please see the attached report."
