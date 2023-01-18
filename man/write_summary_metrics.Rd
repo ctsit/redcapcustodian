@@ -14,7 +14,7 @@ write_summary_metrics(
 \arguments{
 \item{reporting_period_start}{a datetime object, e.g. ymd_hms("2022-11-01 00:00:00")}
 
-\item{reporting_period_end}{a datetime object, e.g. ymd_hms("2022-11-01 00:00:00")}
+\item{reporting_period_end}{a datetime object, e.g. ymd_hms("2022-12-01 00:00:00")}
 
 \item{metric_type}{a character string representing the metric type, e.g. "flux", "state"}
 
@@ -29,8 +29,8 @@ Format and write summary metrics to the redcap_summary_metrics table in your LOG
 \examples{
 \dontrun{
  write_summary_metrics(
-   reporting_period_start = ymd_hms("2022-11-01 00:00:00"),
-   reporting_period_end = ymd_hms("2022-11-30 23:59:59"),
+   reporting_period_start = ymd_hms("2022-01-01 00:00:00", tz=Sys.getenv("TIME_ZONE")),
+   reporting_period_end = ceiling_date(reporting_period_start, "month", change_on_boundary = T)
    metric_type = "state",
    metric_dataframe = my_cool_df
  )
