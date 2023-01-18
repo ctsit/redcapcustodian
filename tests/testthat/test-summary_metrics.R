@@ -9,7 +9,7 @@ schema <- convert_schema_to_sqlite(schema_file)
 res <- DBI::dbSendQuery(conn, schema)
 DBI::dbClearResult(res)
 
-test_that("write_summary_metrics writes summary metrics", {
+testthat::test_that("write_summary_metrics writes summary metrics", {
 
   # HACK: stand in for running init_etl
   set_package_scope_var("log_con", conn)
@@ -17,7 +17,7 @@ test_that("write_summary_metrics writes summary metrics", {
   set_script_name("test-summary_metrics")
 
   start_of_this_month <- floor_date(get_script_run_time(), "month")
-  start_of_previous_month <- floor_date(start_of_this_month - months(1), "month")
+  start_of_previous_month <- floor_date(start_of_this_month - ddays(27), "month")
 
   users <- tbl(conn, "redcap_user_information") %>%
     filter(is.na(user_suspended_time)) %>%
@@ -45,8 +45,8 @@ test_that("write_summary_metrics writes summary metrics", {
   metric_type <- "state"
 
   write_summary_metrics(
-    reporting_period_start = ymd_hms("2022-01-01 00:00:00"),
-    reporting_period_end = ymd_hms("2022-01-31 23:59:59"),
+    reporting_period_start = ymd_hms("2022-01-01 00:00:00", tz=Sys.getenv("TIME_ZONE")),
+    reporting_period_end = ceiling_date(reporting_period_start, "month", change_on_boundary = T),
     metric_type = "state",
     metric_dataframe = metric_dataframe
   )
@@ -57,7 +57,7 @@ test_that("write_summary_metrics writes summary metrics", {
     mutate_columns_to_posixct(c("script_run_time", "reporting_period_start", "reporting_period_end"))
 
   # NOTE: type coercion needed as redcap_summary_metrics value column is varchar
-  expect_equal(
+  testthat::expect_equal(
     as.character(users),
     summary_metrics_table %>%
       filter(key == "users") %>%
@@ -66,7 +66,7 @@ test_that("write_summary_metrics writes summary metrics", {
       pull(value)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     as.character(users_active),
     summary_metrics_table %>%
       filter(key == "users_active") %>%
