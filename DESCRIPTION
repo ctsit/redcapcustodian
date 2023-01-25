@@ -1,7 +1,7 @@
 Package: redcapcustodian
 Type: Package
 Title: System data cleaning for REDCap
-Version: 1.4.1
+Version: 1.5.0
 Authors@R: c(
   person("Philip", "Chase",
         email = "pbc@ufl.edu",
@@ -58,7 +58,8 @@ Suggests:
     digest,
     RSQLite,
     knitr (>= 1.18),
-    rmarkdown (>= 2.0)
+    rmarkdown (>= 2.0),
+    fs
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.2.1

@@ -21,3 +21,4 @@ docs/*
 local.env.txt
 ^hosts/.*
 ^data-raw$
+^credentials$
