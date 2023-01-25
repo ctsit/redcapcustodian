@@ -3,6 +3,17 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.5.0] - 2023-01-25
+### Added
+- Create write_summary_metrics function, corresponding schema and test (Kyle Chesney)
+- Add render_report to /report (Laurence James-Woodley)
+- Port convert_schema_to_sqlite from rcc.billing, altering it to accept path to sql file as input (Kyle Chesney)
+- Port mutate_columns_to_posixct from rcc.billing (Kyle Chesney)
+
+### Changed
+- Ignore local credentials DBs (Philip Chase)
+
+
 ## [1.4.1] - 2022-12-15
 ### Changed
 - Install latex packages directly in Dockerfile (Laurence James-Woodley)
