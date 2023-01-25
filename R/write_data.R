@@ -151,7 +151,8 @@ sync_table <- function(
       conn = conn,
       table = table_name,
       records = data_diff_output$update_records,
-      where_cols = primary_key
+      where_cols = primary_key,
+      batch_size = 100
     )
     update_n <- nrow(data_diff_output$update_records)
   }
@@ -160,7 +161,8 @@ sync_table <- function(
     dbx::dbxDelete(
       conn = conn,
       table = table_name,
-      where = data_diff_output$delete_records
+      where = data_diff_output$delete_records,
+      batch_size = 100
     )
     delete_n <- nrow(data_diff_output$delete_records)
   }
