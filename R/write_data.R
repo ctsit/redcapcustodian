@@ -249,7 +249,8 @@ sync_table_2 <- function(
       conn = conn,
       table = table_name,
       records = update_records,
-      where_cols = target_pk
+      where_cols = target_pk,
+      batch_size = 100
     )
     update_n <- nrow(update_records)
   } else {
@@ -266,7 +267,8 @@ sync_table_2 <- function(
     dbx::dbxDelete(
       conn = conn,
       table = table_name,
-      where = delete_records
+      where = delete_records,
+      batch_size = 100
     )
     delete_n <- nrow(delete_records)
   } else {
