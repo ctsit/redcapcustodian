@@ -212,3 +212,94 @@ testthat::test_that(
     testthat::expect_equal(nrow(result$update_records), result$update_n)
   }
 )
+
+testthat::test_that(
+  "sync_table can do an insert/update/delete",
+  {
+    # make test data
+    mtcars_for_db <- mtcars %>%
+      mutate(model = row.names(mtcars)) %>%
+      mutate(id = row_number()) %>%
+      select(id, model, everything())
+    damaged_mtcars_for_db <- mtcars_for_db %>%
+      filter(id <= 20) %>%
+      mutate(cyl = if_else(id <= 10, 1, cyl)) %>%
+      rbind(mtcars_for_db %>% sample_n(10) %>% mutate(id = id+100))
+
+    # write damaged data to a DB
+    conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+    dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
+
+    # determine what we want to update
+    diff_output <- dataset_diff(
+      source = mtcars_for_db,
+      source_pk = "id",
+      target = damaged_mtcars_for_db,
+      target_pk = "id"
+    )
+
+    # update the data
+    result <- sync_table(
+      conn = conn,
+      table_name = "mtcars",
+      primary_key = "id",
+      data_diff_output = diff_output,
+      insert = T,
+      update = T,
+      delete = T
+    )
+
+    # read the updated table
+    mtcars_from_db <- tbl(conn, "mtcars") %>%
+      collect() %>%
+      mutate(id = as.integer(id))
+
+    # test that the data reads back correctly
+    testthat::expect_true(all_equal(mtcars_for_db, mtcars_from_db))
+  }
+)
+
+testthat::test_that(
+  "sync_table works when deletion count = 0",
+  {
+    # make test data
+    mtcars_for_db <- mtcars %>%
+      mutate(model = row.names(mtcars)) %>%
+      mutate(id = row_number()) %>%
+      select(id, model, everything())
+    damaged_mtcars_for_db <- mtcars_for_db %>%
+      filter(id <= 20) %>%
+      mutate(cyl = if_else(id <= 10, 1, cyl))
+
+    # write damaged data to a DB
+    conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+    dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
+
+    # determine what we want to update
+    diff_output <- dataset_diff(
+      source = mtcars_for_db,
+      source_pk = "id",
+      target = damaged_mtcars_for_db,
+      target_pk = "id"
+    )
+
+    # update the data
+    result <- sync_table(
+      conn = conn,
+      table_name = "mtcars",
+      primary_key = "id",
+      data_diff_output = diff_output,
+      insert = T,
+      update = T,
+      delete = T
+    )
+
+    # read the updated table
+    mtcars_from_db <- tbl(conn, "mtcars") %>%
+      collect() %>%
+      mutate(id = as.integer(id))
+
+    # test that the data reads back correctly
+    testthat::expect_true(all_equal(mtcars_for_db, mtcars_from_db))
+  }
+)

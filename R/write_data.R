@@ -160,7 +160,7 @@ sync_table <- function(
   if (delete) {
     # HACK: if there are no deletions, delete_records is NA rather than an empty dataframe
     # this causes "Error: x must be character or SQL"
-    if (is.na(data_diff_output$delete_records)) {
+    if (!is.data.frame(data_diff_output$delete_records)) {
       delete_n <- 0
     } else {
       dbx::dbxDelete(
