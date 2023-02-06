@@ -138,82 +138,6 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
 })
 
 testthat::test_that(
-  "sync_table can do an update",
-  {
-
-    df = dataset_diff_test_user_data
-
-    # Set up target table
-    drv <- RSQLite::SQLite()
-    con <- connect_to_db(drv)
-    table_name <- "target"
-
-    DBI::dbWriteTable(
-      conn = con,
-      name = table_name,
-      value = df$target,
-      schema = table_name,
-      overwrite = T
-    )
-
-    # determine what we want to update
-    diff_output <- dataset_diff(
-      source = df$source,
-      source_pk = df$source_pk,
-      target = df$target,
-      target_pk = df$target_pk
-    )
-
-    # update the data
-    sync_table(
-      conn = con,
-      table_name = table_name,
-      primary_key = df$target_pk,
-      data_diff_output = diff_output
-    )
-
-    # test that the target was updated
-    testthat::expect_true(dplyr::all_equal(tbl(con, "target") %>% dplyr::collect(), sync_table_test_user_data_result))
-  }
-)
-
-testthat::test_that(
-  "sync_table_2 can do an update",
-  {
-
-    df = dataset_diff_test_user_data
-
-    # Set up target table
-    drv <- RSQLite::SQLite()
-    con <- connect_to_db(drv)
-    table_name <- "target"
-
-    DBI::dbWriteTable(
-      conn = con,
-      name = table_name,
-      value = df$target,
-      schema = table_name,
-      overwrite = T
-    )
-
-    # update the data
-    result <- sync_table_2(
-      conn = con,
-      table_name = table_name,
-      source = df$source,
-      source_pk = df$source_pk,
-      target = df$target,
-      target_pk = df$target_pk
-    )
-
-    # test that the target was updated
-    testthat::expect_true(dplyr::all_equal(tbl(con, "target") %>% dplyr::collect(), sync_table_test_user_data_result))
-    # test that the number of rows updated matches record count of the update dataframe
-    testthat::expect_equal(nrow(result$update_records), result$update_n)
-  }
-)
-
-testthat::test_that(
   "sync_table can do an insert/update/delete",
   {
     # make test data
@@ -289,6 +213,85 @@ testthat::test_that(
       table_name = "mtcars",
       primary_key = "id",
       data_diff_output = diff_output,
+      insert = T,
+      update = T,
+      delete = T
+    )
+
+    # read the updated table
+    mtcars_from_db <- tbl(conn, "mtcars") %>%
+      collect() %>%
+      mutate(id = as.integer(id))
+
+    # test that the data reads back correctly
+    testthat::expect_true(all_equal(mtcars_for_db, mtcars_from_db))
+  }
+)
+
+testthat::test_that(
+  "sync_table_2 can do an insert/update/delete",
+  {
+    # make test data
+    mtcars_for_db <- mtcars %>%
+      mutate(model = row.names(mtcars)) %>%
+      mutate(id = row_number()) %>%
+      select(id, model, everything())
+    damaged_mtcars_for_db <- mtcars_for_db %>%
+      filter(id <= 20) %>%
+      mutate(cyl = if_else(id <= 10, 1, cyl)) %>%
+      rbind(mtcars_for_db %>% sample_n(10) %>% mutate(id = id+100))
+
+    # write damaged data to a DB
+    conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+    dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
+
+    # update the data
+    result <- sync_table_2(
+      conn = conn,
+      table_name = "mtcars",
+      source = mtcars_for_db,
+      source_pk = "id",
+      target = damaged_mtcars_for_db,
+      target_pk = "id",
+      insert = T,
+      update = T,
+      delete = T
+    )
+
+    # read the updated table
+    mtcars_from_db <- tbl(conn, "mtcars") %>%
+      collect() %>%
+      mutate(id = as.integer(id))
+
+    # test that the data reads back correctly
+    testthat::expect_true(all_equal(mtcars_for_db, mtcars_from_db))
+  }
+)
+
+testthat::test_that(
+  "sync_table_2 works when deletion count = 0",
+  {
+    # make test data
+    mtcars_for_db <- mtcars %>%
+      mutate(model = row.names(mtcars)) %>%
+      mutate(id = row_number()) %>%
+      select(id, model, everything())
+    damaged_mtcars_for_db <- mtcars_for_db %>%
+      filter(id <= 20) %>%
+      mutate(cyl = if_else(id <= 10, 1, cyl))
+
+    # write damaged data to a DB
+    conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+    dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
+
+    # update the data
+    result <- sync_table_2(
+      conn = conn,
+      table_name = "mtcars",
+      source = mtcars_for_db,
+      source_pk = "id",
+      target = damaged_mtcars_for_db,
+      target_pk = "id",
       insert = T,
       update = T,
       delete = T
