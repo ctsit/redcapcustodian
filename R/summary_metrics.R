@@ -36,13 +36,13 @@ write_summary_metrics <- function(reporting_period_start,
       script_run_time = get_script_run_time()
     ) %>%
     dplyr::select(
-      reporting_period_start,
-      reporting_period_end,
-      .data$key,
-      .data$value,
-      .data$metric_type,
-      .data$script_name,
-      .data$script_run_time
+      "reporting_period_start",
+      "reporting_period_end",
+      "key",
+      "value",
+      "metric_type",
+      "script_name",
+      "script_run_time"
     )
 
   log_conn <- get_package_scope_var("log_con")
