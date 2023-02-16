@@ -31,7 +31,8 @@ target_project_randomization_state <- create_randomization_row(
 target_project_allocation_state <- create_allocation_rows(
   source_conn = source_conn,
   target_conn = target_conn,
-  source_project_id = source_project_id
+  source_project_id = source_project_id,
+  target_project_id = target_project_id
 )
 
 # Update randomization on the target project
