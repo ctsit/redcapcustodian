@@ -104,7 +104,10 @@ write_allocations <- function(project_status_to_write, allocations, target_direc
 
   filename <- here::here(
     target_directory,
-    paste(base_name, names(project_statuses)[project_status_to_write + 1], date_time_stamp, sep = "_")
+    paste0(
+      paste(base_name, names(project_statuses)[project_status_to_write + 1], date_time_stamp, sep = "_"),
+      ".csv"
+    )
   )
 
   allocations |>
@@ -133,7 +136,6 @@ write_allocations <- function(project_status_to_write, allocations, target_direc
 #' @return - A dataframe containing the current randomization row for the
 #'   target project.
 #'
-#' @return
 #' @export
 #' @importFrom rlang .data
 #'
@@ -263,7 +265,7 @@ create_allocation_rows <- function(source_conn,
     dplyr::filter(.data$project_id == target_project_id) |>
     dplyr::collect()
 
-    # create row in redcap_randomization on target if needed
+  # create row in redcap_randomization on target if needed
   target_project_allocation_state <- dplyr::tbl(target_conn, "redcap_randomization_allocation") |>
     dplyr::filter(.data$rid == !!target_project_randomization_state$rid) |>
     dplyr::collect()
