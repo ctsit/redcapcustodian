@@ -69,7 +69,7 @@ expire_user_project_rights <- function(conn,
 
   update_records <- users_to_expire %>%
     dplyr::mutate(expiration = expiration_date) %>%
-    dplyr::select(.data$project_id, .data$username, .data$expiration)
+    dplyr::select("project_id", "username", "expiration")
 
   diff_data <- list(update_records = update_records)
 
