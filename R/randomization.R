@@ -199,7 +199,7 @@ create_randomization_row <- function(source_conn,
       dplyr::inner_join(source_event_ids |> dplyr::select("event_id", "descrip"), by = c("event_value" = "event_id")) |>
       dplyr::inner_join(target_event_ids |> dplyr::select("event_id", "descrip"), by = "descrip") |>
       dplyr::select(-"event_value", "descrip") |>
-      dplyr::rename(event_value = .data$event_id) |>
+      dplyr::rename(event_value = "event_id") |>
       # pivot wider to restore the original shape of the data
       tidyr::pivot_wider(
         id_cols = c("rid", "project_id", "stratified", "group_by", "field_label", "field_value"),

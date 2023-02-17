@@ -52,8 +52,7 @@ Imports:
     tibble,
     tidyr,
     readr,
-    vctrs,
-    here
+    vctrs
 Suggests:
     testthat (>= 3.0.0),
     digest,
