@@ -98,16 +98,13 @@ write_allocations <- function(project_status_to_write, allocations, target_direc
   date_time_stamp <- format(get_script_run_time(), "%Y%m%d%H%M%S")
   project_statuses <- stats::setNames(c(0, 1), c("development", "production"))
 
-  if (!fs::dir_exists(here::here(target_directory))) {
-    fs::dir_create(here::here(target_directory))
-  }
-
-  filename <- here::here(
+  filename <- paste(
     target_directory,
     paste0(
       paste(base_name, names(project_statuses)[project_status_to_write + 1], date_time_stamp, sep = "_"),
       ".csv"
-    )
+    ),
+    sep = "/"
   )
 
   allocations |>

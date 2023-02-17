@@ -18,7 +18,12 @@ allocations <- export_allocation_tables_from_project(
   project_id_to_export = source_project_id
 )
 
-walk(c(0,1), write_allocations, allocations, "output")
+target_directory = "output"
+if (!fs::dir_exists(here::here(target_directory))) {
+  fs::dir_create(here::here(target_directory))
+}
+
+walk(c(0,1), write_allocations, allocations, target_directory)
 
 # Configure randomization on the target project
 target_project_randomization_state <- create_randomization_row(
