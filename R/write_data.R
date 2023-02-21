@@ -151,18 +151,26 @@ sync_table <- function(
       conn = conn,
       table = table_name,
       records = data_diff_output$update_records,
-      where_cols = primary_key
+      where_cols = primary_key,
+      batch_size = 100
     )
     update_n <- nrow(data_diff_output$update_records)
   }
 
   if (delete) {
-    dbx::dbxDelete(
-      conn = conn,
-      table = table_name,
-      where = data_diff_output$delete_records
-    )
-    delete_n <- nrow(data_diff_output$delete_records)
+    # HACK: if there are no deletions, delete_records is NA rather than an empty dataframe
+    # this causes "Error: x must be character or SQL"
+    if (!is.data.frame(data_diff_output$delete_records)) {
+      delete_n <- 0
+    } else {
+      dbx::dbxDelete(
+        conn = conn,
+        table = table_name,
+        where = data_diff_output$delete_records,
+        batch_size = 100
+      )
+      delete_n <- nrow(data_diff_output$delete_records)
+    }
   }
 
   result <- list(
@@ -247,7 +255,8 @@ sync_table_2 <- function(
       conn = conn,
       table = table_name,
       records = update_records,
-      where_cols = target_pk
+      where_cols = target_pk,
+      batch_size = 100
     )
     update_n <- nrow(update_records)
   } else {
@@ -264,7 +273,8 @@ sync_table_2 <- function(
     dbx::dbxDelete(
       conn = conn,
       table = table_name,
-      where = delete_records
+      where = delete_records,
+      batch_size = 100
     )
     delete_n <- nrow(delete_records)
   } else {

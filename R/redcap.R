@@ -87,12 +87,12 @@ get_redcap_db_connection <- function() {
 get_redcap_emails <- function(conn) {
   wide <- dplyr::tbl(conn, "redcap_user_information") %>%
     dplyr::select(
-      .data$ui_id,
-      .data$username,
-      .data$user_suspended_time,
-      .data$user_email,
-      .data$user_email2,
-      .data$user_email3
+      "ui_id",
+      "username",
+      "user_suspended_time",
+      "user_email",
+      "user_email2",
+      "user_email3"
     ) %>%
     dplyr::collect() %>%
     dplyr::mutate(user_suspended_time = as.POSIXct(.data$user_suspended_time))
@@ -137,7 +137,7 @@ get_redcap_emails <- function(conn) {
 #' }
 get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
   person_data_for_redcap_users_with_bad_emails <- person %>%
-    dplyr::select(.data$user_id, .data$email) %>%
+    dplyr::select("user_id", "email") %>%
     dplyr::filter(.data$user_id %in% bad_redcap_user_emails$username)
 
   replacement_email_addresses_for_bad_redcap_emails <- bad_redcap_user_emails %>%
@@ -146,10 +146,10 @@ get_redcap_email_revisions <- function(bad_redcap_user_emails, person) {
     dplyr::filter(!is.na(.data$email.replacement)) %>%
     dplyr::mutate(corrected_email = .data$email.replacement) %>%
     dplyr::select(
-      .data$ui_id,
-      .data$username,
-      .data$email_field_name,
-      .data$corrected_email
+      "ui_id",
+      "username",
+      "email_field_name",
+      "corrected_email"
     )
 
   redcap_email_revisions <- replacement_email_addresses_for_bad_redcap_emails %>%
@@ -206,7 +206,7 @@ update_redcap_email_addresses <- function(conn,
 
     for (email_field in email_fields) {
       wide_revisions <- redcap_email_revisions %>%
-        dplyr::select(-.data$email) %>%
+        dplyr::select(-"email") %>%
         dplyr::filter(.data$email_field_name == email_field) %>%
         tidyr::pivot_wider(
           names_from = "email_field_name",
@@ -255,10 +255,10 @@ suspend_users_with_no_primary_email <- function(conn) {
       user_comments = paste("Account suspended on", get_script_run_time(), "due to no valid email address")
     ) %>%
     dplyr::select(
-      .data$ui_id,
-      .data$username,
-      .data$user_suspended_time,
-      .data$user_comments
+      "ui_id",
+      "username",
+      "user_suspended_time",
+      "user_comments"
     )
 
   result <- sync_table_2(

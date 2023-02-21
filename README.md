@@ -37,3 +37,11 @@ cd redcapcustodian
 ```
 
 The procedure to use the study template is more involved, but it offers the most reward as well. See  [Writing your own redcapcustodian Rscripts](./docs/custom_rscript.md). It might also help to look at the [Developer Notes](./docs/developer_notes.md)
+
+# Areas of REDCap interest
+
+While much of the REDCap Custodian repository and package is about automating workflows, the package includes tools specific to REDCap.
+
+- For API token management, see [Credential Scraping](docs/credential-scraping.html)
+- For tools and procedures for moving production projects that use randomization, See [Randomization Management](docs/randomization_management.md)
+- For bulk rights expiration, see the function `expire_user_project_rights()` in the package docs
