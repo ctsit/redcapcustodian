@@ -3,6 +3,19 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.6.0] - 2023-02-21
+### Added
+- Add randomization management functions and a sample ETL (Philip Chase)
+- Add batch_size parm to dbx calls in sync_table_2 (Philip Chase)
+- Add batch_size parm to dbx calls in sync_table Prevents possible error: Expression tree is too large (maximum depth 1000) (Kyle Chesney)
+
+### Changed
+- Update testing image used at github (Philip Chase)
+- Eschew deprecated tidyselect features (Philip Chase)
+- Modernize tests of sync_table_2 (Philip Chase)
+- Address fatal bug in sync_table caused when delete = T but there are no records to delete (Kyle Chesney)
+
+
 ## [1.5.0] - 2023-01-25
 ### Added
 - Create write_summary_metrics function, corresponding schema and test (Kyle Chesney)
