@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/ctsit/rstudio-ci:4.1.0
+      image: ghcr.io/ctsit/rstudio-ci:4.2.1
 
     env:
       CI: "TRUE"

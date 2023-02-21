@@ -1,0 +1,5 @@
+event_id,arm_id,day_offset,offset_min,offset_max,descrip,external_id,custom_event_label
+71,19,1,0,0,Event 1,NA,
+73,19,2,0,0,Event 2,NA,NA
+87,28,1,0,0,Event 1,NA,
+88,28,2,0,0,Event 2,NA,

@@ -1,0 +1,2 @@
+rid,project_id,stratified,group_by,target_event,source_event1,source_event2,target_field,source_field1,source_field2
+3,18,1,NA,71,71,71,randomization,sex,birthplace
