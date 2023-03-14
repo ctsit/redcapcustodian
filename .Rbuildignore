@@ -22,3 +22,4 @@ local.env.txt
 ^hosts/.*
 ^data-raw$
 ^credentials$
+^rcc.log.db/.*
