@@ -7,7 +7,7 @@ This package simplifies data management activities on REDCap systems. It provide
 
 ## Operating environment
 
-`redcapcustodian` is an R package than can be referenced in any R script that needs to do ETL work against REDCap. To facilitate automation, this repository also provides a Dockerfile with R, redcapcustodian, and its required packages. The [`Dockerfile`](https://github.com/ctsit/redcapcustodian/tree/master/Dockerfile) and [`build.sh`](https://github.com/ctsit/redcapcustodian/tree/master/build.sh) can be used to build a Docker image named _redcapcustodian_ that can serve as the foundation for containers that serve your specific tasks.
+[`redcapcustodian`](https://ctsit.github.io/redcapcustodian/) is an R package than can be referenced in any R script that needs to do ETL work against REDCap or most any data target. To facilitate automation, this repository also provides a Dockerfile that provides R, the `redcapcustodian` package, and its required packages. The [`Dockerfile`](https://github.com/ctsit/redcapcustodian/tree/master/Dockerfile) and [`build.sh`](https://github.com/ctsit/redcapcustodian/tree/master/build.sh) can be used to build a Docker image named _redcapcustodian_ that can serve as the foundation for containers that serve your specific tasks.
 
 To build upon that foundation, this repository also provides a folder, [`study_template`](https://github.com/ctsit/redcapcustodian/tree/master/study_template/) that can be copied to a new folder and used as the starting point for an Rstudio project, R package, and Docker image that address the needs of a single study or data management project. All of these tools are designed to simplify development and reduce the burden of automating data reporting and recurring data management tasks.
 
