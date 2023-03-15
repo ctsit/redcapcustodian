@@ -1,15 +1,20 @@
 ---
 title: "REDCap Custodian Friday Call Demo"
-author: "Philip Chase & Kyle Chesney"
-date: '2022-08-05'
-output:
-  pdf_document: default
-  html_document: default
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{REDCap Custodian Friday Call Demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
 ```
+
 
 ## Overview
 
@@ -27,7 +32,7 @@ Then we'll talk about how to automate that whole process.
 
 ## Prequisites
 
-Follow the steps and run the code provided in `friday-call-demo-setup.Rmd`.
+Follow the steps and run the code provided in `vignette("friday-call-demo-setup")`.
 
 ## Premise
 
@@ -154,7 +159,7 @@ if (result$success) {
 
 ```
 
-## Review the logs of what the job
+## Review the logs of what the job did
 
 When doing automated jobs, it's important to have a record of what happened. REDCap Custodian writes logs so you can review its actions later.
 
