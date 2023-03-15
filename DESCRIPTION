@@ -1,6 +1,6 @@
 Package: redcapcustodian
 Type: Package
-Title: System data cleaning for REDCap
+Title: Data automation for R-centric workflows with a nod towards REDCap
 Version: 1.6.0
 Authors@R: c(
   person("Philip", "Chase",
@@ -29,7 +29,7 @@ Authors@R: c(
         comment=c(ORCID = "http://orcid.org/0000-0001-7114-1992"))
         )
 Maintainer: Philip B Chase <pbc@ufl.edu>
-Description: REDCap Custodian simplifies data management activities on REDCap systems. It provides a framework for automating data extraction, transformation, and loading work (ETL). It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, and with the REDCap database. It provides an extensible set of R functions, a Docker image, and an Rstudio Project template upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.
+Description: REDCap Custodian simplifies data management activities on REDCap systems. It provides a framework for automating data extraction, transformation, and loading (ETL) work. It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, and with the REDCap database. It provides an extensible set of R functions, a Docker image, and an Rstudio Project template upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.
 License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true
