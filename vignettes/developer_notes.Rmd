@@ -40,3 +40,4 @@ docker-compose up -d
 
 By default, a PHPMyAdmin interface is accessible at http://localhost:9080/. That and other configuration parameters are defined in `./rcc.log.db/.env`. These same parameters are used in 
 `./study_template/example.env`. Using those example values in your local environment files will allow all your scripts across all you redcap custodian projects will allow them to share this logging database.
+=======
