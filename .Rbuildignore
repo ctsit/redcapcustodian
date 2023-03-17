@@ -22,3 +22,6 @@ local.env.txt
 ^hosts/.*
 ^data-raw$
 ^credentials$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
