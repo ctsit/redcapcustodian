@@ -1,9 +1,4 @@
-# Change Log
-All notable changes to the redcapcustodian package and its contained scripts will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/).
-
-
-## [1.8.0] - 2023-03-17
+# Version 1.8.0 (released 2023-03-17)
 ### Added
 - Add a log database system for dev work (Philip Chase)
 
@@ -11,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix ORCIDs in DESCRIPTION (Philip Chase)
 
 
-## [1.7.0] - 2023-03-17
+# Version 1.7.0 (released 2023-03-17)
 ### Added
 - Add a pkgdown website (Philip Chase)
 
@@ -20,7 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Remove publication_date from .zenodo.json (Philip Chase)
 
 
-## [1.6.0] - 2023-02-21
+# Version 1.6.0 (released 2023-02-21)
 ### Added
 - Add randomization management functions and a sample ETL (Philip Chase)
 - Add batch_size parm to dbx calls in sync_table_2 (Philip Chase)
@@ -33,7 +28,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Address fatal bug in sync_table caused when delete = T but there are no records to delete (Kyle Chesney)
 
 
-## [1.5.0] - 2023-01-25
+# Version 1.5.0 (released 2023-01-25)
 ### Added
 - Create write_summary_metrics function, corresponding schema and test (Kyle Chesney)
 - Add render_report to /report (Laurence James-Woodley)
@@ -44,55 +39,55 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ignore local credentials DBs (Philip Chase)
 
 
-## [1.4.1] - 2022-12-15
+# Version 1.4.1 (released 2022-12-15)
 ### Changed
 - Install latex packages directly in Dockerfile (Laurence James-Woodley)
 
 
-## [1.4.0] - 2022-12-13
+# Version 1.4.0 (released 2022-12-13)
 ### Added
 - Switch Dockerfile from tidyverse to verse (Laurence James-Woodley)
 - Add render_report.R to render Rmds (Laurence James-Woodley)
 
 
-## [1.3.2] - 2022-09-14
+# Version 1.3.2 (released 2022-09-14)
 ### Changed
 - Specify package for na.exclude() (Philip Chase)
 - escape . to treat as literal character instead of wildcard in gsub statements (Kyle Chesney)
 
 
-## [1.3.1] - 2022-08-30
+# Version 1.3.1 (released 2022-08-30)
 ### Added
 - Remove remants of the site concept (Philip Chase)
 
 
-## [1.3.0] - 2022-08-29
+# Version 1.3.0 (released 2022-08-29)
 ### Added
 - Add get_bad_emails_from_individual_emails function (Kyle Chesney)
 
 
-## [1.2.2] - 2022-08-26
+# Version 1.2.2 (released 2022-08-26)
 ### Changed
 - Modernize container and add dependencies (Philip Chase)
 
 
-## [1.2.1] - 2022-08-26
+# Version 1.2.1 (released 2022-08-26)
 ### Changed
 - Move schema files into package space (Philip Chase)
 - Correct send_email using email_to for email_cc (Kyle Chesney)
 
 
-## [1.2.0] - 2022-08-25
+# Version 1.2.0 (released 2022-08-25)
 ### Added
 - Add email_from and email_cc params to send_email function, default to env value (Kyle Chesney)
 
 
-## [1.1.1] - 2022-08-24
+# Version 1.1.1 (released 2022-08-24)
 ### Changed
 - Fix test for search results in get_bad_emails_from_listserv_digest (Philip Chase)
 
 
-## [1.1.0] - 2022-08-08
+# Version 1.1.0 (released 2022-08-08)
 ### Added
 - Add logging in Friday Call demo (Philip Chase)
 
@@ -102,7 +97,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Move credential creation and scraping from main friday call to auxiliary setup file (Kyle Chesney)
 
 
-## [1.0.0] - 2022-08-02
+# Version 1.0.0 (released 2022-08-02)
 ### Added
 - Add logging to suspend_users_with_no_primary_email (Philip Chase)
 - Add sync_table2 a merge of dataset_diff and sync_table (Philip Chase)
@@ -117,19 +112,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix ADD of my.study (Philip Chase)
 
 
-## [0.7.0] - 2022-07-17
+# Version 0.7.0 (released 2022-07-17)
 ### Changed
 - Add here package to Dockerfile (Philip Chase)
 - Add send_email function adapted from stp (Kyle Chesney)
 - Add DOI badge to README (Philip Chase)
 
 
-## [0.6.1] - 2022-07-13
+# Version 0.6.1 (released 2022-07-13)
 ### Changed
 - Fix typo in description (Philip Chase)
 
 
-## [0.6.0] - 2022-07-13
+# Version 0.6.0 (released 2022-07-13)
 ### Added
 - Add resources for publication (Philip Chase)
 - Add friday-call-demo.Rmd (Kyle Chesney, Philip Chase)
@@ -148,12 +143,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Update username to my_username to avoid tautological filter in credential gathering (Kyle Chesney)
 
 
-## [0.5.1] - 2022-06-24
+# Version 0.5.1 (released 2022-06-24)
 ### Changed
 - Export email-fixing functions (Philip Chase)
 
 
-## [0.5.0] - 2022-06-23
+# Version 0.5.0 (released 2022-06-23)
 ### Added
 - Add first version of a demonstration script (Philip Chase)
 - Add sync_table (Kyle Chesney)
@@ -171,17 +166,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ignore ./output/ (Philip Chase)
 
 
-## [0.4.1] - 2022-03-04
+# Version 0.4.1 (released 2022-03-04)
 ### Changed
 - Fix build.sh deployment bugs (Philip Chase)
 
 
-## [0.4.0] - 2022-03-03
+# Version 0.4.0 (released 2022-03-03)
 ### Added
 - Remove host image concet and deploy from site project (Philip Chase)
 
 
-## [0.3.0] - 2022-03-03
+# Version 0.3.0 (released 2022-03-03)
 ### Added
 - Add mRpostman and writexl to the Dockerfile (Philip Chase)
 - Add suspend_users_with_no_primary_email (Laurence James-Woodley)
@@ -191,7 +186,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix get_redcap_email_revisions to match initial implementation allows it to create data that will result in user suspension (Kyle Chesney)
 
 
-## [0.2.0] - 2022-02-16
+# Version 0.2.0 (released 2022-02-16)
 ### Added
 - Add get_redcap_email_revisions (Michael Bentz)
 - Add automated tests (Michael Bentz)
@@ -208,7 +203,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add basic logging (Michael Bentz)
 
 
-## [0.1.0] - 2021-06-22
+# Version 0.1.0 (released 2021-06-22)
 ### Summary
 - Initial commit of redcapcustodian
 - Scripted image building.
