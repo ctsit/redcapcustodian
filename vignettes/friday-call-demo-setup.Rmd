@@ -1,16 +1,19 @@
 ---
 title: "REDCap Custodian Friday Call Demo Credentials Setup"
-author: "Philip Chase & Kyle Chesney"
-date: '2022-06-15'
-output:
-  pdf_document: default
-  html_document: default
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{REDCap Custodian Friday Call Demo Credentials Setup}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
 ```
-
 ## Overview
 
 These are the setup instructions for a demonstration of some features of the REDCap Custodian R package. 
@@ -21,7 +24,7 @@ In these setup steps, we will demonstrate how to:
 1. Fetch and store your API tokens in the credentials database
 3. Create an load some fake data into the REDCap projects we want to test with.
 
-All of this is a prelude to a demonstration of moving data between REDCap projects described in `friday-call-demo.Rmd`.
+All of this is a prelude to a demonstration of moving data between REDCap projects described in `vignette("friday-call-demo")`.
 
 ## Prequisites
 
@@ -32,9 +35,9 @@ If you want to do this yourself, we recommend you do these things to setup your 
 3. Clone the [redcap-docker-compose](https://github.com/123andy/redcap-docker-compose/) git repo
 4. Create a local REDCap with redcap-docker-compose
 5. Create an new project in Rstudio.  Note this is an _R_ project, not a _REDCap_ project,
-6. Copy [local.env.txt](./local.env.txt) to .env in the root of your new project folder.
+6. Copy [local.env.txt](https://github.com/ctsit/redcapcustodian/tree/master/vignettes/local.env.txt) to .env in the root of your new project folder.
 
-You also need some REDCap projects to play with. If you have your own, that's great. for our demo, we need two REDCap projects to exist. Please make those projects with these XML files: [main](./main.xml) [biospecimen](./biospecimen.xml).
+You also need some REDCap projects to play with. If you have your own, that's great. for our demo, we need two REDCap projects to exist. Please make those projects with these XML files: [main](https://github.com/ctsit/redcapcustodian/tree/master/vignettes/main.xml) [biospecimen](https://github.com/ctsit/redcapcustodian/tree/master/vignettes/biospecimen.xml).
 
 Name the project from `main.xml`: "Demo Main"
 Name the project from `biospecimen.xml`: "Demo Biospecimen"
@@ -60,9 +63,6 @@ library(lubridate)
 Then, make a database to hold the credentials:
 
 ```{r make_credentials_db}
-
-# fetching all extant API tokens and adding them to storage #################
-
 dir.create(here::here("credentials"))
 
 # creates file if one does not exist

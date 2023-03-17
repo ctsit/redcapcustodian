@@ -1,0 +1,112 @@
+---
+title: "Randomization Management"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Randomization Management}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  include = FALSE
+)
+```
+
+```{r setup}
+library(redcapcustodian)
+```
+
+REDCap Custodian contains a suite of functions to help a developer work with randomization data in ways that are not supported within the REDCap code.
+
+## Moving a Production project with allocated randomization records
+
+These tools were created to allow a production project with randomization turned on to be moved to another REDCap project. REDCap doesn't allow that, so the work has to be done in the backend with database reads and write. As the tables involved have REDCap project IDs, randomization IDs, eventIDs, and allocations IDs embedded, the work requires multiple transformations before writing the randomization configuration to the target project.
+
+An example of how to use randomization management functions to copy allocated randomizations is shown here.
+
+```{r copy-allocated-randomization-example, eval = FALSE, include = TRUE, fig.cap = ""}
+library(redcapcustodian)
+library(DBI)
+library(tidyverse)
+library(lubridate)
+library(dotenv)
+
+init_etl("copy_allocated_randomization")
+
+source_conn <- connect_to_redcap_db()
+# specify a second database connection if the target project is on another host
+target_conn <- source_conn
+source_project_id <- 18
+target_project_id <- 25
+
+# get and print importable allocations if we need them for reference
+allocations <- export_allocation_tables_from_project(
+  conn = source_conn,
+  project_id_to_export = source_project_id
+)
+
+target_directory = "output"
+if (!fs::dir_exists(here::here(target_directory))) {
+  fs::dir_create(here::here(target_directory))
+}
+
+walk(c(0,1), write_allocations, allocations, target_directory)
+
+# Configure randomization on the target project
+target_project_randomization_state <- create_randomization_row(
+    source_conn = source_conn,
+    target_conn = target_conn,
+    source_project_id = source_project_id,
+    target_project_id = target_project_id
+)
+
+target_project_allocation_state <- create_allocation_rows(
+  source_conn = source_conn,
+  target_conn = target_conn,
+  source_project_id = source_project_id,
+  target_project_id = target_project_id
+)
+
+# Update randomization on the target project
+target_project_allocation_update <- update_production_allocation_state(
+  source_conn = source_conn,
+  target_conn = target_conn,
+  source_project_id = source_project_id,
+  target_rid = target_project_randomization_state$rid
+)
+
+# Enable randomization on the target
+enable_randomization_on_a_preconfigured_project_in_production(
+  target_conn = target_conn,
+  target_project_id = target_project_id
+)
+```
+
+This script and the functions in it calls were designed to fit into this workflow:
+
+### Preparation
+
+1.  Start with a production project with randomization turned on and configured, data entered and records randomized. This is the *source project*. Note its project ID.
+2.  Copy/clone the source project. Either use the *Copy the Project* button in REDCap Project Setup, or do an XML export and an import. This new project is the *target project*. Note its project ID.
+3.  Turn off randomization in the target project if the copy/cloning process turned it on. This probably seems strange, but it's needed to allow data import into the randomization field and to trick REDCap into moving the project to production with data in the "randomization" field and the assignments in the allocation table.
+4.  Do any reconfiguration work needed on the target project. You should be able to move the fields to other forms and to other events if needed. That said, do not change the names of the stratification and randomization fields.
+5.  Copy the script above and set your own values for source and target project ids.
+6.  Run your `copy_allocated_randomization.R` script. It should mirror the randomization configuration from the source project to the target project. If you cloned the project with the *Copy the Project* button, the script will complain that some configuration data exists. That is fine. Regardless how you cloned the project, the script should complain that you have not met the requirements for turn on randomization. You are *supposed* to see that warning at this point.
+
+### Activation
+
+1.  Take the source project offline.
+2.  If any changes have occurred to the data in the source project since you cloned it, re-export that data from the source project and import it into the target project.
+3.  Immediately move the target project to production.
+4.  Immediately re-run your `copy_allocated_randomization.R` script. It should turn on randomization in the target project.
+5.  Revoke access to the source project.
+6.  You are done.
+
+## Limitations
+
+These randomization management tools do not support DAG group_ids as randomization variables. They could, but they don't as they were not needed for the project that inspired these tools. Do not try to use these on a project that uses DAGs in the randomization configuration.
+
+The tools do not support changing the randomization configuration. They might form a good foundation for that, but they do not support it.

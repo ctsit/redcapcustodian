@@ -3,6 +3,15 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.7.0] - 2023-03-17
+### Added
+- Add a pkgdown website (Philip Chase)
+
+### Changed
+- Revise the package title away from REDCap and towards automation (Philip Chase)
+- Remove publication_date from .zenodo.json (Philip Chase)
+
+
 ## [1.6.0] - 2023-02-21
 ### Added
 - Add randomization management functions and a sample ETL (Philip Chase)
