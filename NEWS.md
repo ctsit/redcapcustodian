@@ -3,6 +3,14 @@ All notable changes to the redcapcustodian package and its contained scripts wil
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.8.0] - 2023-03-17
+### Added
+- Add a log database system for dev work (Philip Chase)
+
+### Changed
+- Fix ORCIDs in DESCRIPTION (Philip Chase)
+
+
 ## [1.7.0] - 2023-03-17
 ### Added
 - Add a pkgdown website (Philip Chase)

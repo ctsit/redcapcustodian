@@ -1,0 +1,35 @@
+# Use root/example as user/password credentials
+version: '3.9'
+services:
+  db:
+    image: mysql
+    container_name: rcc_log_db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    # does not work unless provided through command line see (https://github.com/docker/compose/issues/4001#issuecomment-70356687)
+    # env_file: testing.env
+    environment:
+      MYSQL_DATABASE: ${LOG_DB_NAME}
+      MYSQL_USER: ${LOG_DB_USER}
+      MYSQL_PASSWORD: ${LOG_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: mysecretpassword
+    ports:
+        - "127.0.0.1:${LOG_DB_PORT}:3306"
+    volumes:
+        - ./schema:/docker-entrypoint-initdb.d/
+    networks:
+      - rcc_log_network
+  phpmyadmin:
+    container_name: rcc_log_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    # does not work unless provided through command line see (https://github.com/docker/compose/issues/4001#issuecomment-70356687)
+    #env_file: testing.env
+    depends_on:
+      - db
+    ports:
+      - "127.0.0.1:${LOG_PHPMYADMIN_PORT}:80"
+    networks:
+      - rcc_log_network
+networks:
+  rcc_log_network:
+    name: "rcc_log_network"

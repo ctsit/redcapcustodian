@@ -22,6 +22,7 @@ local.env.txt
 ^hosts/.*
 ^data-raw$
 ^credentials$
+^rcc.log.db/.*
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$

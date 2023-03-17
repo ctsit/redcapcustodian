@@ -28,3 +28,16 @@ cd redcapcustodian
 git pull
 sudo ./build.sh
 ```
+
+## Local logging for development work
+
+When doing development work, it's useful to have a local log database. This allows you to initialize logging as you test your scripts without throwing an error and even test the write to the log on success or failure. REDCap Custodian provides an example logging system in the form of a `docker-compose.yml` and a database schema at `./rcc.log.db/`. You can start the logging database with these commands:
+
+```sh
+cd ./rcc.log.db/
+docker-compose up -d
+```
+
+By default, a PHPMyAdmin interface is accessible at http://localhost:9080/. That and other configuration parameters are defined in `./rcc.log.db/.env`. These same parameters are used in 
+`./study_template/example.env`. Using those example values in your local environment files will allow all your scripts across all you redcap custodian projects will allow them to share this logging database.
+=======

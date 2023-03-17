@@ -16,6 +16,7 @@ site
 !host_template/*.env
 !host_template/.env
 local.env.txt
+!rcc.log.db/.env
 
 # local credentials databases
 credentials/*
