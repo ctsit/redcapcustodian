@@ -28,6 +28,8 @@ Authors@R: c(
         role = "ctb",
         comment=c(ORCID = "0000-0001-7114-1992"))
         )
+URL: https://ctsit.github.io/redcapcustodian/, https://github.com/ctsit/redcapcustodian/, https://project-redcap.org
+BugReports: https://github.com/ctsit/redcapcustodian/issues/
 Maintainer: Philip B Chase <pbc@ufl.edu>
 Description: REDCap Custodian simplifies data management activities on REDCap systems. It provides a framework for automating data extraction, transformation, and loading (ETL) work. It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, and with the REDCap database. It provides an extensible set of R functions, a Docker image, and an Rstudio Project template upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.
 License: Apache License (>= 2.0)
