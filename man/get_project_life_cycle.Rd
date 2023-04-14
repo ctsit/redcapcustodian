@@ -9,7 +9,7 @@ get_project_life_cycle(rc_conn, cache_file = NA_character_, read_cache = TRUE)
 \arguments{
 \item{rc_conn}{- a DBI connection to a REDCap database}
 
-\item{cache_file}{- an optional path to the cache_file. Defaults to ./output/get_project_life_cycle.rds}
+\item{cache_file}{- an optional path to the cache_file. Defaults to NA.}
 
 \item{read_cache}{- a boolean to indicate if the cache should be read. Defaults to TRUE}
 }

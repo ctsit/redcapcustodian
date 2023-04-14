@@ -31,7 +31,7 @@
 #' deleter. The admin who executed the task is just the custodian.
 #'
 #' @param rc_conn - a DBI connection to a REDCap database
-#' @param cache_file - an optional path to the cache_file. Defaults to ./output/get_project_life_cycle.rds
+#' @param cache_file - an optional path to the cache_file. Defaults to NA.
 #' @param read_cache - a boolean to indicate if the cache should be read. Defaults to TRUE
 #'
 #' @return - a dataframe of redcap_log_event rows with added columns `log_event_table` (an index) and `event_date`
@@ -44,14 +44,6 @@
 get_project_life_cycle <- function(rc_conn,
                                    cache_file = NA_character_,
                                    read_cache = TRUE) {
-
-  if (is.na(cache_file)) {
-    cache_dir <- "output"
-    cache_file <- here::here(cache_dir, "get_project_life_cycle.rds")
-    if (!fs::dir_exists(cache_dir)) {
-      fs::dir_create(cache_dir)
-    }
-  }
 
   project_life_cycle_descriptions <- c(
     "Approve production project modifications (automatic)",
@@ -87,6 +79,9 @@ get_project_life_cycle <- function(rc_conn,
       dplyr::collect() %>%
       dplyr::mutate(event_date = lubridate::ymd(stringr::str_sub(.data$ts, start = 1, end = 8)))
 
+    # pid <- project_life_cycle_from_one_table %>%summarise(min = min(project_id)) %>% pull(min)
+    # saveRDS(project_life_cycle_from_one_table, file = paste0("output/", pid, ".rds"))
+
     return(project_life_cycle_from_one_table)
   }
 
@@ -100,7 +95,11 @@ get_project_life_cycle <- function(rc_conn,
         rc_conn,
         .id = "log_event_table"
       )
-    saveRDS(project_life_cycle, file = cache_file)
+    # Write to the cache if there is a cache_file path
+    fs::path
+    if (!is.na(cache_file)) {
+      saveRDS(project_life_cycle, file = cache_file)
+    }
   }
 
   return(project_life_cycle)
