@@ -26,3 +26,4 @@ local.env.txt
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^scratch.R

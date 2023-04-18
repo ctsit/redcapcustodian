@@ -90,3 +90,10 @@
 #' @format A vector with 9 elements
 #' @details DETAILS
 "log_event_tables"
+
+#' @title project_life_cycle_descriptions
+#' @description A character vector of the descriptions used in the redcap_log_event table
+#'   to describe the different stages in the life cycle of a REDCap Project
+#' @format A charecter vector with 24 elements
+#' @details DETAILS
+"project_life_cycle_descriptions"

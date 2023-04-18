@@ -45,36 +45,9 @@ get_project_life_cycle <- function(rc_conn,
                                    cache_file = NA_character_,
                                    read_cache = TRUE) {
 
-  project_life_cycle_descriptions <- c(
-    "Approve production project modifications (automatic)",
-    "Approve production project modifications",
-    "Archive project",
-    "Copy project",
-    "Create project (API)",
-    "Create project folder",
-    "Create project using REDCap XML file",
-    "Create project using template",
-    "Create project",
-    "Delete project bookmark",
-    "Delete project",
-    "Move project back to development status",
-    "Move project to production status",
-    "Permanently delete project",
-    "Reject production project modifications",
-    "Request approval for production project modifications",
-    "Reset production project modifications",
-    "Restore/undelete project",
-    "Return project to production from inactive status",
-    "Send request to copy project",
-    "Send request to create project",
-    "Send request to delete project",
-    "Send request to move project to production status",
-    "Set project as inactive"
-  )
-
   get_project_life_cycle_by_log_table <- function(log_event_table_name, rc_conn) {
     project_life_cycle_from_one_table <- dplyr::tbl(rc_conn, log_event_table_name) %>%
-      dplyr::filter(.data$description %in% project_life_cycle_descriptions) %>%
+      dplyr::filter(.data$description %in% !!redcapcustodian::project_life_cycle_descriptions) %>%
       dplyr::arrange(.data$project_id, .data$ts) %>%
       dplyr::collect() %>%
       dplyr::mutate(event_date = lubridate::ymd(stringr::str_sub(.data$ts, start = 1, end = 8)))
@@ -94,7 +67,8 @@ get_project_life_cycle <- function(rc_conn,
         get_project_life_cycle_by_log_table,
         rc_conn,
         .id = "log_event_table"
-      )
+      ) %>%
+      dplyr::mutate(log_event_table = as.numeric(.data$log_event_table))
     # Write to the cache if there is a cache_file path
     fs::path
     if (!is.na(cache_file)) {
