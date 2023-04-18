@@ -17,6 +17,7 @@ RUN R -e "install.packages(c( \
   'dotenv', \
   'here', \
   'janitor', \
+  'quarto', \
   'rjson', \
   'sendmailR', \
   'sqldf', \
@@ -26,18 +27,31 @@ RUN R -e "install.packages(c( \
 
 RUN R -e "devtools::install_github('allanvc/mRpostman')"
 RUN R -e "tinytex::tlmgr_install(c(\
-  'amscls', 'amsmath', 'booktabs', \
+  'amscls', 'amsmath', \
+  'bookmark', \
+  'booktabs', \
   'caption','colortbl', 'dvips', \
-  'ec', 'environ', 'epstopdf-pkg', 'etoolbox', 'euenc', \
-  'fancyvrb', 'float', 'fontspec', 'framed', 'geometry', \
+  'ec', 'environ', 'epstopdf-pkg', \
+  'etoolbox', 'euenc', \
+  'fancyvrb', 'float', 'fontspec', \
+  'framed', 'geometry', \
   'gsftopk', 'helvetic', \
   'hyperref', 'iftex', \
+  'koma-script', \
   'latexmk', \
   'makecell', 'mathspec', \
-  'mdwtools', 'multirow', 'natbib', 'oberdiek', 'pdflscape', \
+  'mdwtools', 'multirow', \
+  'natbib', 'oberdiek', \
+  'pdfcol', \
+  'pdflscape', \
+  'pgf', \
   'tabu', \
-  'threeparttable', 'threeparttablex', 'times', 'tipa', 'titling', \
-  'trimspaces', 'ulem', 'upquote', \
+  'tcolorbox', \
+  'threeparttable', 'threeparttablex', \
+  'times', 'tipa', 'titling', \
+  'trimspaces', 'ulem', \
+  'unicode-math', \
+  'upquote', \
   'varwidth', 'wrapfig', 'xcolor', \
   'xunicode', 'zapfding' \
 ))"
