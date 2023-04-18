@@ -22,7 +22,7 @@ salt <- get_package_scope_var("salt")
 
 get_project_life_cycle_records_by_log_table <- function(log_event_table_name, conn) {
   one_log_table <- dplyr::tbl(conn, log_event_table_name) %>%
-    dplyr::filter(.data$description %in% !!redcapcustodian::project_life_cycle_descriptions) %>%
+    dplyr::filter(.data$object_type == "redcap_projects") %>%
     dplyr::collect()
 
   pids <- one_log_table %>%

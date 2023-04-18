@@ -30,7 +30,26 @@
 #' project" event, the username on the request should be consider the
 #' deleter. The admin who executed the task is just the custodian.
 #'
+#' All that said, the query for the large list of descriptions is very slow.
+#' A much faster query is to query for `object_type == "redcap_projects"`.
+#' What's more, this query can then be filtered by `ts >= start_date`` to make
+#' it even faster and to allow incremental queries. This comes at a small
+#' cost because these descriptions are not are not included when searching for
+#' `object_type == "redcap_projects"`:
+#'
+#'   Create project (API)
+#'   Create project folder
+#'   Delete project bookmark
+#'   Send request to copy project
+#'   Send request to create project
+#'   Send request to delete project
+#'   Send request to move project to production status
+#'
+#' Among other things, their loss means we cannot tell who requested things or
+#' when they requested it.
+#'
 #' @param rc_conn - a DBI connection to a REDCap database
+#' @param start_date - an optional minimum date for query results
 #' @param cache_file - an optional path to the cache_file. Defaults to NA.
 #' @param read_cache - a boolean to indicate if the cache should be read. Defaults to TRUE
 #'
@@ -42,15 +61,29 @@
 #' project_life_cycle <- get_project_life_cycle(rc_conn = rc_conn, read_cache = TRUE)
 #' }
 get_project_life_cycle <- function(rc_conn,
+                                   start_date = as.Date(NA),
                                    cache_file = NA_character_,
                                    read_cache = TRUE) {
 
-  get_project_life_cycle_by_log_table <- function(log_event_table_name, rc_conn) {
-    project_life_cycle_from_one_table <- dplyr::tbl(rc_conn, log_event_table_name) %>%
-      dplyr::filter(.data$description %in% !!redcapcustodian::project_life_cycle_descriptions) %>%
-      dplyr::arrange(.data$project_id, .data$ts) %>%
-      dplyr::collect() %>%
-      dplyr::mutate(event_date = lubridate::ymd(stringr::str_sub(.data$ts, start = 1, end = 8)))
+  get_project_life_cycle_by_log_table <- function(log_event_table_name, rc_conn, start_date) {
+
+    if(is.na(start_date)) {
+      project_life_cycle_from_one_table <- dplyr::tbl(rc_conn, log_event_table_name) %>%
+        dplyr::filter(.data$object_type == "redcap_projects") %>%
+        dplyr::arrange(.data$project_id, .data$ts) %>%
+        dplyr::collect() %>%
+        dplyr::filter(.data$description %in% !!redcapcustodian::project_life_cycle_descriptions) %>%
+        dplyr::mutate(event_date = lubridate::ymd(stringr::str_sub(.data$ts, start = 1, end = 8)))
+    } else {
+      minimum_ts <- format(start_date, "%Y%m%d%H%M%S") %>% as.numeric()
+      project_life_cycle_from_one_table <- dplyr::tbl(rc_conn, log_event_table_name) %>%
+        dplyr::filter(.data$object_type == "redcap_projects") %>%
+        dplyr::filter(.data$ts >= minimum_ts) %>%
+        dplyr::arrange(.data$project_id, .data$ts) %>%
+        dplyr::collect() %>%
+        dplyr::filter(.data$description %in% !!redcapcustodian::project_life_cycle_descriptions) %>%
+        dplyr::mutate(event_date = lubridate::ymd(stringr::str_sub(.data$ts, start = 1, end = 8)))
+    }
 
     # pid <- project_life_cycle_from_one_table %>%summarise(min = min(project_id)) %>% pull(min)
     # saveRDS(project_life_cycle_from_one_table, file = paste0("output/", pid, ".rds"))
@@ -66,6 +99,7 @@ get_project_life_cycle <- function(rc_conn,
         redcapcustodian::log_event_tables,
         get_project_life_cycle_by_log_table,
         rc_conn,
+        start_date,
         .id = "log_event_table"
       ) %>%
       dplyr::mutate(log_event_table = as.numeric(.data$log_event_table))
