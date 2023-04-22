@@ -17,6 +17,7 @@ RUN R -e "install.packages(c( \
   'dotenv', \
   'here', \
   'janitor', \
+  'quarto', \
   'rjson', \
   'sendmailR', \
   'sqldf', \
@@ -26,20 +27,32 @@ RUN R -e "install.packages(c( \
 
 RUN R -e "devtools::install_github('allanvc/mRpostman')"
 RUN R -e "tinytex::tlmgr_install(c(\
-  'amscls', 'amsfonts', 'amsmath', 'babel', 'bibtex', 'booktabs', \
-  'caption', 'cm', 'colortbl', 'dehyph', 'dvipdfmx', 'dvips', \
-  'ec', 'environ', 'epstopdf-pkg', 'etex', 'etoolbox', 'euenc', \
-  'fancyvrb', 'float', 'fontspec', 'framed', 'geometry', 'glyphlist', \
-  'graphics', 'graphics-cfg', 'graphics-def', 'gsftopk', 'helvetic', \
-  'hyperref', 'hyphen-base', 'ifluatex', 'iftex', 'ifxetex', 'inconsolata', \
-  'knuth-lib', 'kpathsea', 'l3kernel', 'l3packages', 'latex', 'latex-bin', \
-  'latex-fonts', 'latexconfig', 'latexmk', 'lm', 'lualibs', 'luaotfload', \
-  'luatex', 'makecell', 'makeindex', 'mathspec', 'metafont', 'mfware', \
-  'mdwtools', 'multirow', 'natbib', 'oberdiek', 'pdflscape', 'pdftex', 'plain', \
-  'scheme-infraonly', 'tabu', 'tetex', 'tex', 'tex-ini-files', 'texlive.infra', \
-  'threeparttable', 'threeparttablex', 'times', 'tipa', 'titling', \
-  'tools', 'trimspaces', 'ulem', 'unicode-data', 'upquote', 'url', \
-  'varwidth', 'wrapfig', 'xcolor', 'xetex', 'xetexconfig', 'xkeyval', \
+  'amscls', 'amsmath', \
+  'bookmark', \
+  'booktabs', \
+  'caption','colortbl', 'dvips', \
+  'ec', 'environ', 'epstopdf-pkg', \
+  'etoolbox', 'euenc', \
+  'fancyvrb', 'float', 'fontspec', \
+  'framed', 'geometry', \
+  'gsftopk', 'helvetic', \
+  'hyperref', 'iftex', \
+  'koma-script', \
+  'latexmk', \
+  'makecell', 'mathspec', \
+  'mdwtools', 'multirow', \
+  'natbib', 'oberdiek', \
+  'pdfcol', \
+  'pdflscape', \
+  'pgf', \
+  'tabu', \
+  'tcolorbox', \
+  'threeparttable', 'threeparttablex', \
+  'times', 'tipa', 'titling', \
+  'trimspaces', 'ulem', \
+  'unicode-math', \
+  'upquote', \
+  'varwidth', 'wrapfig', 'xcolor', \
   'xunicode', 'zapfding' \
 ))"
 
