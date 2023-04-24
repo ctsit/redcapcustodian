@@ -37,15 +37,16 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     DBI,
-    dbx,
-    RMariaDB,
     REDCapR,
+    RMariaDB,
+    dbx,
     dplyr,
     glue,
     lubridate,
-    magrittr,
     mRpostman,
+    magrittr,
     purrr,
+    readr,
     rjson,
     rlang,
     rstudioapi,
@@ -53,15 +54,14 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    readr,
     vctrs
 Suggests:
-    testthat (>= 3.0.0),
-    digest,
     RSQLite,
+    digest,
+    fs,
     knitr (>= 1.18),
     rmarkdown (>= 2.0),
-    fs
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.2.1
