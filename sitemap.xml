@@ -109,6 +109,9 @@
     <loc>/reference/get_package_scope_var.html</loc>
   </url>
   <url>
+    <loc>/reference/get_project_life_cycle.html</loc>
+  </url>
+  <url>
     <loc>/reference/get_redcap_db_connection.html</loc>
   </url>
   <url>
@@ -148,6 +151,9 @@
     <loc>/reference/is_on_ci.html</loc>
   </url>
   <url>
+    <loc>/reference/log_event_tables.html</loc>
+  </url>
+  <url>
     <loc>/reference/log_job_debug.html</loc>
   </url>
   <url>
@@ -158,6 +164,9 @@
   </url>
   <url>
     <loc>/reference/mutate_columns_to_posixct.html</loc>
+  </url>
+  <url>
+    <loc>/reference/project_life_cycle_descriptions.html</loc>
   </url>
   <url>
     <loc>/reference/quit_non_interactive_run.html</loc>
