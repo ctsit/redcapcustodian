@@ -38,7 +38,7 @@ get_job_duration <- function(start_time, end_time) {
 #'   get_package_scope_var("hello")
 #' }
 get_package_scope_var  <- function(key) {
-  return(get(key, redcapcustodian.env))
+  return(get0(key, redcapcustodian.env))
 }
 
 #' Initialize all etl dependencies
