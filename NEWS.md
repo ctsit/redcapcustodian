@@ -1,3 +1,6 @@
+# Version 1.9.0 (released 2023-04-24)
+- Add quarto and tlmgr packages it needs for pdf generation (Philip Chase)
+
 # Version 1.8.1 (released 2023-03-20)
 - Update NEWS.md and DESCRIPTION to comply with pkgdown (@pbchase, #103)
 
