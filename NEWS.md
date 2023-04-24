@@ -1,3 +1,7 @@
+# Version 1.10.0 (released 2023-04-24)
+- Add project_life_cycle_descriptions (Philip Chase)
+- Add get_project_life_cycle() (Philip Chase)
+
 # Version 1.9.0 (released 2023-04-24)
 - Add quarto and tlmgr packages it needs for pdf generation (Philip Chase)
 
