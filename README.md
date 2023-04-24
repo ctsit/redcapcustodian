@@ -45,3 +45,4 @@ While much of the REDCap Custodian repository and package is about automating wo
 - For API token management, see [Credential Scraping](https://ctsit.github.io/redcapcustodian/articles/credential-scraping.html)
 - For tools and procedures for moving production projects that use randomization, See [Randomization Management](https://ctsit.github.io/redcapcustodian/articles/randomization-management.html)
 - For bulk rights expiration, see the function [`expire_user_project_rights()`](https://ctsit.github.io/redcapcustodian/reference/expire_user_project_rights.html)
+- To get the history of projects on a REDCap system, see [`get_project_life_cycle()`](https://ctsit.github.io/redcapcustodian/reference/get_project_life_cycle.html). It runs speedy queries against the REDCap log event tables to get all of the events in the life cycle of every project on the system. 
