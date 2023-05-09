@@ -9,15 +9,12 @@
 #' The redcap_log_event table is among the largest redcap tables. In the test
 #' instance where this script was developed, it had 2.2m rows The production system
 #' had 29m rows in the corresponding redcap_data table. A row count in the
-#' millions is completely normal. Fortunately, project history is easy to
-#' extract by querying for a specific of list descriptions and that field is
-#' indexed.
+#' millions is completely normal.
 #'
-#' All that said, the query for the large list of descriptions is very slow.
-#' A much faster query is to query for `object_type == "redcap_projects"`.
+#' The fastest way to query is to query for `object_type == "redcap_projects"`.
 #' What's more, this query can then be filtered by `ts >= start_date`` to make
 #' it even faster and to allow incremental queries. This comes at a small
-#' cost because these descriptions are not are not included when searching for
+#' cost because these descriptions are not included when searching for
 #' `object_type == "redcap_projects"`:
 #'
 #' \itemize{
@@ -56,7 +53,13 @@
 #' @param cache_file - an optional path to the cache_file. Defaults to NA.
 #' @param read_cache - a boolean to indicate if the cache should be read. Defaults to TRUE
 #'
-#' @return - a dataframe of redcap_log_event rows with added columns `log_event_table` (an index) and `event_date`
+#' @return - a dataframe of redcap_log_event rows with these added columns:
+#' \itemize{
+#'   \item `log_event_table` an index for the event table read
+#'   \item `event_date` a date object for the event
+#'   \item `description_base_name` The description with project or report level details removed
+#' }
+#'
 #' @export
 #'
 #' @examples
@@ -73,18 +76,14 @@ get_project_life_cycle <- function(rc_conn,
     if(is.na(start_date)) {
       project_life_cycle_from_one_table <- dplyr::tbl(rc_conn, log_event_table_name) %>%
         dplyr::filter(.data$object_type == "redcap_projects") %>%
-        dplyr::arrange(.data$project_id, .data$ts) %>%
         dplyr::collect() %>%
-        dplyr::filter(.data$description %in% !!redcapcustodian::project_life_cycle_descriptions) %>%
         dplyr::mutate(event_date = lubridate::ymd(stringr::str_sub(.data$ts, start = 1, end = 8)))
     } else {
       minimum_ts <- format(start_date, "%Y%m%d%H%M%S") %>% as.numeric()
       project_life_cycle_from_one_table <- dplyr::tbl(rc_conn, log_event_table_name) %>%
         dplyr::filter(.data$object_type == "redcap_projects") %>%
         dplyr::filter(.data$ts >= minimum_ts) %>%
-        dplyr::arrange(.data$project_id, .data$ts) %>%
         dplyr::collect() %>%
-        dplyr::filter(.data$description %in% !!redcapcustodian::project_life_cycle_descriptions) %>%
         dplyr::mutate(event_date = lubridate::ymd(stringr::str_sub(.data$ts, start = 1, end = 8)))
     }
 
@@ -105,7 +104,16 @@ get_project_life_cycle <- function(rc_conn,
         start_date,
         .id = "log_event_table"
       ) %>%
-      dplyr::mutate(log_event_table = as.numeric(.data$log_event_table))
+      dplyr::mutate(log_event_table = as.numeric(.data$log_event_table)) %>%
+      dplyr::mutate(description_base_name = .data$description) %>%
+      dplyr::mutate(description_base_name = stringr::str_replace_all(.data$description_base_name, "\n", "  ")) %>%
+      dplyr::mutate(description_base_name = stringr::str_replace(.data$description_base_name, "^Copy project as PID.*", "Copy project as")) %>%
+      dplyr::mutate(description_base_name = stringr::str_replace(.data$description_base_name, "^Copy project from PID.*", "Copy project from")) %>%
+      dplyr::mutate(description_base_name = stringr::str_replace(.data$description_base_name, "^Copy report \\(report.*", "Copy report")) %>%
+      dplyr::mutate(description_base_name = stringr::str_replace(.data$description_base_name, "^Create report \\(report.*", "Create report")) %>%
+      dplyr::mutate(description_base_name = stringr::str_replace(.data$description_base_name, "^Delete report \\(report.*", "Delete report")) %>%
+      dplyr::mutate(description_base_name = stringr::str_replace(.data$description_base_name, "^Edit report \\(report.*", "Edit report")) %>%
+      dplyr::mutate(description_base_name = stringr::str_replace(.data$description_base_name, "^Permanently delete project.*", "Permanently delete project"))
     # Write to the cache if there is a cache_file path
     fs::path
     if (!is.na(cache_file)) {
