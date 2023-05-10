@@ -1,4 +1,40 @@
 project_life_cycle_descriptions <- c(
+  # modern values from Spring 2023
+  "Add/edit survey login settings",
+  "Approve production project modifications",
+  "Approve production project modifications (automatic)",
+  "Cancel draft mode",
+  "Copy project as",
+  "Copy project from",
+  "Copy report",
+  "Create project",
+  "Create project using REDCap XML file",
+  "Create project using template",
+  "Create report",
+  "Delete project",
+  "Delete report",
+  "Disable auto variable naming",
+  "Disable participant identifiers for project",
+  "Edit report",
+  "Enable auto variable naming",
+  "Enable participant identifiers for project",
+  "Enter draft mode",
+  "Make project customizations",
+  "Modify project settings",
+  "Modify settings for single project",
+  "Move project to Analysis/Cleanup status",
+  "Move project to Production status",
+  "Permanently delete project",
+  "Project marked as Completed",
+  "Project moved from Completed status back to Analysis/Cleanup status",
+  "Project moved from Completed status back to Development status",
+  "Project moved from Completed status back to Production status",
+  "Reject production project modifications",
+  "Remove production project modifications",
+  "Reorder reports",
+  "Request approval for production project modifications",
+  "Return project to Production from Analysis/Cleanup status",
+  # older values
   "Approve production project modifications (automatic)",
   "Approve production project modifications",
   "Archive project",
@@ -23,7 +59,8 @@ project_life_cycle_descriptions <- c(
   "Send request to delete project",
   "Send request to move project to production status",
   "Set project as inactive"
-)
+) %>%
+  unique()
 
 # write the data
 usethis::use_data(project_life_cycle_descriptions, overwrite = T)
