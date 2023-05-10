@@ -99,21 +99,20 @@ the system.</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>- a dataframe of redcap_log_event rows with added columns `log_event_table` (an index) and `event_date`</p>
-    </div>
+<p>- a dataframe of redcap_log_event rows with these added columns:</p><ul><li><p>`log_event_table` an index for the event table read</p></li>
+<li><p>`event_date` a date object for the event</p></li>
+<li><p>`description_base_name` The description with project or report level details removed</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The redcap_log_event table is among the largest redcap tables. In the test
 instance where this script was developed, it had 2.2m rows The production system
 had 29m rows in the corresponding redcap_data table. A row count in the
-millions is completely normal. Fortunately, project history is easy to
-extract by querying for a specific of list descriptions and that field is
-indexed.</p>
-<p>All that said, the query for the large list of descriptions is very slow.
-A much faster query is to query for `object_type == "redcap_projects"`.
+millions is completely normal.</p>
+<p>The fastest way to query is to query for `object_type == "redcap_projects"`.
 What's more, this query can then be filtered by `ts &gt;= start_date`` to make
 it even faster and to allow incremental queries. This comes at a small
-cost because these descriptions are not are not included when searching for
+cost because these descriptions are not included when searching for
 `object_type == "redcap_projects"`:</p>
 <ul><li><p>Create project (API)</p></li>
 <li><p>Create project folder</p></li>
