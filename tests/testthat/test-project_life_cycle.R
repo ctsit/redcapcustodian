@@ -28,12 +28,17 @@ testthat::test_that("get_project_life_cycle caches and returns event_date, log_e
     read_cache = T
   )
 
-  records_to_include <- 5
+  approximate_records_to_include <- 5
   start_date <- result %>%
     dplyr::arrange(.data$event_date) %>%
-    dplyr::slice_tail(n = records_to_include) %>%
+    dplyr::slice_tail(n = approximate_records_to_include) %>%
     dplyr::summarise(start_date = min(.data$event_date)) %>%
     dplyr::pull(start_date)
+
+  records_to_include <- result %>%
+    dplyr::arrange(.data$event_date) %>%
+    dplyr::filter(start_date <= .data$event_date) %>%
+    nrow()
 
   time_filtered_result <- get_project_life_cycle(
     rc_conn = t_conn,
@@ -49,7 +54,7 @@ testthat::test_that("get_project_life_cycle caches and returns event_date, log_e
     rep(TRUE, nrow(result))
   )
   testthat::expect_equal(
-    result$description %in% redcapcustodian::project_life_cycle_descriptions,
+    result$description_base_name %in% redcapcustodian::project_life_cycle_descriptions,
     rep(TRUE, nrow(result))
   )
   testthat::expect_equal(records_to_include, nrow(time_filtered_result))

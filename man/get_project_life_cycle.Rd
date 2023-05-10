@@ -21,7 +21,12 @@ get_project_life_cycle(
 \item{read_cache}{- a boolean to indicate if the cache should be read. Defaults to TRUE}
 }
 \value{
-- a dataframe of redcap_log_event rows with added columns `log_event_table` (an index) and `event_date`
+- a dataframe of redcap_log_event rows with these added columns:
+\itemize{
+  \item `log_event_table` an index for the event table read
+  \item `event_date` a date object for the event
+  \item `description_base_name` The description with project or report level details removed
+}
 }
 \description{
 get_project_life_cycle runs speedy queries against the REDCap log event
@@ -32,15 +37,12 @@ the system.
 The redcap_log_event table is among the largest redcap tables. In the test
 instance where this script was developed, it had 2.2m rows The production system
 had 29m rows in the corresponding redcap_data table. A row count in the
-millions is completely normal. Fortunately, project history is easy to
-extract by querying for a specific of list descriptions and that field is
-indexed.
+millions is completely normal.
 
-All that said, the query for the large list of descriptions is very slow.
-A much faster query is to query for `object_type == "redcap_projects"`.
+The fastest way to query is to query for `object_type == "redcap_projects"`.
 What's more, this query can then be filtered by `ts >= start_date`` to make
 it even faster and to allow incremental queries. This comes at a small
-cost because these descriptions are not are not included when searching for
+cost because these descriptions are not included when searching for
 `object_type == "redcap_projects"`:
 
 \itemize{
