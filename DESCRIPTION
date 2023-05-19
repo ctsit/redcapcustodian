@@ -54,7 +54,8 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    vctrs
+    vctrs,
+    jsonlite
 Suggests:
     RSQLite,
     digest,
