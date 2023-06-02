@@ -37,13 +37,19 @@
 #'
 #' unnest_job_summary_data_json_object(log_data)
 #' }
-unnest_job_summary_data_json_object <- function(log_data) {
+unnest_job_summary_data_json_object <- function(log_data, objects_to_include = NA) {
   log_ids <- log_data$id
   names(log_ids) <- log_ids
 
-  result <- purrr::map2_dfr(log_ids, log_data$job_summary_data, ~ jsonlite::fromJSON(.y), .id = "id") %>%
-    dplyr::mutate(id = as.integer(.data$id)) %>%
-    dplyr::left_join(log_data %>% dplyr::select(-"job_summary_data"), by = "id")
+  if (is.na(objects_to_include[1]) & length(objects_to_include) == 1) {
+    result <- purrr::map2_dfr(log_ids, log_data$job_summary_data, ~ jsonlite::fromJSON(.y), .id = "id") %>%
+      dplyr::mutate(id = as.integer(.data$id)) %>%
+      dplyr::left_join(log_data %>% dplyr::select(-"job_summary_data"), by = "id")
+  } else {
+    result <- purrr::map2_dfr(log_ids, log_data$job_summary_data, ~ jsonlite::fromJSON(.y)[objects_to_include], .id = "id") %>%
+      dplyr::mutate(id = as.integer(.data$id)) %>%
+      dplyr::left_join(log_data %>% dplyr::select(-"job_summary_data"), by = "id")
+  }
 
   return(result)
 }
