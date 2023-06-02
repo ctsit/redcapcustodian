@@ -1,3 +1,7 @@
+# redcapcustodian 1.12.0 (released 2023-06-02)
+- Add unnest_job_summary_data_json_object() (@pbchase, #111)
+- Fix Version in DESCRIPTION (@pbchase)
+
 # redcapcustodian 1.11.0 (released 2023-05-10)
 - Add description_base_name to get_project_life_cycle() output. (@pbchase, #110)
 - Expand list of descriptions in project_life_cycle_descriptions to include more modern descriptions.(@pbchase, #110)
