@@ -94,6 +94,28 @@
 #' @title project_life_cycle_descriptions
 #' @description A character vector of the descriptions used in the redcap_log_event table
 #'   to describe the different stages in the life cycle of a REDCap Project
-#' @format A charecter vector with 24 elements
+#' @format A character vector with 24 elements
 #' @details DETAILS
 "project_life_cycle_descriptions"
+
+#' @title project_status_labels
+#' @description A tibble project status IDs and project statuses that reflect their
+#'   meaning as used in the `status` column of the `redcap_projects` table
+#' @format A data frame with 4 rows and 2 variables:
+#' \describe{
+#'   \item{\code{id}}{double primary key}
+#'   \item{\code{project_status}}{character redcap project status}
+#'}
+#' @details DETAILS
+"project_status_labels"
+
+#' @title project_purpose_labels
+#' @description A tibble project purpose IDs and project purposes that reflect their
+#'   meaning as used in the `purpose` column of the `redcap_projects` table
+#' @format A data frame with 5 rows and 2 variables:
+#' \describe{
+#'   \item{\code{id}}{double primary key}
+#'   \item{\code{project_purpose}}{character redcap project purpose}
+#'}
+#' @details DETAILS
+"project_purpose_labels"

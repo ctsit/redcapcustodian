@@ -5,7 +5,7 @@
 \alias{project_life_cycle_descriptions}
 \title{project_life_cycle_descriptions}
 \format{
-A charecter vector with 24 elements
+A character vector with 24 elements
 }
 \usage{
 project_life_cycle_descriptions

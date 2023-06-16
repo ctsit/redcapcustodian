@@ -59,6 +59,7 @@ Imports:
 Suggests:
     RSQLite,
     digest,
+    duckdb,
     fs,
     knitr (>= 1.18),
     rmarkdown (>= 2.0),
