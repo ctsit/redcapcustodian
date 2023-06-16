@@ -51,3 +51,30 @@ testthat::test_that("convert_schema_to_sqlite can convert a MySQL schema to vali
   testthat::expect_equal(DBI::dbListTables(sqlite_conn), "redcap_entity_project_ownership")
   DBI::dbDisconnect(sqlite_conn)
 })
+
+testthat::test_that("copy_entire_table_to_db works", {
+
+  # Build the objects need for testing
+  test_data <- dplyr::tribble(
+    ~a, ~b, ~c, ~d,
+    "asdf", 1, TRUE, lubridate::ymd_hms("2023-01-14 12:34:56"),
+    "qwer", 2, FALSE, lubridate::ymd_hms("2016-01-14 12:34:56")
+  )
+  table_name <- "test_data"
+  source_conn <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
+  DBI::dbWriteTable(conn = source_conn, name = table_name, value = test_data)
+
+  # copy the table
+  target_conn <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
+  copy_entire_table_to_db(
+    source_conn = source_conn,
+    table_name = table_name,
+    target_conn = target_conn
+  )
+
+  # verify the copy
+  testthat::expect_equal(
+    dplyr::collect(dplyr::tbl(target_conn, table_name)),
+    test_data
+  )
+})
