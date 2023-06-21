@@ -1,0 +1,2 @@
+# Run the example Quarto report
+17 8-17 * * * root /usr/bin/docker run --rm --env-file /rcc/study_template/.env rcc.site Rscript report/render_report.R report/quarto_html_example.qmd
