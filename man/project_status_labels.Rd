@@ -15,7 +15,7 @@ A data frame with 4 rows and 2 variables:
 project_status_labels
 }
 \description{
-A tibble project status IDs and project statuses that reflect their
+A tibble of project status IDs and project statuses that reflect their
   meaning as used in the `status` column of the `redcap_projects` table
 }
 \details{

@@ -15,7 +15,7 @@ A data frame with 5 rows and 2 variables:
 project_purpose_labels
 }
 \description{
-A tibble project purpose IDs and project purposes that reflect their
+A tibble of project purpose IDs and project purposes that reflect their
   meaning as used in the `purpose` column of the `redcap_projects` table
 }
 \details{
