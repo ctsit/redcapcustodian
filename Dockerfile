@@ -11,6 +11,7 @@ RUN R -e "install.packages(c( \
   'RCurl', \
   'REDCapR', \
   'RMariaDB', \
+  'argparse', \
   'checkmate', \
   'dbx', \
   'digest', \
