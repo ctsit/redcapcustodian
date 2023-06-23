@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.12.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.13.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,8 @@
 <span>  <span class="va">reporting_period_start</span>,</span>
 <span>  <span class="va">reporting_period_end</span>,</span>
 <span>  <span class="va">metric_type</span>,</span>
-<span>  <span class="va">metric_dataframe</span></span>
+<span>  <span class="va">metric_dataframe</span>,</span>
+<span>  conn <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -87,6 +88,12 @@
 
 <dt>metric_dataframe</dt>
 <dd><p>A wide data frame of key-value pairs with a single row of data</p></dd>
+
+
+<dt>conn</dt>
+<dd><p>A DBI connection object to the database that holds the
+`redcap_summary_metrics` table. Can be left as NULL if the connection is available
+on the package scope var "log_con".</p></dd>
 
 </dl></div>
     <div class="section level2">

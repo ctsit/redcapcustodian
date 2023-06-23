@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.12.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.13.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -315,8 +315,9 @@ If you have good container infrastructure, use it to build and deploy
 your containers.</p>
 <p>Running automated R Markdown reports from docker requires the use of
 an Rmd renderer. <a href="https://github.com/ctsit/redcapcustodian/tree/master/study_template/report/render_report.R" class="external-link">render_report.R</a>
-contains functionality to knit an Rmd, email it and then log the job
-run. The Rmd script name is passed as a command line argument to <a href="https://github.com/ctsit/redcapcustodian/tree/master/study_template/report/render_report.R" class="external-link">render_report.R</a>
+contains functionality to knit an Rmd or a Qmd, email it and then log
+the job run. The Rmd/Qmd script name is passed as a command line
+argument to <a href="https://github.com/ctsit/redcapcustodian/tree/master/study_template/report/render_report.R" class="external-link">render_report.R</a>
 via cron. Refer to <a href="https://github.com/ctsit/redcapcustodian/tree/master/study_template/cron/sample_report" class="external-link">sample_report</a>
 for an example cron job.</p>
 </div>
