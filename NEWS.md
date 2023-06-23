@@ -1,3 +1,10 @@
+# redcapcustodian 1.13.0 (released 2023-06-23)
+- Add project_purpose_other_research_labels.rda (@pbchase, #123)
+- Add project_status_labels and project_purpose_labels (@pbchase, #122)
+- Add conn parameter to write_summary_metrics() (@pbchase, #122)
+- Add copy_entire_table_to_db() (@pbchase, #122)
+- Update render_report.R to support quarto files (@pbchase, #118)
+
 # redcapcustodian 1.12.0 (released 2023-06-02)
 - Add unnest_job_summary_data_json_object() (@pbchase, #111)
 - Fix Version in DESCRIPTION (@pbchase)
