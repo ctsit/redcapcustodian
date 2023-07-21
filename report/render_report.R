@@ -5,49 +5,38 @@ library(lubridate)
 library(rmarkdown)
 library(sendmailR)
 library(redcapcustodian)
-library(argparse)
 
 init_etl("render_report")
 
-parser <- ArgumentParser()
-parser$add_argument("script_name", nargs=1, help="Script to be run")
+if (!dir.exists("output")){
+  dir.create("output")
+}
+
 if (!interactive()) {
-  args <- parser$parse_args()
-  script_name <- args$script_name
-  if(!fs::file_exists(script_name)) {
-    stop(sprintf("Specified file, %s, does not exist", script_name))
-  }
+  args <- commandArgs(trailingOnly = T)
+  script_name <- word(args, 2, sep = "=")
 } else {
-  script_name <- "dummy.qmd"
-  stop(sprintf("Specified file, %s, does not exist", script_name))
+  script_name <- "sample_report.Rmd"
 }
 
 report_name <- word(script_name, 1, sep = "\\.")
-report_type <- word(script_name, 2, sep = "\\.")
 
 script_run_time <- set_script_run_time()
-output_file <-
-  paste0(str_replace(report_name, ".*/", ""),
-         "_",
-         format(script_run_time, "%Y%m%d%H%M%S"),
-         if_else(report_type == "qmd", ".pdf", "")
-         )
 
-if (report_type == "qmd") {
-  quarto::quarto_render(
-    script_name,
-    output_file = output_file,
-    output_format = "pdf"
-  )
-} else {
-  render(
-    script_name,
-    output_file = output_file
-  )
-}
+output_file <- here::here(
+  "output",
+  paste0(report_name,
+  "_",
+  format(script_run_time, "%Y%m%d%H%M%S"))
+)
 
-output_file_extension <- word(output_file, 2 , sep = "\\.")
-attachment_object <- mime_part(output_file, output_file)
+full_path_to_output_file <- render(
+  here::here("report", script_name),
+  output_file = output_file
+)
+
+output_file_extension <- word(full_path_to_output_file, 2 , sep = "\\.")
+attachment_object <- mime_part(full_path_to_output_file, basename(full_path_to_output_file))
 
 email_subject <- paste(report_name, "|", script_run_time)
 body <- "Please see the attached report."
