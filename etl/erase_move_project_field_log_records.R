@@ -5,7 +5,7 @@ library(redcapcustodian) # devtools::install_github("ctsit/redcapcustodian")
 library(DBI)
 library(RMariaDB)
 
-script_name <- "erase_move_project_field_log_records"
+init_etl("erase_move_project_field_log_records")
 
 connect_to_redcap_with_schema <- function(schema = NULL) {
   if (is.null(schema)) {
