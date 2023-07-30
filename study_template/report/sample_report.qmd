@@ -1,6 +1,10 @@
 ---
 title: "sample_report"
-format: pdf
+format:
+  html:
+    toc: true
+  pdf:
+    toc: true
 ---
 
 ## Quarto
