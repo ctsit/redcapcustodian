@@ -27,3 +27,4 @@ local.env.txt
 ^docs$
 ^pkgdown$
 ^scratch.R
+LICENSE
