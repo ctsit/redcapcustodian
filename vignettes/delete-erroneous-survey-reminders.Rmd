@@ -1,0 +1,26 @@
+---
+title: "Deleting Erroneous Survey Reminders"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Deleting Erroneous Survey Reminders}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  include = FALSE
+)
+```
+
+There is an ancient bug in REDCap, long ago fixed, that created a data bug that plagues some old REDCap projects on old REDCap systems. It causes novel pre-scheduled survey reminders to not get purged after the survey is completed. The bug persists in mid-2023 and is elusive. 
+
+Whereas we don't know where the data bug is, we can see the symptoms in the form of non-deleted invitation reminders for completed surveys. These are easy to see by looking in `Surveys/invite_participants.php` for future invitations with completed responses. It's easy to delete them manually there as well, but as new ones are being created every day, it presents a maintenance problem. They have to be deleted before a reminder to a completed survey goes out.
+
+Should this bug exist on your REDCap system, the script `delete_erroneous_survey_reminders.R` Can provide some relief. It enumerates all the future survey reminders on a REDCap system that already have completed responses and deletes them. It logs this activity in the job log.
+
+## Activation
+
+Should you want to use this on your system, follow the instructions at [REDCap Custodian](https://ctsit.github.io/redcapcustodian/) to make a new R Project from the study_template if you don't already have such a project. Then revise `cron/delete_erroneous_survey_reminders` uncommenting the cron line and adjusting the frequency to your needs. Then build and deploy your R Project. 
