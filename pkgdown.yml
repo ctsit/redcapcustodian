@@ -4,10 +4,11 @@ pkgdown_sha: ~
 articles:
   credential-scraping: credential-scraping.html
   custom_rscript: custom_rscript.html
+  delete-erroneous-survey-reminders: delete-erroneous-survey-reminders.html
   developer_notes: developer_notes.html
   expire_user_project_rights: expire_user_project_rights.html
   friday-call-demo-setup: friday-call-demo-setup.html
   friday-call-demo: friday-call-demo.html
   randomization-management: randomization-management.html
-last_built: 2023-08-10T15:50Z
+last_built: 2023-08-14T11:28Z
 
