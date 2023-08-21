@@ -37,7 +37,7 @@ dataframe_to_redcap_dictionary <- function(
            "integer" = "integer",
            "Date" = "date_dmy",
            "POSIXct" = "datetime_dmy",
-           "text")
+           "alpha_only")
   }
 
   # create unique identifier for each record
