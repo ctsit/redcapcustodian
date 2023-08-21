@@ -2,10 +2,11 @@
 % Please edit documentation in R/dataframe_to_redcap_dictionary.R
 \name{dataframe_to_redcap_dictionary}
 \alias{dataframe_to_redcap_dictionary}
-\title{dataframe_to_redcap_dictionary}
+\title{Create a REDCap data dictionary from a dataframe}
 \usage{
 dataframe_to_redcap_dictionary(
   df,
+  record_id_col,
   form_name,
   write_to_csv = FALSE,
   filename = NULL
@@ -13,6 +14,8 @@ dataframe_to_redcap_dictionary(
 }
 \arguments{
 \item{df}{the dataframe to generate the data dictionary for}
+
+\item{record_id_col}{a column in the dataframe that uniquely  identifies each record}
 
 \item{form_name}{the form name to display in REDCap}
 
@@ -24,20 +27,25 @@ dataframe_to_redcap_dictionary(
 A redcap data dictionary
 }
 \description{
-Create a REDCap data dictionary for a dataframe
+Create a REDCap data dictionary from a dataframe
 }
 \examples{
 \dontrun{
 
 df <- data.frame(
-  numeric_col = c(1, 2, 3),
-  integer_col = as.integer(5.9),
+  pk_col = c("a1", "a2", "a3"),
+  integer_col = c(1, 2, 3),
+  numeric_col = 5.9,
   character_col = c("a", "b", "c"),
   date_col = as.Date("2011-03-07"),
-  date_time_col = as.POSIXct(strptime("2011-03-27 01:30:00", "\%Y-\%m-\%d \%H:\%M:\%S"))
+  date_time_col = as.POSIXct(strptime("2011-03-27 01:30:00", "\%Y-\%m-\%d \%H:\%M:\%S")),
+  email_col = c("test@example.com", "test.2@example.edu", "3test@example.net")
 )
 
-redcap_data_dictionary <- dataframe_to_redcap_dictionary(df, "test")
-redcap_data_dictionary <- dataframe_to_redcap_dictionary(df, "test", TRUE, "<output_path>.csv")
+redcap_data_dictionary <- dataframe_to_redcap_dictionary(df, "pk_col", "test_form")
+redcap_data_dictionary <- dataframe_to_redcap_dictionary(
+df, "pk_col", "test_form"
+TRUE, "<output_path>.csv"
+)
 }
 }
