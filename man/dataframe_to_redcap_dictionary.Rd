@@ -16,7 +16,7 @@ dataframe_to_redcap_dictionary(
 
 \item{form_name}{the form name to display in REDCap}
 
-\item{write_to_csv}{If TRUE will write the datadictionary to a csv.}
+\item{write_to_csv}{If TRUE will write the data dictionary to a csv.}
 
 \item{filename}{A string specifying the filename for the CSV.}
 }

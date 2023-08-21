@@ -4,7 +4,7 @@
 #'
 #' @param df the dataframe to generate the data dictionary for
 #' @param form_name  the form name to display in REDCap
-#' @param write_to_csv If TRUE will write the datadictionary to a csv.
+#' @param write_to_csv If TRUE will write the data dictionary to a csv.
 #' @param filename A string specifying the filename for the CSV.
 #'
 #' @return A redcap data dictionary

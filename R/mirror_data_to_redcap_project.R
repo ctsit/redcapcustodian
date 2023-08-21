@@ -25,13 +25,13 @@ mirror_data_to_redcap_project <- function(df_to_mirror, table_name, path_to_env_
     dotenv::load_dot_env(path_to_env_file)
   }
 
-  # Retrieve the PID value from environment the env file
+  # retrieve the PID value from environment the env file
   project_id <- paste0(toupper(table_name), "_PID") |>
     Sys.getenv()
 
   credentials_db_path <- Sys.getenv("CREDENTIALS_DB")
 
-  # Check if the PID was found
+  # check if the PID was found
   if (project_id == "") {
     stop(sprintf(
       "Environment variable %s not found in %s.",
@@ -47,12 +47,12 @@ mirror_data_to_redcap_project <- function(df_to_mirror, table_name, path_to_env_
 
   credentials_db <- DBI::dbConnect(RSQLite::SQLite(), credentials_db_path)
 
-  # Get the REDCap API credentials from the credentials database
+  # get the REDCap API credentials from the credentials database
   redcap_credentials <- dplyr::tbl(credentials_db, "credentials") |>
     dplyr::filter(project_id == local(project_id)) |>
     dplyr::collect()
 
-  # Check if credentials were found
+  # check if credentials were found
   if (nrow(redcap_credentials) == 0) {
     stop(sprintf("No REDCap API credentials found for PID %s.", project_id))
   }
@@ -73,5 +73,3 @@ mirror_data_to_redcap_project <- function(df_to_mirror, table_name, path_to_env_
 
   return(write_result)
 }
-
-
