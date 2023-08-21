@@ -67,11 +67,3 @@ dataframe_to_redcap_dictionary <- function(
 
   return(redcap_data_dictionary)
 }
-
-
-
-
-
-
-
-
