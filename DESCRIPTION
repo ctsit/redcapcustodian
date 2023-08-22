@@ -40,7 +40,6 @@ Imports:
     REDCapR,
     RMariaDB,
     dbx,
-    dotenv,
     dplyr,
     glue,
     lubridate,
@@ -60,11 +59,13 @@ Imports:
 Suggests:
     RSQLite,
     digest,
+    dotenv,
     duckdb,
     fs,
     knitr (>= 1.18),
     rmarkdown (>= 2.0),
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tidyselect
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 RoxygenNote: 7.2.2
