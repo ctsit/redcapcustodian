@@ -69,7 +69,7 @@ if (nrow(reminders_to_deactivate) > 0) {
   sql_reminders_to_delete <-
     paste(
       "delete from redcap_surveys_scheduler_queue where ssq_id in (",
-      paste(reminders_to_deactivate$ssq_id, collapse = " "),
+      paste(reminders_to_deactivate$ssq_id, collapse = ","),
       ");"
     )
   rows_to_be_deleted <- tbl(rc_conn, "redcap_surveys_scheduler_queue") %>%
