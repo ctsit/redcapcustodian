@@ -1,3 +1,6 @@
+# redcapcustodian 1.14.1 (released 2023-08-24)
+- Update etl/delete_erroneous_survey_reminders.R (Philip Chase)
+
 # redcapcustodian 1.14.0 (released 2023-08-14)
 - Fix build issues on Apple silicon (@pbchase, #133, #134)
 - Add delete_erroneous_survey_reminders.R (@pbchase, #131, #132)
