@@ -4,24 +4,14 @@
 \alias{dataframe_to_redcap_dictionary}
 \title{Create a REDCap data dictionary from a dataframe}
 \usage{
-dataframe_to_redcap_dictionary(
-  df,
-  record_id_col,
-  form_name,
-  write_to_csv = FALSE,
-  filename = NULL
-)
+dataframe_to_redcap_dictionary(df, form_name, record_id_col = NULL)
 }
 \arguments{
 \item{df}{the dataframe to generate the data dictionary for}
 
-\item{record_id_col}{a column in the dataframe that uniquely  identifies each record}
-
 \item{form_name}{the form name to display in REDCap}
 
-\item{write_to_csv}{If TRUE will write the data dictionary to a csv.}
-
-\item{filename}{A string specifying the filename for the CSV.}
+\item{record_id_col}{a column in the dataframe that uniquely  identifies each record}
 }
 \value{
 A redcap data dictionary
@@ -42,10 +32,7 @@ df <- data.frame(
   email_col = c("test@example.com", "test.2@example.edu", "3test@example.net")
 )
 
-redcap_data_dictionary <- dataframe_to_redcap_dictionary(df, "pk_col", "test_form")
-redcap_data_dictionary <- dataframe_to_redcap_dictionary(
-df, "pk_col", "test_form"
-TRUE, "<output_path>.csv"
-)
+redcap_data_dictionary <- dataframe_to_redcap_dictionary(df, "test_form")
+redcap_data_dictionary <- dataframe_to_redcap_dictionary(df, "test_form"m "character_col")
 }
 }
