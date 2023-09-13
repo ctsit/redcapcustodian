@@ -1,3 +1,14 @@
+# redcapcustodian 1.14.1 (released 2023-08-24)
+- Update etl/delete_erroneous_survey_reminders.R (@pbchase, #137)
+
+# redcapcustodian 1.14.0 (released 2023-08-14)
+- Fix build issues on Apple silicon (@pbchase, #133, #134)
+- Add delete_erroneous_survey_reminders.R (@pbchase, #131, #132)
+
+# redcapcustodian 1.13.1 (released 2023-08-04)
+- update render_report to handle qmd files (@ljwoodley, #117, #129)
+- Add LICENSE (@pbchase, #119, #124)
+
 # redcapcustodian 1.13.0 (released 2023-06-23)
 - Add project_purpose_other_research_labels.rda (@pbchase, #123)
 - Add project_status_labels and project_purpose_labels (@pbchase, #122)

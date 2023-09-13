@@ -1,4 +1,4 @@
-FROM rocker/verse:4.2.1
+FROM --platform=linux/amd64 rocker/verse:4.2.1
 
 WORKDIR /home/rocker
 
@@ -59,7 +59,7 @@ RUN R -e "tinytex::tlmgr_install(c(\
 
 # build and install this package
 ADD . /home/rocker/redcapcustodian
-RUN R CMD build redcapcustodian
+RUN R CMD build --no-build-vignettes redcapcustodian
 RUN R CMD INSTALL redcapcustodian_*.tar.gz
 RUN rm -rf redcapcustodian
 
