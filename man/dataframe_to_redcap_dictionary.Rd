@@ -33,6 +33,6 @@ df <- data.frame(
 )
 
 redcap_data_dictionary <- dataframe_to_redcap_dictionary(df, "test_form")
-redcap_data_dictionary <- dataframe_to_redcap_dictionary(df, "test_form"m "character_col")
+redcap_data_dictionary <- dataframe_to_redcap_dictionary(df, "test_form", "character_col")
 }
 }
