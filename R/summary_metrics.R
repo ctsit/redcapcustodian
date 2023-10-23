@@ -4,6 +4,9 @@
 #' @param reporting_period_end a datetime object, e.g. ymd_hms("2022-12-01 00:00:00")
 #' @param metric_type a character string representing the metric type, e.g. "flux", "state"
 #' @param metric_dataframe A wide data frame of key-value pairs with a single row of data
+#' @param conn A DBI connection object to the database that holds the
+#'        `redcap_summary_metrics` table. Can be left as NULL if the connection is available
+#'        on the package scope var "log_con".
 #'
 #' @return nothing
 #'
@@ -14,13 +17,19 @@
 #'    reporting_period_start = ymd_hms("2022-01-01 00:00:00", tz=Sys.getenv("TIME_ZONE")),
 #'    reporting_period_end = ceiling_date(reporting_period_start, "month", change_on_boundary = T)
 #'    metric_type = "state",
-#'    metric_dataframe = my_cool_df
+#'    metric_dataframe = my_cool_df,
+#'    conn = my_conn
 #'  )
 #' }
 write_summary_metrics <- function(reporting_period_start,
                                   reporting_period_end,
                                   metric_type,
-                                  metric_dataframe) {
+                                  metric_dataframe,
+                                  conn = NULL) {
+
+  if (is.null(conn)) {
+    conn = get_package_scope_var("log_con")
+  }
 
   tall_df <- metric_dataframe %>%
     tidyr::pivot_longer(
@@ -45,8 +54,6 @@ write_summary_metrics <- function(reporting_period_start,
       "script_run_time"
     )
 
-  log_conn <- get_package_scope_var("log_con")
-
   # log data in redcap_summary_metrics
-  DBI::dbAppendTable(log_conn, "redcap_summary_metrics", tall_df)
+  DBI::dbAppendTable(conn, "redcap_summary_metrics", tall_df)
 }

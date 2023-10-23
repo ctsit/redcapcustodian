@@ -8,7 +8,8 @@ write_summary_metrics(
   reporting_period_start,
   reporting_period_end,
   metric_type,
-  metric_dataframe
+  metric_dataframe,
+  conn = NULL
 )
 }
 \arguments{
@@ -19,6 +20,10 @@ write_summary_metrics(
 \item{metric_type}{a character string representing the metric type, e.g. "flux", "state"}
 
 \item{metric_dataframe}{A wide data frame of key-value pairs with a single row of data}
+
+\item{conn}{A DBI connection object to the database that holds the
+`redcap_summary_metrics` table. Can be left as NULL if the connection is available
+on the package scope var "log_con".}
 }
 \value{
 nothing
@@ -32,7 +37,8 @@ Format and write summary metrics to the redcap_summary_metrics table in your LOG
    reporting_period_start = ymd_hms("2022-01-01 00:00:00", tz=Sys.getenv("TIME_ZONE")),
    reporting_period_end = ceiling_date(reporting_period_start, "month", change_on_boundary = T)
    metric_type = "state",
-   metric_dataframe = my_cool_df
+   metric_dataframe = my_cool_df,
+   conn = my_conn
  )
 }
 }

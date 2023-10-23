@@ -5,40 +5,57 @@ library(lubridate)
 library(rmarkdown)
 library(sendmailR)
 library(redcapcustodian)
+library(argparse)
 
 init_etl("render_report")
 
-if (!dir.exists("output")){
-  dir.create("output")
-}
-
+parser <- ArgumentParser()
+parser$add_argument("script_name", nargs=1, help="Script to be run")
 if (!interactive()) {
-  args <- commandArgs(trailingOnly = T)
-  script_name <- word(args, 2, sep = "=")
+  args <- parser$parse_args()
+  script_name <- args$script_name
+  if(!fs::file_exists(script_name)) {
+    stop(sprintf("Specified file, %s, does not exist", script_name))
+  }
 } else {
-  script_name <- "sample_report.Rmd"
+  script_name <- "report/sample_report.qmd"
+  if(!fs::file_exists(script_name)) {
+    stop(sprintf("Specified file, %s, does not exist", script_name))
+  }
 }
 
 report_name <- word(script_name, 1, sep = "\\.")
+report_type <- word(script_name, 2, sep = "\\.")
 
 script_run_time <- set_script_run_time()
+output_filename <-
+  paste0(
+    str_replace(report_name, ".*/", ""),
+    "_",
+    format(script_run_time, "%Y%m%d%H%M%S")
+  )
 
-output_file <- here::here(
-  "output",
-  paste0(report_name,
-  "_",
-  format(script_run_time, "%Y%m%d%H%M%S"))
-)
+if (report_type == "qmd") {
+  full_path_to_output_file <- quarto::quarto_render(
+    script_name,
+    output_file = paste0(output_filename, ".pdf"),
+    output_format = "pdf"
+  )
 
-full_path_to_output_file <- render(
-  here::here("report", script_name),
-  output_file = output_file
-)
+  attachment_object <- mime_part(paste0(output_filename, ".pdf"))
+} else {
+  full_path_to_output_file <- render(
+    script_name,
+    output_file = output_filename
+  )
 
-output_file_extension <- word(full_path_to_output_file, 2 , sep = "\\.")
-attachment_object <- mime_part(full_path_to_output_file, basename(full_path_to_output_file))
+  attachment_object <- mime_part(
+    full_path_to_output_file,
+    basename(full_path_to_output_file)
+  )
+}
 
-email_subject <- paste(report_name, "|", script_run_time)
+email_subject <- paste(basename(report_name), "|", script_run_time)
 body <- "Please see the attached report."
 
 email_body <- list(body, attachment_object)
@@ -46,4 +63,5 @@ email_body <- list(body, attachment_object)
 # send the email with the attached output file
 send_email(email_body, email_subject)
 
+set_script_name("render_report")
 log_job_success(jsonlite::toJSON(script_name))

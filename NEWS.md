@@ -1,3 +1,25 @@
+# redcapcustodian 1.14.1 (released 2023-08-24)
+- Update etl/delete_erroneous_survey_reminders.R (@pbchase, #137)
+
+# redcapcustodian 1.14.0 (released 2023-08-14)
+- Fix build issues on Apple silicon (@pbchase, #133, #134)
+- Add delete_erroneous_survey_reminders.R (@pbchase, #131, #132)
+
+# redcapcustodian 1.13.1 (released 2023-08-04)
+- update render_report to handle qmd files (@ljwoodley, #117, #129)
+- Add LICENSE (@pbchase, #119, #124)
+
+# redcapcustodian 1.13.0 (released 2023-06-23)
+- Add project_purpose_other_research_labels.rda (@pbchase, #123)
+- Add project_status_labels and project_purpose_labels (@pbchase, #122)
+- Add conn parameter to write_summary_metrics() (@pbchase, #122)
+- Add copy_entire_table_to_db() (@pbchase, #122)
+- Update render_report.R to support quarto files (@pbchase, #118)
+
+# redcapcustodian 1.12.0 (released 2023-06-02)
+- Add unnest_job_summary_data_json_object() (@pbchase, #111)
+- Fix Version in DESCRIPTION (@pbchase)
+
 # redcapcustodian 1.11.0 (released 2023-05-10)
 - Add description_base_name to get_project_life_cycle() output. (@pbchase, #110)
 - Expand list of descriptions in project_life_cycle_descriptions to include more modern descriptions.(@pbchase, #110)

@@ -1,0 +1,3 @@
+# Run delete_erroneous_survey_reminders daily.
+# Increase the frequency as needed to address more frequent survey reminders
+# 5 7 * * * root /usr/bin/docker run --rm --env-file /rcc/example/.env redcapcustodian Rscript etl/delete_erroneous_survey_reminders.R
