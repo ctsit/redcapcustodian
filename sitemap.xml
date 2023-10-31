@@ -76,6 +76,9 @@
     <loc>/reference/create_test_tables.html</loc>
   </url>
   <url>
+    <loc>/reference/dataframe_to_redcap_dictionary.html</loc>
+  </url>
+  <url>
     <loc>/reference/dataset_diff.html</loc>
   </url>
   <url>
@@ -83,6 +86,9 @@
   </url>
   <url>
     <loc>/reference/dataset_diff_test_user_data.html</loc>
+  </url>
+  <url>
+    <loc>/reference/delete_project.html</loc>
   </url>
   <url>
     <loc>/reference/disable_non_interactive_quit.html</loc>
