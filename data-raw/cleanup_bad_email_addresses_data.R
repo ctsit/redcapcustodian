@@ -68,7 +68,7 @@ bad_redcap_user_emails <- dplyr::tribble(
 
 output <- dplyr::tribble(
   ~ui_id, ~email_field_name, ~username, ~corrected_email, ~email,
-  1, "user_email", "site_admin", "NA", "joe.user@projectredcap.org",
+  1, "user_email", "site_admin", NA, "joe.user@projectredcap.org",
   3, "user_email", "alice", "real_alice@example.org", "alice@example.org",
   4, "user_email", "bob", "bob_b@example.org", "bob_a@example.org",
   5, "user_email2", "carol", "carol_a@example.org", "carol_b@example.org",
