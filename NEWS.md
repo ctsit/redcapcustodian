@@ -1,3 +1,8 @@
+# redcapcustodian 1.15.0 (released 2023-10-31)
+- Fix test data for get_redcap_email_revisions() (@pbchase)
+- Add delete_project() (@ljwoodley, #139)
+- Add dataframe_to_redcap_dictionary() (@ljwoodley, #136)
+
 # redcapcustodian 1.14.1 (released 2023-08-24)
 - Update etl/delete_erroneous_survey_reminders.R (@pbchase, #137)
 
