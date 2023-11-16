@@ -1,3 +1,6 @@
+# redcapcustodian 1.16.0 (released 2023-11-16)
+- Add MySQL database comparison tools (@pbchase, @ChemiKyle, #140)
+
 # redcapcustodian 1.15.0 (released 2023-10-31)
 - Fix test data for get_redcap_email_revisions() (@pbchase)
 - Add delete_project() (@ljwoodley, #139)
