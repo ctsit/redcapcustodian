@@ -18,7 +18,9 @@ knitr::opts_chunk$set(
 library(redcapcustodian)
 library(tidyverse)
 library(kableExtra)
-dotenv::load_dot_env(here::here(".env"))
+tmp <- tempfile()
+cat("dummy=value\n", file = tmp)
+dotenv::load_dot_env(tmp)
 ```
 
 REDCap Custodian includes its own job logging facility. The system is designed to log each job run to a single row in a MYSQL database. With as little a four lines of code, you can log job success or failure along with a message. e.g.,
