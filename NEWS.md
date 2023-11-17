@@ -1,3 +1,7 @@
+# redcapcustodian 1.17.0 (released 2023-11-17)
+- Add job_logging vignette (@pbchase, #113, #115)
+- Add objects_to_include param to unnest_job_summary_data_json_object() (@pbchase, #112, #115)
+
 # redcapcustodian 1.16.0 (released 2023-11-16)
 - Add MySQL database comparison tools (@pbchase, @ChemiKyle, #140)
 
