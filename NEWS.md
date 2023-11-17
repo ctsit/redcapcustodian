@@ -1,3 +1,6 @@
+# redcapcustodian 1.17.2 (released 2023-11-17)
+- Update vignettes/job_logging.Rmd to fix build errors (@pbchase, #142)
+
 # redcapcustodian 1.17.1 (released 2023-11-17)
 - Fix build failures caused by vignettes/job_logging.Rmd (@pbchase)
 
