@@ -1,3 +1,6 @@
+# redcapcustodian 1.17.1 (released 2023-11-17)
+- Fix build failures caused by vignettes/job_logging.Rmd (@pbchase)
+
 # redcapcustodian 1.17.0 (released 2023-11-17)
 - Add job_logging vignette (@pbchase, #113, #115)
 - Add objects_to_include param to unnest_job_summary_data_json_object() (@pbchase, #112, #115)
