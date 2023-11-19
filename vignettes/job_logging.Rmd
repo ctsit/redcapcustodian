@@ -150,7 +150,7 @@ unnest_job_summary_data_json_object(log_data) |>
 
 The output from `unnest_job_summary_data_json_object`, once unnested, would look like:
 
-![Example output from unnest_job_summary_data_json_object](unnest_job_summary_data_json_object_output.png){width="531"}
+![Example output from unnest_job_summary_data_json_object](unnest_job_summary_data_json_object_output.png){width="744"}
 
 ```{r, eval = T, include = F}
 DBI::dbDisconnect(log_conn)
