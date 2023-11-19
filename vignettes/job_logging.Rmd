@@ -102,8 +102,7 @@ log_job_failure("input dataframe was empty")
 Logging "It worked!" or "input dataframe was empty" is fine, but often, you want to provide more detail about a job's activities. Chances are you have some useful facts in R objects already. It is a simple matter to assemble those objects into a list, convert the list object into a text string with using JSON libraries, and use that string as the job's message. If you wanted report some updates you made to the 'iris' database, you might log it like this:
 
 ```{r iris-updates, eval = T, echo = T}
-# log_db_drv is typically not needed
-init_etl("iris_updater", log_db_drv = duckdb::duckdb())
+init_etl("iris_updater")
 # Do some stuff
 # ...
 iris_updates <- iris |> dplyr::sample_n(3) |> select(Sepal.Length, Species)
