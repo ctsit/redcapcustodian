@@ -107,6 +107,8 @@ source_credentials_upload <- scraped_credentials %>%
   )
 
 dbAppendTable(file_conn, "credentials", source_credentials_upload)
+
+DBI::dbDisconnect(source_conn)
 ```
 
 ## Make test data and write it to your test projects
@@ -119,6 +121,9 @@ source_credentials <- tbl(file_conn, "credentials") %>%
   collect() %>%
   filter(str_detect(project_display_name, "Demo Main")) %>%
   unnest()
+
+# Disconnect when your done with the database
+dbDisconnect(file_conn)
 ```
 
 We use Will Beasley's REDCapR library to interact with REDCap via its API. REDCapR allows you to specify the forms, fields, event names, and time frames of interest. It even allows REDCap filtering.

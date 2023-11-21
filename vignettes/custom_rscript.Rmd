@@ -150,6 +150,7 @@ activity_log <- diff_output$update_records %>%
   select(pid, billable, updated)
 
 log_job_success(jsonlite::toJSON(activity_log))
+dbDisconnect(conn)
 ```
 
 That script generated this log record in the log database:

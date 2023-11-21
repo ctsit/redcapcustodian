@@ -83,6 +83,8 @@ enable_randomization_on_a_preconfigured_project_in_production(
   target_conn = target_conn,
   target_project_id = target_project_id
 )
+
+DBI::dbDisconnect(source_conn)
 ```
 
 This script and the functions in it calls were designed to fit into this workflow:
