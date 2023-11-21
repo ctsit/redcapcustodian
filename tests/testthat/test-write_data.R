@@ -24,11 +24,11 @@ test_that("write_to_sql_db returns the identical data frame that is written", {
 
 test_that("on error, write_to_sql_db does not log a failure when continue_on_error = TRUE", {
     skip_if(interactive())
-    drv <- RSQLite::SQLite()
+    drv <- duckdb::duckdb()
 
     init_etl("write_to_sql_db - log failure", log_db_drv = drv)
     log_con <- get_package_scope_var("log_con")
-    con <- connect_to_db(drv)
+    con <- connect_to_db(duckdb::duckdb())
     table_name <- "sample_data"
 
     write_to_sql_db(
@@ -63,11 +63,11 @@ test_that("on error, write_to_sql_db does log a failure when continue_on_error =
     skip_if(interactive())
 
     disable_non_interactive_quit()
-    drv <- RSQLite::SQLite()
+    drv <- duckdb::duckdb()
 
     init_etl("write_to_sql_db - log failure", log_db_drv = drv)
     log_con <- get_package_scope_var("log_con")
-    con <- connect_to_db(drv)
+    con <- connect_to_db(duckdb::duckdb())
     table_name <- "sample_data"
 
     write_to_sql_db(
@@ -101,11 +101,11 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
     skip_if(interactive())
     disable_non_interactive_quit()
 
-    drv <- RSQLite::SQLite()
+    drv <- duckdb::duckdb()
 
     init_etl("write_to_sql_db - log failure", log_db_drv = drv)
     log_con <- get_package_scope_var("log_con")
-    con <- connect_to_db(drv)
+    con <- connect_to_db(duckdb::duckdb())
     table_name <- "sample_data"
 
     write_to_sql_db(
