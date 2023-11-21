@@ -15,7 +15,7 @@
 #' \dontrun{
 #'  write_summary_metrics(
 #'    reporting_period_start = ymd_hms("2022-01-01 00:00:00", tz=Sys.getenv("TIME_ZONE")),
-#'    reporting_period_end = ceiling_date(reporting_period_start, "month", change_on_boundary = T)
+#'    reporting_period_end = ceiling_date(reporting_period_start, "month", change_on_boundary = T),
 #'    metric_type = "state",
 #'    metric_dataframe = my_cool_df,
 #'    conn = my_conn

@@ -18,8 +18,8 @@ error_list <- dplyr::tibble(
 #' \dontrun{
 #'  build_etl_job_log_df(
 #'    job_duration,
-#'    job_summary
-#'    level,
+#'    job_summary,
+#'    level
 #'  )
 #' }
 build_etl_job_log_df <- function(job_duration, job_summary, level) {
@@ -492,9 +492,9 @@ write_success_job_log_entry <- function(con, job_duration, job_summary) {
 #'  write_error_log_entry(
 #'    conn = con,
 #'    target_db_name = rc_case,
-#'    table_written = "cases"
+#'    table_written = "cases",
 #'    df = data_written,
-#'    pk_col = "record_id",
+#'    pk_col = "record_id"
 #'  )
 #' }
 write_error_log_entry <- function(conn, target_db_name, table_written = NULL, df, pk_col) {
