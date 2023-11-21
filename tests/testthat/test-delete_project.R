@@ -83,4 +83,4 @@ testthat::test_that("delete_project deletes, updates and returns the correct pro
 
 })
 
-DBI::dbDisconnect(conn)
+DBI::dbDisconnect(conn, shutdown = TRUE)

@@ -57,6 +57,9 @@ log_data |>
   kable_styling()
 ```
 
+```{r disconnect, eval = T, include = F}
+DBI::dbDisconnect(log_conn, shutdown=TRUE)
+```
 ## Behind the scenes
 
 That's a tiny script, but a lot is happening. Let's decode what's going on in those few lines.
@@ -152,6 +155,7 @@ The output from `unnest_job_summary_data_json_object`, once unnested, would look
 
 ![Example output from unnest_job_summary_data_json_object](unnest_job_summary_data_json_object_output.png){width="744"}
 
-```{r, eval = T, include = F}
-DBI::dbDisconnect(log_conn)
+```{r final-disconnect, eval = T, include = F}
+log_conn <- get_package_scope_var("log_con")
+DBI::dbDisconnect(log_conn, shutdown=TRUE)
 ```
