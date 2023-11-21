@@ -54,8 +54,8 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
             return(FALSE)
         }
     )
-    DBI::dbDisconnect(log_con)
-    DBI::dbDisconnect(con)
+    DBI::dbDisconnect(log_con, shutdown=TRUE)
+    DBI::dbDisconnect(con, shutdown=TRUE)
     expect_false(result)
 })
 
@@ -92,8 +92,8 @@ test_that("on error, write_to_sql_db does log a failure when continue_on_error =
             return(FALSE)
         }
     )
-    DBI::dbDisconnect(log_con)
-    DBI::dbDisconnect(con)
+    DBI::dbDisconnect(log_con, shutdown=TRUE)
+    DBI::dbDisconnect(con, shutdown=TRUE)
     expect_equal(result$level, "ERROR")
 })
 
@@ -132,8 +132,8 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
             return(FALSE)
         }
     )
-    DBI::dbDisconnect(log_con)
-    DBI::dbDisconnect(con)
+    DBI::dbDisconnect(log_con, shutdown=TRUE)
+    DBI::dbDisconnect(con, shutdown=TRUE)
     expect_false(result)
 })
 

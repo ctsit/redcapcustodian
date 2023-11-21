@@ -9,7 +9,7 @@ test_that("log_job_debug writes a debug log entry", {
         log_con,
         "SELECT * FROM rcc_job_log WHERE level = 'DEBUG'"
     )
-    DBI::dbDisconnect(log_con)
+    DBI::dbDisconnect(log_con, shutdown=TRUE)
     expect_equal(result$job_summary_data, summary)
 })
 
@@ -25,7 +25,7 @@ test_that("log_job_failure writes an error log entry", {
         "SELECT * FROM rcc_job_log WHERE level = 'ERROR'"
     )
     summary_data_json <- rjson::fromJSON(result$job_summary_data)
-    DBI::dbDisconnect(log_con)
+    DBI::dbDisconnect(log_con, shutdown=TRUE)
     expect_equal(summary_data_json$error_message, summary)
 })
 
@@ -40,6 +40,6 @@ test_that("log_job_success writes a success log entry", {
         log_con,
         "SELECT * FROM rcc_job_log WHERE level = 'SUCCESS'"
     )
-    DBI::dbDisconnect(log_con)
+    DBI::dbDisconnect(log_con, shutdown=TRUE)
     expect_equal(result$job_summary_data, summary)
 })
