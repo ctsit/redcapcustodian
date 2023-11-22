@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.17.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.17.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,10 +102,10 @@ The latter tells devtools about version number changes. The former
 allows image builds to be tagged as they are built by the <a href="https://github.com/ctsit/redcapcustodian/tree/master/build.sh" class="external-link"><code>build.sh</code></a></p>
 <p>To deploy a new release on the Linux host, execute this series of
 commands or an equivalent from your home directory on that host:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/redcapcustodian.git</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="bu">cd</span> redcapcustodian</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">git</span> pull</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">sudo</span> ./build.sh</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/redcapcustodian.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> redcapcustodian</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ./build.sh</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="local-logging-for-development-work">Local logging for development work<a class="anchor" aria-label="anchor" href="#local-logging-for-development-work"></a>
@@ -117,8 +117,8 @@ or failure. REDCap Custodian provides an example logging system in the
 form of a <code>docker-compose.yml</code> and a database schema at
 <code>./rcc.log.db/</code>. You can start the logging database with
 these commands:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="bu">cd</span> ./rcc.log.db/</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">docker-compose</span> up <span class="at">-d</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ./rcc.log.db/</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up <span class="at">-d</span></span></code></pre></div>
 <p>By default, a PHPMyAdmin interface is accessible at <a href="http://localhost:9080/" class="external-link uri">http://localhost:9080/</a>.
 That and other configuration parameters are defined in
 <code>./rcc.log.db/.env</code>. These same parameters are used in
