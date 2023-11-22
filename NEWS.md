@@ -1,3 +1,11 @@
+# redcapcustodian 1.17.3 (released 2023-11-21)
+- Fix 4 intermittent test failures caused by environment vars (@pbchase, #143)
+- Fix error in test 'init_etl properly sets script name, script run time, and initializes log connection' (@pbchase, #143)
+- Fix 11 warnings about dplyr::all_equal() in tests (@pbchase, #143)
+- Address lots of pkgdown::build_site() complaints about garbage-collected connections (@pbchase, @ChemiKyle, #143)
+- Address pkgdown::build_site() complaints about non-parsable code examples (@pbchase, @ChemiKyle, #104, #143)
+- Update vignettes/job_logging.Rmd to fix build errors (@pbchase, #143)
+
 # redcapcustodian 1.17.2 (released 2023-11-17)
 - Update vignettes/job_logging.Rmd to fix build errors (@pbchase, #142)
 
