@@ -57,9 +57,12 @@ log_data |>
   kable_styling()
 ```
 
+```{r disconnect, eval = T, include = F}
+DBI::dbDisconnect(log_conn, shutdown=TRUE)
+```
 ## Behind the scenes
 
-That's a tiny script, but a lot is happening. Let's decode what's going on in those few lines. 
+That's a tiny script, but a lot is happening. Let's decode what's going on in those few lines.
 
 ### `library(dotenv)`
 
@@ -91,19 +94,18 @@ The reason given was:
 
 ## Failed jobs
 
-When jobs fail you might want to log that condition, for that, call `log_job_failure()`. As with `log_job_success()`, you can provide a message to give more detail about what went wrong.
+When jobs fail, you might want to log that condition, for that, call `log_job_failure()`. As with `log_job_success()`, you can provide a message to give more detail about what went wrong.
 
-```r
+``` r
 log_job_failure("input dataframe was empty")
 ```
 
 ## More detailed messages
 
-Logging "It worked!" or "input dataframe was empty" is fine, but often, you want to provide more detail about a job's activities. Chances are you have some useful facts in R objects already. It is a simple matter to assemble those objects into a list, convert the list object into a text string with using JSON libraries, and use that string as the job's message. If you wanted report some updates you made to the 'iris' database, you might log it like this:
+Logging "It worked!" or "input dataframe was empty" is fine, but often, you want to provide more detail about a job's activities. Chances are you have some useful facts in R objects already. It is a simple matter to assemble those objects into a list, convert the list object into a text string with using JSON libraries, and use that string as the job's message. If you wanted to report some updates you made to the 'iris' database, you might log it like this:
 
 ```{r iris-updates, eval = T, echo = T}
-# log_db_drv is typically not needed
-init_etl("iris_updater", log_db_drv = duckdb::duckdb())
+init_etl("iris_updater")
 # Do some stuff
 # ...
 iris_updates <- iris |> dplyr::sample_n(3) |> select(Sepal.Length, Species)
@@ -113,13 +115,13 @@ log_message <- dplyr::lst(iris_updates)
 log_job_success(jsonlite::toJSON(log_message))
 ```
 
-The `summary` value can contain any number of JSON-encoded objects. That said, plan them carefully. Ask what questions you will want to answer later after a job has run. The package authors have found the most common questions posed are "Why did this value change?", "Who (or what) set the value?", and "When did this change?" Store as little information as is needed to answer those questions succinctly. If you provide lots of different objects, it might make for a pile of log data to sift through later. We've found we can usually meet these needs by including minimal dataframes of the data written by the job. 
+The `summary` value can contain any number of JSON-encoded objects. That said, plan them carefully. Ask what questions you will want to answer later after a job has run. The package authors have found the most common questions posed are "Why did this value change?", "Who (or what) set the value?", and "When did this change?" Store as little information as is needed to answer those questions succinctly. If you provide lots of different objects, it might make for a pile of log data to sift through later. We've found we can usually meet these needs by including minimal dataframes of the data written by the job.
 
-If you have multiple jobs writing to the same dataset, consider the value of self-consistency across those jobs. If every update operation of the _invoice_ table is logged in an object named _invoice_updates_, you can more easily search across those jobs.
+If you have multiple jobs writing to the same dataset, consider the value of self-consistency across those jobs. If every update operation of the *invoice* table is logged in an object named *invoice_updates*, you can more easily search across those jobs.
 
 ## Reading back log data
 
-Reading back the log data presents a few challenges. When you are answering the "Who? What? When? Why?" questions you often have to search across multiple log events to find the job run that made the change. You can filter the log data to the time frame or jobs of interest, but you will still have to search multiple job summaries to find the one that made the change you care about. 
+Reading back the log data presents a few challenges. When you are answering the "Who? What? When? Why?" questions you often have to search across multiple log events to find the job run that made the change. You can filter the log data to the time frame or jobs of interest, but you will still have to search multiple job summaries to find the one that made the change you care about.
 
 If you encoded the job summary data with JSON, you'll need to decode it, but `jsonlite::fromJSON` is not vectorized. You'll have to iterate over the log records. Also, you'll want to unnest the job summary objects returned by `jsonlite::fromJSON`. REDCap Custodian provides the function `unnest_job_summary_data_json_object()` to help with these operations. e.g.,
 
@@ -134,7 +136,7 @@ make_updates()
 make_updates()
 ```
 
-```{r }
+```{r query-log-db, eval = F, echo = T}
 log_conn <- get_package_scope_var("log_con")
 
 log_data <-
@@ -149,6 +151,11 @@ unnest_job_summary_data_json_object(log_data) |>
   kable_styling()
 ```
 
-```{r, eval = T, include = F}
-DBI::dbDisconnect(log_conn)
+The output from `unnest_job_summary_data_json_object`, once unnested, would look like:
+
+![Example output from unnest_job_summary_data_json_object](unnest_job_summary_data_json_object_output.png){width="744"}
+
+```{r final-disconnect, eval = T, include = F}
+log_conn <- get_package_scope_var("log_con")
+DBI::dbDisconnect(log_conn, shutdown=TRUE)
 ```

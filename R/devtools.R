@@ -192,6 +192,9 @@ mutate_columns_to_posixct <- function(data, column_names) {
 #'
 #' dplyr::collect(dplyr::tbl(target_conn, table_name))
 #'
+#' DBI::dbDisconnect(source_conn, shutdown = TRUE)
+#' DBI::dbDisconnect(target_conn, shutdown = TRUE)
+#'
 #' \dontrun{
 #' library(tidyverse)
 #' library(lubridate)

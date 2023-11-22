@@ -25,9 +25,9 @@ Write an error log entry
  write_error_log_entry(
    conn = con,
    target_db_name = rc_case,
-   table_written = "cases"
+   table_written = "cases",
    df = data_written,
-   pk_col = "record_id",
+   pk_col = "record_id"
  )
 }
 }

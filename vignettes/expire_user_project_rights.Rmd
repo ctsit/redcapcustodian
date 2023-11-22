@@ -93,13 +93,15 @@ result <- expire_user_project_rights(
 
 `expire_user_project_rights` returns a list with the number of records revised and the dataframe of updates that was applied to the redcap_user_rights table. 
 
-It is easy to transform that into a JSON object and then pass that to `log_job_success` which will put that JSON object into the summary field of the log record.
+It is easy to transform that into a JSON object and then pass that to `log_job_success` which will put that JSON object into the summary field of the log record. Closing the database connection is optional, but responsible coding.
 
 ```{r}
 log_job_success(jsonlite::toJSON(result))
+
+DBI::dbDisconnect(conn)
 ```
 
-Here's the entire script, but you'll need to use write your own user exclusions and list of project IDs. Be careful with those project IDs. There is no check that you typed the right ID. 
+Here's the entire script, but you'll need to write your own user exclusions and list of project IDs. Be careful with those project IDs. There is no check that you typed the right ID. 
 
 ```
 library(tidyverse)
@@ -133,6 +135,7 @@ result <- expire_user_project_rights(
 
 log_job_success(jsonlite::toJSON(result))
 
+DBI::dbDisconnect(conn)
 ```
 
 And here's the entire `redcap_server.env` file, but make sure you adapt this to your environment:

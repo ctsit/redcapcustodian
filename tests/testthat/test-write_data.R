@@ -24,11 +24,11 @@ test_that("write_to_sql_db returns the identical data frame that is written", {
 
 test_that("on error, write_to_sql_db does not log a failure when continue_on_error = TRUE", {
     skip_if(interactive())
-    drv <- RSQLite::SQLite()
+    drv <- duckdb::duckdb()
 
     init_etl("write_to_sql_db - log failure", log_db_drv = drv)
     log_con <- get_package_scope_var("log_con")
-    con <- connect_to_db(drv)
+    con <- connect_to_db(duckdb::duckdb())
     table_name <- "sample_data"
 
     write_to_sql_db(
@@ -54,8 +54,8 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
             return(FALSE)
         }
     )
-    DBI::dbDisconnect(log_con)
-    DBI::dbDisconnect(con)
+    DBI::dbDisconnect(log_con, shutdown=TRUE)
+    DBI::dbDisconnect(con, shutdown=TRUE)
     expect_false(result)
 })
 
@@ -63,11 +63,11 @@ test_that("on error, write_to_sql_db does log a failure when continue_on_error =
     skip_if(interactive())
 
     disable_non_interactive_quit()
-    drv <- RSQLite::SQLite()
+    drv <- duckdb::duckdb()
 
     init_etl("write_to_sql_db - log failure", log_db_drv = drv)
     log_con <- get_package_scope_var("log_con")
-    con <- connect_to_db(drv)
+    con <- connect_to_db(duckdb::duckdb())
     table_name <- "sample_data"
 
     write_to_sql_db(
@@ -92,8 +92,8 @@ test_that("on error, write_to_sql_db does log a failure when continue_on_error =
             return(FALSE)
         }
     )
-    DBI::dbDisconnect(log_con)
-    DBI::dbDisconnect(con)
+    DBI::dbDisconnect(log_con, shutdown=TRUE)
+    DBI::dbDisconnect(con, shutdown=TRUE)
     expect_equal(result$level, "ERROR")
 })
 
@@ -101,11 +101,11 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
     skip_if(interactive())
     disable_non_interactive_quit()
 
-    drv <- RSQLite::SQLite()
+    drv <- duckdb::duckdb()
 
     init_etl("write_to_sql_db - log failure", log_db_drv = drv)
     log_con <- get_package_scope_var("log_con")
-    con <- connect_to_db(drv)
+    con <- connect_to_db(duckdb::duckdb())
     table_name <- "sample_data"
 
     write_to_sql_db(
@@ -132,8 +132,8 @@ test_that("on error, write_to_sql_db does not log a failure when continue_on_err
             return(FALSE)
         }
     )
-    DBI::dbDisconnect(log_con)
-    DBI::dbDisconnect(con)
+    DBI::dbDisconnect(log_con, shutdown=TRUE)
+    DBI::dbDisconnect(con, shutdown=TRUE)
     expect_false(result)
 })
 
@@ -142,17 +142,17 @@ testthat::test_that(
   {
     # make test data
     mtcars_for_db <- mtcars %>%
-      mutate(model = row.names(mtcars)) %>%
-      mutate(id = row_number()) %>%
-      select(id, model, everything())
+      dplyr::mutate(model = row.names(mtcars)) %>%
+      dplyr::mutate(id = dplyr::row_number()) %>%
+      dplyr::select(id, model, dplyr::everything())
     damaged_mtcars_for_db <- mtcars_for_db %>%
-      filter(id <= 20) %>%
-      mutate(cyl = if_else(id <= 10, 1, cyl)) %>%
-      rbind(mtcars_for_db %>% sample_n(10) %>% mutate(id = id+100))
+      dplyr::filter(id <= 20) %>%
+      dplyr::mutate(cyl = dplyr::if_else(id <= 10, 1, cyl)) %>%
+      rbind(mtcars_for_db %>% dplyr::sample_n(10) %>% dplyr::mutate(id = id+100))
 
     # write damaged data to a DB
-    conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
-    dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
+    conn <- DBI::dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+    DBI::dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
 
     # determine what we want to update
     diff_output <- dataset_diff(
@@ -174,12 +174,12 @@ testthat::test_that(
     )
 
     # read the updated table
-    mtcars_from_db <- tbl(conn, "mtcars") %>%
-      collect() %>%
-      mutate(id = as.integer(id))
+    mtcars_from_db <- dplyr::tbl(conn, "mtcars") %>%
+      dplyr::collect() %>%
+      dplyr::mutate(id = as.integer(id))
 
     # test that the data reads back correctly
-    testthat::expect_true(all_equal(mtcars_for_db, mtcars_from_db))
+    testthat::expect_true(all.equal(dplyr::as_tibble(mtcars_for_db), mtcars_from_db))
   }
 )
 
@@ -188,16 +188,16 @@ testthat::test_that(
   {
     # make test data
     mtcars_for_db <- mtcars %>%
-      mutate(model = row.names(mtcars)) %>%
-      mutate(id = row_number()) %>%
-      select(id, model, everything())
+      dplyr::mutate(model = row.names(mtcars)) %>%
+      dplyr::mutate(id = dplyr::row_number()) %>%
+      dplyr::select(id, model, dplyr::everything())
     damaged_mtcars_for_db <- mtcars_for_db %>%
-      filter(id <= 20) %>%
-      mutate(cyl = if_else(id <= 10, 1, cyl))
+      dplyr::filter(id <= 20) %>%
+      dplyr::mutate(cyl = dplyr::if_else(id <= 10, 1, cyl))
 
     # write damaged data to a DB
-    conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
-    dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
+    conn <- DBI::dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+    DBI::dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
 
     # determine what we want to update
     diff_output <- dataset_diff(
@@ -219,12 +219,12 @@ testthat::test_that(
     )
 
     # read the updated table
-    mtcars_from_db <- tbl(conn, "mtcars") %>%
-      collect() %>%
-      mutate(id = as.integer(id))
+    mtcars_from_db <- dplyr::tbl(conn, "mtcars") %>%
+      dplyr::collect() %>%
+      dplyr::mutate(id = as.integer(id))
 
     # test that the data reads back correctly
-    testthat::expect_true(all_equal(mtcars_for_db, mtcars_from_db))
+    testthat::expect_true(all.equal(dplyr::as_tibble(mtcars_for_db), mtcars_from_db))
   }
 )
 
@@ -233,17 +233,17 @@ testthat::test_that(
   {
     # make test data
     mtcars_for_db <- mtcars %>%
-      mutate(model = row.names(mtcars)) %>%
-      mutate(id = row_number()) %>%
-      select(id, model, everything())
+      dplyr::mutate(model = row.names(mtcars)) %>%
+      dplyr::mutate(id = dplyr::row_number()) %>%
+      dplyr::select(id, model, dplyr::everything())
     damaged_mtcars_for_db <- mtcars_for_db %>%
-      filter(id <= 20) %>%
-      mutate(cyl = if_else(id <= 10, 1, cyl)) %>%
-      rbind(mtcars_for_db %>% sample_n(10) %>% mutate(id = id+100))
+      dplyr::filter(id <= 20) %>%
+      dplyr::mutate(cyl = dplyr::if_else(id <= 10, 1, cyl)) %>%
+      rbind(mtcars_for_db %>% dplyr::sample_n(10) %>% dplyr::mutate(id = id+100))
 
     # write damaged data to a DB
-    conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
-    dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
+    conn <- DBI::dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+    DBI::dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
 
     # update the data
     result <- sync_table_2(
@@ -259,12 +259,12 @@ testthat::test_that(
     )
 
     # read the updated table
-    mtcars_from_db <- tbl(conn, "mtcars") %>%
-      collect() %>%
-      mutate(id = as.integer(id))
+    mtcars_from_db <- dplyr::tbl(conn, "mtcars") %>%
+      dplyr::collect() %>%
+      dplyr::mutate(id = as.integer(id))
 
     # test that the data reads back correctly
-    testthat::expect_true(all_equal(mtcars_for_db, mtcars_from_db))
+    testthat::expect_true(all.equal(dplyr::as_tibble(mtcars_for_db), mtcars_from_db))
   }
 )
 
@@ -273,16 +273,16 @@ testthat::test_that(
   {
     # make test data
     mtcars_for_db <- mtcars %>%
-      mutate(model = row.names(mtcars)) %>%
-      mutate(id = row_number()) %>%
-      select(id, model, everything())
+      dplyr::mutate(model = row.names(mtcars)) %>%
+      dplyr::mutate(id = dplyr::row_number()) %>%
+      dplyr::select(id, model, dplyr::everything())
     damaged_mtcars_for_db <- mtcars_for_db %>%
-      filter(id <= 20) %>%
-      mutate(cyl = if_else(id <= 10, 1, cyl))
+      dplyr::filter(id <= 20) %>%
+      dplyr::mutate(cyl = dplyr::if_else(id <= 10, 1, cyl))
 
     # write damaged data to a DB
-    conn <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
-    dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
+    conn <- DBI::dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+    DBI::dbWriteTable(conn = conn, name = "mtcars", value = damaged_mtcars_for_db)
 
     # update the data
     result <- sync_table_2(
@@ -298,11 +298,11 @@ testthat::test_that(
     )
 
     # read the updated table
-    mtcars_from_db <- tbl(conn, "mtcars") %>%
-      collect() %>%
-      mutate(id = as.integer(id))
+    mtcars_from_db <- dplyr::tbl(conn, "mtcars") %>%
+      dplyr::collect() %>%
+      dplyr::mutate(id = as.integer(id))
 
     # test that the data reads back correctly
-    testthat::expect_true(all_equal(mtcars_for_db, mtcars_from_db))
+    testthat::expect_true(all.equal(dplyr::as_tibble(mtcars_for_db), mtcars_from_db))
   }
 )

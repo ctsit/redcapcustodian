@@ -49,7 +49,7 @@ write_to_sql_db(
   df_to_write = rule_output,
   schema = Sys.getenv("ETL_DB_SCHEMA"),
   overwrite = FALSE,
-  db_name = Sys.getenv("ETL_DB_NAME")
+  db_name = Sys.getenv("ETL_DB_NAME"),
   append = TRUE
 )
 }

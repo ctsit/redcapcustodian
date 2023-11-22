@@ -22,8 +22,12 @@ disable_non_interactive_quit <- function() {
 #' @return the exact length of the time span between start time and end time
 #' @export
 #' @examples
-#' \dontrun{get_job_duration(get_script_run_time(),get_current_time()}
-#'
+#' \dontrun{
+#' get_job_duration(
+#'   start_time = get_script_run_time(),
+#'   end_time = get_current_time()
+#' )
+#' }
 get_job_duration <- function(start_time, end_time) {
   return(lubridate::time_length(end_time - start_time))
 }
