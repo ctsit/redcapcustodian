@@ -104,7 +104,7 @@ log_job_failure("input dataframe was empty")
 
 Logging "It worked!" or "input dataframe was empty" is fine, but often, you want to provide more detail about a job's activities. Chances are you have some useful facts in R objects already. It is a simple matter to assemble those objects into a list, convert the list object into a text string with using JSON libraries, and use that string as the job's message. If you wanted to report some updates you made to the 'iris' database, you might log it like this:
 
-```{r iris-updates, eval = T, echo = T}
+```{r iris-updates, eval = F, echo = T}
 init_etl("iris_updater")
 # Do some stuff
 # ...
@@ -125,7 +125,7 @@ Reading back the log data presents a few challenges. When you are answering the 
 
 If you encoded the job summary data with JSON, you'll need to decode it, but `jsonlite::fromJSON` is not vectorized. You'll have to iterate over the log records. Also, you'll want to unnest the job summary objects returned by `jsonlite::fromJSON`. REDCap Custodian provides the function `unnest_job_summary_data_json_object()` to help with these operations. e.g.,
 
-```{r mock-updates-to-iris, eval = T, echo = F}
+```{r mock-updates-to-iris, eval = F, echo = F}
 make_updates <- function() {
   Sys.sleep(1)
   iris_updates <- iris |> dplyr::sample_n(3) |> select(Sepal.Length, Species)
@@ -155,7 +155,7 @@ The output from `unnest_job_summary_data_json_object`, once unnested, would look
 
 ![Example output from unnest_job_summary_data_json_object](unnest_job_summary_data_json_object_output.png){width="744"}
 
-```{r final-disconnect, eval = T, include = F}
+```{r final-disconnect, eval = F, include = F}
 log_conn <- get_package_scope_var("log_con")
 DBI::dbDisconnect(log_conn, shutdown=TRUE)
 ```

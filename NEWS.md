@@ -1,3 +1,6 @@
+# redcapcustodian 1.17.4 (released 2023-11-22)
+- Turn off code chunks in job_logging.Rmd to fix pkgdown::deploy_to_branch() errors (@pbchase)
+
 # redcapcustodian 1.17.3 (released 2023-11-21)
 - Fix 4 intermittent test failures caused by environment vars (@pbchase, #143)
 - Fix error in test 'init_etl properly sets script name, script run time, and initializes log connection' (@pbchase, #143)
