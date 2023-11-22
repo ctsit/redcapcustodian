@@ -125,7 +125,7 @@ script_run_time
 </tr></thead>
 <tbody><tr>
 <td style="text-align:right;">
-0.153548
+0.156672
 </td>
 <td style="text-align:left;">
 It worked!
@@ -134,13 +134,13 @@ It worked!
 SUCCESS
 </td>
 <td style="text-align:left;">
-2023-11-22 18:59:43
+2023-11-22 19:14:14
 </td>
 <td style="text-align:left;">
 my_useful_script
 </td>
 <td style="text-align:left;">
-2023-11-22 18:59:43
+2023-11-22 19:14:14
 </td>
 </tr></tbody>
 </table>
@@ -210,7 +210,7 @@ into a text string with using JSON libraries, and use that string as the
 job’s message. If you wanted to report some updates you made to the
 ‘iris’ database, you might log it like this:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/init_etl.html">init_etl</a></span><span class="op">(</span><span class="st">"iris_updater"</span>, log_db_drv <span class="op">=</span> <span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/duckdb/man/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/init_etl.html">init_etl</a></span><span class="op">(</span><span class="st">"iris_updater"</span><span class="op">)</span></span>
 <span><span class="co"># Do some stuff</span></span>
 <span><span class="co"># ...</span></span>
 <span><span class="va">iris_updates</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Species</span><span class="op">)</span></span>
