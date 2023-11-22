@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.16.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.17.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
     <a class="dropdown-item" href="articles/expire_user_project_rights.html">expire_user_project_rights</a>
     <a class="dropdown-item" href="articles/friday-call-demo-setup.html">REDCap Custodian Friday Call Demo Credentials Setup</a>
     <a class="dropdown-item" href="articles/friday-call-demo.html">REDCap Custodian Friday Call Demo</a>
+    <a class="dropdown-item" href="articles/job_logging.html">Job Logging</a>
     <a class="dropdown-item" href="articles/randomization-management.html">Randomization Management</a>
   </div>
 </li>
@@ -77,12 +78,12 @@
 <div class="page-header"><h1 id="redcap-custodian">REDCap Custodian<a class="anchor" aria-label="anchor" href="#redcap-custodian"></a>
 </h1></div>
 <p><a href="https://doi.org/10.5281/zenodo.6828728" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.6828728.svg" alt="DOI"></a></p>
-<p>This package simplifies data management activities on REDCap systems. It provides a framework for automating data extraction, transformation, and loading (ETL) work. It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, and with the REDCap database. It provides an extensible set of R functions, a Docker image, and an RStudio Project template upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.</p>
+<p>This package simplifies data management activities on REDCap systems. It provides a framework for automating data extraction, transformation, and loading (ETL) work. It supports ETL work within a REDCap, between REDCap projects, between REDCap systems, and with the REDCap database. It provides an extensible set of R functions, a Docker image, and an Rstudio Project template upon which a REDCap team can build ETL tasks that serve their REDCap systems and customers.</p>
 <div class="section level2">
 <h2 id="operating-environment">Operating environment<a class="anchor" aria-label="anchor" href="#operating-environment"></a>
 </h2>
 <p><a href="https://ctsit.github.io/redcapcustodian/" class="external-link"><code>redcapcustodian</code></a> is an R package than can be referenced in any R script that needs to do ETL work against REDCap or most any data target. To facilitate automation, this repository also provides a Dockerfile that provides R, the <code>redcapcustodian</code> package, and its required packages. The <a href="https://github.com/ctsit/redcapcustodian/tree/master/Dockerfile" class="external-link"><code>Dockerfile</code></a> and <a href="https://github.com/ctsit/redcapcustodian/tree/master/build.sh" class="external-link"><code>build.sh</code></a> can be used to build a Docker image named <em>redcapcustodian</em> that can serve as the foundation for containers that serve your specific tasks.</p>
-<p>To build upon that foundation, this repository also provides a folder, <a href="https://github.com/ctsit/redcapcustodian/tree/master/study_template/" class="external-link"><code>study_template</code></a> that can be copied to a new folder and used as the starting point for an RStudio project, R package, and Docker image that address the needs of a single study or data management project. All of these tools are designed to simplify development and reduce the burden of automating data reporting and recurring data management tasks.</p>
+<p>To build upon that foundation, this repository also provides a folder, <a href="https://github.com/ctsit/redcapcustodian/tree/master/study_template/" class="external-link"><code>study_template</code></a> that can be copied to a new folder and used as the starting point for an Rstudio project, R package, and Docker image that address the needs of a single study or data management project. All of these tools are designed to simplify development and reduce the burden of automating data reporting and recurring data management tasks.</p>
 <p>In such an automated environment, each ETL job in this system is an Rscript run via Docker. Each report is an RMarkdown file again run via Docker. The design assumes the Docker containers are hosted on a Linux host with API access to one or more REDCap systems, a mail server, a MySQL database, and, optionally, the REDCap database itself.</p>
 <p>For sites without container infrastructure, each image can be instantiated into a container via a cron job as documented in the files in <a href="https://github.com/ctsit/redcapcustodian/tree/master/study_template/cron" class="external-link"><code>study_template/crons/</code></a>. Each file in that folder runs a single job. To run a job, its cron script must be copied to the <code>/etc/cron.d/</code> folder on the Linux host. The <a href="https://github.com/ctsit/redcapcustodian/tree/master/build.sh" class="external-link"><code>build.sh</code></a> script builds the redcapcustodian container upon which containers built by the study template would depend.</p>
 </div>
@@ -94,12 +95,12 @@
 <p>The REDCap Custodian package can be used in your custom RScript simply by installing it and loading the package in RStudio:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ctsit/redcapcustodian"</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ctsit/redcapcustodian"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ctsit.github.io/redcapcustodian/" class="external-link">redcapcustodian</a></span><span class="op">)</span></span></code></pre></div>
 <p>To use the Docker container, you’ll need to checkout this repository with git and build it from the Dockerfile. If you are on a Mac or Linux computer those steps would look like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/redcapcustodian.git</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> redcapcustodian</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./build.sh</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/redcapcustodian.git</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="bu">cd</span> redcapcustodian</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="ex">./build.sh</span></span></code></pre></div>
 <p>The procedure to use the study template is more involved, but it offers the most reward as well. See <a href="https://ctsit.github.io/redcapcustodian/articles/custom_rscript.html" class="external-link">Writing your own redcapcustodian Rscripts</a>. It might also help to look at the <a href="https://ctsit.github.io/redcapcustodian/articles/developer_notes.html" class="external-link">Developer Notes</a></p>
 </div>
 <div class="section level1">

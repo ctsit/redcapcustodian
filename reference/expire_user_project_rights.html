@@ -12,7 +12,7 @@ on list of users to expire or users to exclude from expiration"><!-- mathjax -->
     
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.16.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.17.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,7 @@ on list of users to expire or users to exclude from expiration"><!-- mathjax -->
     <a class="dropdown-item" href="../articles/expire_user_project_rights.html">expire_user_project_rights</a>
     <a class="dropdown-item" href="../articles/friday-call-demo-setup.html">REDCap Custodian Friday Call Demo Credentials Setup</a>
     <a class="dropdown-item" href="../articles/friday-call-demo.html">REDCap Custodian Friday Call Demo</a>
+    <a class="dropdown-item" href="../articles/job_logging.html">Job Logging</a>
     <a class="dropdown-item" href="../articles/randomization-management.html">Randomization Management</a>
   </div>
 </li>
@@ -129,7 +130,16 @@ on list of users to expire or users to exclude from expiration</p>
 <span class="r-in"><span>  project_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">34</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  usernames <span class="op">=</span> <span class="va">usernames</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in check_dbplyr():</span> The package "dbplyr" is required to communicate with database backends.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $updates</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   project_id username expiration</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>         34 bob      2023-11-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>         34 dan      2023-11-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

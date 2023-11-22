@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.16.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.17.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,7 @@
     <a class="dropdown-item" href="../articles/expire_user_project_rights.html">expire_user_project_rights</a>
     <a class="dropdown-item" href="../articles/friday-call-demo-setup.html">REDCap Custodian Friday Call Demo Credentials Setup</a>
     <a class="dropdown-item" href="../articles/friday-call-demo.html">REDCap Custodian Friday Call Demo</a>
+    <a class="dropdown-item" href="../articles/job_logging.html">Job Logging</a>
     <a class="dropdown-item" href="../articles/randomization-management.html">Randomization Management</a>
   </div>
 </li>
@@ -57,6 +58,28 @@
       <small>Source: <a href="https://github.com/ctsit/redcapcustodian/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.17.3" id="redcapcustodian-1173-released-2023-11-21">redcapcustodian 1.17.3 (released 2023-11-21)<a class="anchor" aria-label="anchor" href="#redcapcustodian-1173-released-2023-11-21"></a></h2>
+<ul><li>Fix 4 intermittent test failures caused by environment vars (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/143" class="external-link">#143</a>)</li>
+<li>Fix error in test ‘init_etl properly sets script name, script run time, and initializes log connection’ (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/143" class="external-link">#143</a>)</li>
+<li>Fix 11 warnings about dplyr::all_equal() in tests (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/143" class="external-link">#143</a>)</li>
+<li>Address lots of pkgdown::build_site() complaints about garbage-collected connections (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ChemiKyle" class="external-link">@ChemiKyle</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/143" class="external-link">#143</a>)</li>
+<li>Address pkgdown::build_site() complaints about non-parsable code examples (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ChemiKyle" class="external-link">@ChemiKyle</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/104" class="external-link">#104</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/143" class="external-link">#143</a>)</li>
+<li>Update vignettes/job_logging.Rmd to fix build errors (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/143" class="external-link">#143</a>)</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.17.2" id="redcapcustodian-1172-released-2023-11-17">redcapcustodian 1.17.2 (released 2023-11-17)<a class="anchor" aria-label="anchor" href="#redcapcustodian-1172-released-2023-11-17"></a></h2>
+<ul><li>Update vignettes/job_logging.Rmd to fix build errors (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/142" class="external-link">#142</a>)</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.17.1" id="redcapcustodian-1171-released-2023-11-17">redcapcustodian 1.17.1 (released 2023-11-17)<a class="anchor" aria-label="anchor" href="#redcapcustodian-1171-released-2023-11-17"></a></h2>
+<ul><li>Fix build failures caused by vignettes/job_logging.Rmd (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>)</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.17.0" id="redcapcustodian-1170-released-2023-11-17">redcapcustodian 1.17.0 (released 2023-11-17)<a class="anchor" aria-label="anchor" href="#redcapcustodian-1170-released-2023-11-17"></a></h2>
+<ul><li>Add job_logging vignette (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/113" class="external-link">#113</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/115" class="external-link">#115</a>)</li>
+<li>Add objects_to_include param to unnest_job_summary_data_json_object() (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/112" class="external-link">#112</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/115" class="external-link">#115</a>)</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.16.0" id="redcapcustodian-1160-released-2023-11-16">redcapcustodian 1.16.0 (released 2023-11-16)<a class="anchor" aria-label="anchor" href="#redcapcustodian-1160-released-2023-11-16"></a></h2>
 <ul><li>Add MySQL database comparison tools (<a href="https://github.com/pbchase" class="external-link">@pbchase</a>, <a href="https://github.com/ChemiKyle" class="external-link">@ChemiKyle</a>, <a href="https://github.com/ctsit/redcapcustodian/issues/140" class="external-link">#140</a>)</li>

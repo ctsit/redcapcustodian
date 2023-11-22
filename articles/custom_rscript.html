@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.16.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.17.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
     <a class="dropdown-item" href="../articles/expire_user_project_rights.html">expire_user_project_rights</a>
     <a class="dropdown-item" href="../articles/friday-call-demo-setup.html">REDCap Custodian Friday Call Demo Credentials Setup</a>
     <a class="dropdown-item" href="../articles/friday-call-demo.html">REDCap Custodian Friday Call Demo</a>
+    <a class="dropdown-item" href="../articles/job_logging.html">Job Logging</a>
     <a class="dropdown-item" href="../articles/randomization-management.html">Randomization Management</a>
   </div>
 </li>
@@ -104,13 +105,13 @@ more REDCap hosts or projects. That script should load the
 <em>redcapcustodian</em> package. To make your own script clone the
 redcap custodian repository, then copy the contents of <a href="https://github.com/ctsit/redcapcustodian/tree/master/study_template/" class="external-link"><code>study_template</code></a>
 to a new folder</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/redcapcustodian.git</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> redcapcustodian/site_template my.study</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../my.study</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/redcapcustodian.git</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> redcapcustodian/site_template my.study</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="bu">cd</span> ../my.study</span></code></pre></div>
 <p>Rename the Rstudio project to match your study’s name:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> example.Rproj my.study.Rproj</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">mv</span> example.Rproj my.study.Rproj</span></code></pre></div>
 <p>Then you can open the new project in Rstudio.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">open</span> my.study.Rproj</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">open</span> my.study.Rproj</span></code></pre></div>
 <p>If this is your first redcapcustodian project, it might help to
 follow the example in <code><a href="../articles/friday-call-demo.html">vignette("friday-call-demo")</a></code> in
 RStudio. That example was created to present REDCap Custodian to the
@@ -126,8 +127,8 @@ mis-steps.</p>
 will probably want both. Rename the <code>example.env</code> to
 <code>testing.env</code> and configure it for development on your
 computer. That file is composed of five sections.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">INSTANCE</span><span class="op">=</span>Development</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">TIME_ZONE</span><span class="op">=</span>America/New_York</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="va">INSTANCE</span><span class="op">=</span>Development</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="va">TIME_ZONE</span><span class="op">=</span>America/New_York</span></code></pre></div>
 <p><code>INSTANCE</code> names the REDCap system or <em>instance</em>
 you’ll be talking to. This file assumes you are talking to only one
 REDCap in your script. There are other tools for multiple-instances.</p>
@@ -135,30 +136,30 @@ REDCap in your script. There are other tools for multiple-instances.</p>
 instance. Note that REDCap time facts in local time. The MariaDB driver
 and the Lubridate library default to UTC. That can get complicated. Be
 careful with time. For more details see <a href="https://gist.github.com/pbchase/ed55ab5dacbcc5d8a702a9cb935cccb5" class="external-link"><code>stupid_date_tricks.R</code></a></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Email config</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">EMAIL_TO</span><span class="op">=</span>you@example.org</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="va">EMAIL_CC</span><span class="op">=</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="va">EMAIL_FROM</span><span class="op">=</span>please-do-not-reply@example.org</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="va">SMTP_SERVER</span><span class="op">=</span>smtp.example.org</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Email config</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="va">EMAIL_TO</span><span class="op">=</span>you@example.org</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="va">EMAIL_CC</span><span class="op">=</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="va">EMAIL_FROM</span><span class="op">=</span>please-do-not-reply@example.org</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="va">SMTP_SERVER</span><span class="op">=</span>smtp.example.org</span></code></pre></div>
 <p>Many scripts will need to send emails to the developers, the REDCap
 Admin or a study coordinator. Set the email values appropriately for
 your site and study needs.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># REDCap DB Credentials</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="va">REDCAP_DB_NAME</span><span class="op">=</span>DB_NAME</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">REDCAP_DB_HOST</span><span class="op">=</span>DB_HOST</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="va">REDCAP_DB_USER</span><span class="op">=</span>DB_USER</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="va">REDCAP_DB_PASSWORD</span><span class="op">=</span>DB_PASSWORD</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="va">REDCAP_DB_PORT</span><span class="op">=</span>3306</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># REDCap DB Credentials</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="va">REDCAP_DB_NAME</span><span class="op">=</span>DB_NAME</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="va">REDCAP_DB_HOST</span><span class="op">=</span>DB_HOST</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="va">REDCAP_DB_USER</span><span class="op">=</span>DB_USER</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="va">REDCAP_DB_PASSWORD</span><span class="op">=</span>DB_PASSWORD</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="va">REDCAP_DB_PORT</span><span class="op">=</span>3306</span></code></pre></div>
 <p>If you need to talk directly to your REDCap database, you’ll need to
 provide the credentials to that database. If you are doing development
 work, enter the credentials for your local MySQL Database.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ETL DB Credentials</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ETL_DB_NAME<span class="ot">=</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ETL_DB_HOST<span class="ot">=</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ETL_DB_USER<span class="ot">=</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ETL_DB_PASSWORD<span class="ot">=</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ETL_DB_SCHEMA<span class="ot">=</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ETL_DB_PORT<span class="ot">=</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># ETL DB Credentials</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>ETL_DB_NAME<span class="ot">=</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>ETL_DB_HOST<span class="ot">=</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>ETL_DB_USER<span class="ot">=</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>ETL_DB_PASSWORD<span class="ot">=</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>ETL_DB_SCHEMA<span class="ot">=</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>ETL_DB_PORT<span class="ot">=</span></span></code></pre></div>
 <p>The task or study you are working on might need its own database
 tables. They might hold data that does not need to be in REDCap or data
 that does not fit well in the REDCap data model. If your REDCap projects
@@ -171,13 +172,13 @@ credentials and your scripts will need access to those secrets. The
 Load”–a common term in database management. You can use any prefix you
 like, but you <em>will</em> want to use a prefix. The database
 connection functions depend on it.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log DB Credentials</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">LOG_DB_NAME</span><span class="op">=</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">LOG_DB_HOST</span><span class="op">=</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="va">LOG_DB_USER</span><span class="op">=</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="va">LOG_DB_PASSWORD</span><span class="op">=</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="va">LOG_DB_SCHEMA</span><span class="op">=</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="va">LOG_DB_PORT</span><span class="op">=</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Log DB Credentials</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="va">LOG_DB_NAME</span><span class="op">=</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="va">LOG_DB_HOST</span><span class="op">=</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="va">LOG_DB_USER</span><span class="op">=</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="va">LOG_DB_PASSWORD</span><span class="op">=</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="va">LOG_DB_SCHEMA</span><span class="op">=</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="va">LOG_DB_PORT</span><span class="op">=</span></span></code></pre></div>
 <p>REDCap Custodian provides a rich framework for logging both success
 and failure of automated processes. By default, it logs activity to a
 MySQL databse of your choosing. This should <em>not</em> be your REDCap
@@ -240,7 +241,7 @@ in the redcap backend and logs what is did:</p>
 <span></span>
 <span><span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/connect_to_redcap_db.html">connect_to_redcap_db</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">diff_output</span> <span class="op">&lt;-</span> <span class="fu">update_billable_by_ownership</span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span>
+<span><span class="va">diff_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rcc.billing/man/update_billable_by_ownership.html" class="external-link">update_billable_by_ownership</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">sync_activity</span> <span class="op">&lt;-</span> <span class="fu">redcapcustodian</span><span class="fu">::</span><span class="fu"><a href="../reference/sync_table.html">sync_table</a></span><span class="op">(</span></span>
 <span>  conn <span class="op">=</span> <span class="va">conn</span>,</span>
@@ -252,13 +253,14 @@ in the redcap backend and logs what is did:</p>
 <span>  delete <span class="op">=</span> <span class="cn">F</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">activity_log</span> <span class="op">&lt;-</span> <span class="va">diff_output</span><span class="op">$</span><span class="va">update_records</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">pid</span>, <span class="va">billable</span>, <span class="va">updated</span><span class="op">)</span></span>
+<span><span class="va">activity_log</span> <span class="op">&lt;-</span> <span class="va">diff_output</span><span class="op">$</span><span class="va">update_records</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">pid</span>, <span class="va">billable</span>, <span class="va">updated</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/log_job_success.html">log_job_success</a></span><span class="op">(</span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html" class="external-link">toJSON</a></span><span class="op">(</span><span class="va">activity_log</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/log_job_success.html">log_job_success</a></span><span class="op">(</span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html" class="external-link">toJSON</a></span><span class="op">(</span><span class="va">activity_log</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></code></pre></div>
 <p>That script generated this log record in the log database:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> `rcc_job_log` (`job_duration`, `job_summary_data`, `level`, `log_date`, `script_name`, `script_run_time`) <span class="kw">VALUES</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>(<span class="fl">80.16091799736023</span>, <span class="st">'[{</span><span class="ch">\"</span><span class="st">pid</span><span class="ch">\"</span><span class="st">:15,</span><span class="ch">\"</span><span class="st">billable</span><span class="ch">\"</span><span class="st">:1,</span><span class="ch">\"</span><span class="st">updated</span><span class="ch">\"</span><span class="st">:1657139254},{</span><span class="ch">\"</span><span class="st">pid</span><span class="ch">\"</span><span class="st">:16,</span><span class="ch">\"</span><span class="st">billable</span><span class="ch">\"</span><span class="st">:1,</span><span class="ch">\"</span><span class="st">updated</span><span class="ch">\"</span><span class="st">:1657139254},{</span><span class="ch">\"</span><span class="st">pid</span><span class="ch">\"</span><span class="st">:22,</span><span class="ch">\"</span><span class="st">billable</span><span class="ch">\"</span><span class="st">:1,</span><span class="ch">\"</span><span class="st">updated</span><span class="ch">\"</span><span class="st">:1657139254}]'</span>, <span class="st">'SUCCESS'</span>, <span class="st">'2022-07-06 20:28:54.494426'</span>, <span class="st">'update_project_billable_attribute'</span>, <span class="st">'2022-07-06 20:27:34.322926'</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> `rcc_job_log` (`job_duration`, `job_summary_data`, `level`, `log_date`, `script_name`, `script_run_time`) <span class="kw">VALUES</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>(<span class="fl">80.16091799736023</span>, <span class="st">'[{</span><span class="ch">\"</span><span class="st">pid</span><span class="ch">\"</span><span class="st">:15,</span><span class="ch">\"</span><span class="st">billable</span><span class="ch">\"</span><span class="st">:1,</span><span class="ch">\"</span><span class="st">updated</span><span class="ch">\"</span><span class="st">:1657139254},{</span><span class="ch">\"</span><span class="st">pid</span><span class="ch">\"</span><span class="st">:16,</span><span class="ch">\"</span><span class="st">billable</span><span class="ch">\"</span><span class="st">:1,</span><span class="ch">\"</span><span class="st">updated</span><span class="ch">\"</span><span class="st">:1657139254},{</span><span class="ch">\"</span><span class="st">pid</span><span class="ch">\"</span><span class="st">:22,</span><span class="ch">\"</span><span class="st">billable</span><span class="ch">\"</span><span class="st">:1,</span><span class="ch">\"</span><span class="st">updated</span><span class="ch">\"</span><span class="st">:1657139254}]'</span>, <span class="st">'SUCCESS'</span>, <span class="st">'2022-07-06 20:28:54.494426'</span>, <span class="st">'update_project_billable_attribute'</span>, <span class="st">'2022-07-06 20:27:34.322926'</span>);</span></code></pre></div>
 <p><code>job_summary_data</code> is a JSON object of all of the data
 updated. It’s hard for humans to read but 100% machine parsable.</p>
 <p>To query the job log, use your favorite DB client. If you are a
@@ -331,24 +333,24 @@ install Docker on it, and give you <code>sudo su</code> access. That
 will allow you to build and run docker images on the host.</p>
 <p>Login, git clone redcapcustodian’s git repository, cd into the
 repository and build the image:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/redcapcustodian.git</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> redcapcustodian</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ./build.sh</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/redcapcustodian.git</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="bu">cd</span> redcapcustodian</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">sudo</span> ./build.sh</span></code></pre></div>
 <p>Do the same for your own study repository:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/rcc.billing.git</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> rcc.billing</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ./build.sh</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:ctsit/rcc.billing.git</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="bu">cd</span> rcc.billing</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="fu">sudo</span> ./build.sh</span></code></pre></div>
 <p>To clone a private repository, you’ll need a deployment key. See <a href="https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys" class="external-link">Deploy
 Keys</a> for instructions.</p>
 <p>Once you’ve built the study container on your Docker host, create a
 cron entry to run it with the right parameters and secrets. To run the
 above script, <code>etl/update_project_billable_attribute.R</code>
 regularly on a host you call ‘prod’, create a cron entry for it:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> su</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;&lt;END&gt;&gt;</span> prod/cron/update_project_billable_attribute</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st"># run update_project_billable_attribute at 6:07 a.m.</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">7 6 * * * root /usr/bin/docker run --rm --env-file /rcc/rcc.billing/prod.env rcc.billing Rscript rcc.billing/etl/update_project_billable_attribute.R</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">END</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">sudo</span> su</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;&lt;END&gt;&gt;</span> prod/cron/update_project_billable_attribute</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="st"># run update_project_billable_attribute at 6:07 a.m.</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="st">7 6 * * * root /usr/bin/docker run --rm --env-file /rcc/rcc.billing/prod.env rcc.billing Rscript rcc.billing/etl/update_project_billable_attribute.R</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="op">END</span></span></code></pre></div>
 <p>The build script has a <code>-d</code> option to automatically deploy
 the cron file and build time. If you place your cron file in the
 <code>./cron/</code> folder at the root of the repository, and build
