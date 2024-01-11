@@ -1,3 +1,6 @@
+# redcapcustodian 1.18.0 (released 2024-01-10)
+- Update Dockerfile to verse:4.3.2 (@pbchase)
+
 # redcapcustodian 1.17.4 (released 2023-11-22)
 - Turn off code chunks in job_logging.Rmd to fix pkgdown::deploy_to_branch() errors (@pbchase)
 

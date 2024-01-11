@@ -1,8 +1,8 @@
-FROM --platform=linux/amd64 rocker/verse:4.2.1
+FROM --platform=linux/amd64 rocker/verse:4.3.2
 
 WORKDIR /home/rocker
 
-RUN apt update -y && apt install -y libmariadb-dev libmariadbclient-dev
+RUN apt update -y && apt install -y libmariadb-dev libmariadb-dev-compat
 RUN apt install -y --no-install-recommends libxt6
 
 # install necessary libraries
