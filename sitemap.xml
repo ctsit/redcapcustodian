@@ -205,6 +205,12 @@
     <loc>/reference/quit_non_interactive_run.html</loc>
   </url>
   <url>
+    <loc>/reference/read_project_data.html</loc>
+  </url>
+  <url>
+    <loc>/reference/read_project_metadata.html</loc>
+  </url>
+  <url>
     <loc>/reference/scrape_user_api_tokens.html</loc>
   </url>
   <url>
@@ -278,6 +284,9 @@
   </url>
   <url>
     <loc>/reference/write_info_log_entry.html</loc>
+  </url>
+  <url>
+    <loc>/reference/write_project_data.html</loc>
   </url>
   <url>
     <loc>/reference/write_success_job_log_entry.html</loc>
