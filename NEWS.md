@@ -1,3 +1,6 @@
+# redcapcustodian 1.19.0 (released 2024-01-30)
+- Add REDCapR wrapper functions (@ljwoodley, #147, #148)
+
 # redcapcustodian 1.18.0 (released 2024-01-10)
 - Update Dockerfile to verse:4.3.2 (@pbchase)
 
