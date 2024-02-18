@@ -571,6 +571,8 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #' @param email_to The email addresses of the primary recipient(s), separate recipient addresses with spaces
 #' @param email_cc The email addresses of cc'd recipient(s), separate recipient addresses with spaces
 #' @param email_from The email addresses of the sender
+#' @param df_to_email The df to include as a file attachment
+#' @param file_name The file name of the attachment
 #' @return No returned value
 #' @examples
 #'
@@ -585,34 +587,81 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #' }
 #' @importFrom sendmailR "sendmail"
 #' @export
-send_email <- function(email_body, email_subject = "", email_to = "", email_cc = "", email_from = "") {
-  # email credentials
-  email_server <- list(smtpServer = Sys.getenv("SMTP_SERVER"))
-  if (email_from == "") {
-    email_from <- Sys.getenv("EMAIL_FROM")
-  }
-  if (email_cc == "") {
-    email_cc <- unlist(strsplit(Sys.getenv("EMAIL_CC"), " "))
-  } else {
-    email_cc <- unlist(strsplit(email_cc, " "))
-  }
-  if (email_subject == "") {
-    email_subject <- paste(Sys.getenv("EMAIL_SUBJECT"), get_script_run_time())
+send_email <-
+  function(email_body,
+           email_subject = "",
+           email_to = "",
+           email_cc = "",
+           email_from = "",
+           df_to_email = NULL,
+           file_name = NULL
+  ) {
+
+    email_server <- list(smtpServer = Sys.getenv("SMTP_SERVER"))
+    if (email_from == "") {
+      email_from <- Sys.getenv("EMAIL_FROM")
+    }
+    if (email_cc == "") {
+      email_cc <- unlist(strsplit(Sys.getenv("EMAIL_CC"), " "))
+    } else {
+      email_cc <- unlist(strsplit(email_cc, " "))
+    }
+    if (email_subject == "") {
+      email_subject <-
+        paste(Sys.getenv("EMAIL_SUBJECT"), get_script_run_time())
+    }
+
+    if (email_to == "") {
+      email_to <- unlist(strsplit(Sys.getenv("EMAIL_TO"), " "))
+    } else {
+      email_to <- unlist(strsplit(email_to, " "))
+    }
+
+    email_content <- list(email_body)
+
+    if (!is.null(df_to_email)) {
+      df_to_email <- if (is.data.frame(df_to_email)) {
+        list(df_to_email)
+      } else {
+        df_to_email
+      }
+
+      if (length(df_to_email) != length(file_name)) {
+        stop("The number of dataframes and file names must match.")
+      }
+
+      output_dir <- tempdir()
+      for (i in seq_along(df_to_email)) {
+        file_fullpath <- file.path(output_dir, file_name[[i]])
+        file_extension <- sub(".*\\.(.*)$", "\\1", file_name[[i]])
+
+        if (tolower(file_extension) == "csv") {
+          write.csv(df_to_email[[i]], file_fullpath, row.names = FALSE)
+        } else if (tolower(file_extension) == "xlsx") {
+          writexl::write_xlsx(df_to_email[[i]], file_fullpath)
+        } else {
+          stop("Unsupported file format. Use 'csv' or 'xlsx'.")
+        }
+
+        attachment_object <- sendmailR::mime_part(file_fullpath, file_name[[i]])
+        email_content <- c(email_content, attachment_object)
+      }
+    }
+
+    ## TODO: consider toggling bypass of printing if interactive and local env detected
+    ## if (interactive()) {
+    ##   print(email_body)
+    ##   return(email_body)
+    ## }
+    # TODO: consider replacing sendmailR with mRpostman
+    sendmailR::sendmail(
+      from = email_from,
+      to = email_to,
+      cc = email_cc,
+      subject = email_subject,
+      msg = email_content,
+      control = email_server
+    )
   }
 
-  if (email_to == "") {
-    email_to <- unlist(strsplit(Sys.getenv("EMAIL_TO"), " "))
-  } else {
-    email_to <- unlist(strsplit(email_to, " "))
-  }
 
-  ## TODO: consider toggling bypass of printing if interactive and local env detected
-  ## if (interactive()) {
-  ##   print(email_body)
-  ##   return(email_body)
-  ## }
-  # TODO: consider replacing sendmailR with mRpostman
-  sendmailR::sendmail(from = email_from, to = email_to, cc = email_cc,
-                      subject = email_subject, msg = email_body,
-                      control = email_server)
-}

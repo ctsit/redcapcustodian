@@ -9,7 +9,9 @@ send_email(
   email_subject = "",
   email_to = "",
   email_cc = "",
-  email_from = ""
+  email_from = "",
+  df_to_email = NULL,
+  file_name = NULL
 )
 }
 \arguments{
@@ -22,6 +24,10 @@ send_email(
 \item{email_cc}{The email addresses of cc'd recipient(s), separate recipient addresses with spaces}
 
 \item{email_from}{The email addresses of the sender}
+
+\item{df_to_email}{The df to include as a file attachment}
+
+\item{file_name}{The file name of the attachment}
 }
 \value{
 No returned value
