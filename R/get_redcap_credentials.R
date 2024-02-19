@@ -47,7 +47,7 @@ get_redcap_credentials <- function(project_pid = NA,
     dplyr::filter(is.na(!!username) | .data$username == !!username) |>
     dplyr::collect() |>
     # Make a copy of redcap_uri to make redcapAPI coding a tiny bit simpler
-    dplyr::mutate(url = redcap_uri)
+    dplyr::mutate(url = .data$redcap_uri)
 
   DBI::dbDisconnect(credentials_conn)
 
