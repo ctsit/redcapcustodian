@@ -12,8 +12,12 @@
 #' @return A dataframe of filtered REDCap credentials, including a 'url' column added for convenience.
 #'
 #' @examples
-#' get_redcap_credentials(project_pid = "123")
-#' get_redcap_credentials(server_short_name = Sys.getenv("SERVER_SHORT_NAME"))
+#' \dontrun{
+#'   source_credentials <- get_redcap_credentials(project_pid = "123")
+#'   prod_credentials <- get_redcap_credentials(server_short_name = "prod")
+#'   target_credentials <- prod_credentials |>
+#'     filter(str_detect(project_name, "biospecimens"))
+#' }
 #'
 #' @export
 #'
