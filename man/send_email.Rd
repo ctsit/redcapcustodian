@@ -11,7 +11,8 @@ send_email(
   email_cc = "",
   email_from = "",
   df_to_email = NULL,
-  file_name = NULL
+  file_name = NULL,
+  ...
 )
 }
 \arguments{
@@ -25,25 +26,95 @@ send_email(
 
 \item{email_from}{The email addresses of the sender}
 
-\item{df_to_email}{The df to include as a file attachment}
+\item{df_to_email}{(Optional) A dataframe or a list of dataframes to be included as file attachment(s). If this parameter is used, `file_name` must also be specified.
+Each dataframe in the list must have a corresponding file name in the `file_name` parameter to ensure a one-to-one match between dataframes and file names.}
 
-\item{file_name}{The file name of the attachment}
+\item{file_name}{(Optional) A character vector specifying the file name(s) of the attachment(s). Valid file extensions are `.csv`, `.xlsx`, and `.zip`. Each file name must be unique.}
+
+\item{...}{Additional arguments passed directly to the file writing functions: `write.csv` for CSV files, and `writexl::write_xlsx` for XLSX files.}
 }
 \value{
+This function does not return a value. It performs an action by sending an email.
+
 No returned value
 }
 \description{
-A wrapper function that sends an email (via sendmailR) reporting the outcome of another function
+This function sends an email via `sendmailR`, optionally including a dataframe (or dataframes) as file attachment(s).
 }
 \examples{
 
 \dontrun{
-message <- paste("Failed REDCap data import to", project_title,
+email_body <- paste("Failed REDCap data import to", project_title,
                   "\nThe reason given was:", error_message)
 
 email_subject <- paste("FAILED |", script_name, "|",
                         Sys.getenv("INSTANCE"), "|", script_run_time)
 
-send_email(message, email_subject)
+# email without attachemnts
+send_email(email_body, email_subject)
+
+email_to <- c("email1@example.com email2@example.com")
+dfs_to_email <- list(head(cars), tail(cars))
+file_names <- c("file1.csv", "file2.xlsx")
+
+# single attachment and at least one email address
+send_email(
+  email_subject = email_subject,
+  email_body = email_body,
+  email_from = email_from,
+  email_to = email_to,
+  df_to_email = head(cars),
+  file_name = "file1.csv"
+)
+
+# multiple attachments and at least one email address
+send_email(
+  email_subject = email_subject,
+  email_body = email_body,
+  email_from = email_from,
+  email_to = email_to,
+  df_to_email = dfs_to_email,
+  file_name = file_names
+)
+
+send_email(
+  email_subject = "email_subject here",
+  email_body = email_body,
+  email_from = email_from,
+  email_to = email_to
+  file_name = c("file1.zip", "file2.zip")
+)
+
+# single attachment for each email group
+email_to <- c("email1@example.com", c("email2@example.com email2@example.com"))
+
+args_list <- list(
+  email_subject = email_subject,
+  email_body = email_body,
+  email_to = email_to,
+  email_from = email_from,
+  df_to_email = dfs_to_email,
+  file_name = file_names
+)
+
+purrr::pmap(args_list, send_email)
+
+# multiple attachments for each email group
+email_to <- c(
+  c("email1@example.com email2@example.com"),
+  c("email3@example.com email4@example.com")
+)
+
+args_list <- list(
+  email_subject = email_subject,
+  email_body = email_body,
+  email_to = email_to,
+  email_from = email_from,
+  df_to_email = list(dfs_to_email, dfs_to_email),
+  file_name = list(file_names, file_names)
+)
+
+purrr::pmap(args_list, send_email)
+
 }
 }

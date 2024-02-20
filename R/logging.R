@@ -566,26 +566,98 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 
 #' A wrapper function that sends an email (via sendmailR) reporting the outcome of another function
 #'
+#' This function sends an email via `sendmailR`, optionally including a dataframe (or dataframes) as file attachment(s).
+#'
 #' @param email_body The contents of the email
 #' @param email_subject The subject line of the email
 #' @param email_to The email addresses of the primary recipient(s), separate recipient addresses with spaces
 #' @param email_cc The email addresses of cc'd recipient(s), separate recipient addresses with spaces
 #' @param email_from The email addresses of the sender
-#' @param df_to_email The df to include as a file attachment
-#' @param file_name The file name of the attachment
+#' @param df_to_email (Optional) A dataframe or a list of dataframes to be included as file attachment(s). If this parameter is used, `file_name` must also be specified.
+#'                    Each dataframe in the list must have a corresponding file name in the `file_name` parameter to ensure a one-to-one match between dataframes and file names.
+#' @param file_name (Optional) A character vector specifying the file name(s) of the attachment(s). Valid file extensions are `.csv`, `.xlsx`, and `.zip`. Each file name must be unique.
+#' @param ... Additional arguments passed directly to the file writing functions: `write.csv` for CSV files, and `writexl::write_xlsx` for XLSX files.
+#' @return This function does not return a value. It performs an action by sending an email.
 #' @return No returned value
 #' @examples
 #'
 #' \dontrun{
-#' message <- paste("Failed REDCap data import to", project_title,
+#' email_body <- paste("Failed REDCap data import to", project_title,
 #'                   "\nThe reason given was:", error_message)
 #'
 #' email_subject <- paste("FAILED |", script_name, "|",
 #'                         Sys.getenv("INSTANCE"), "|", script_run_time)
 #'
-#' send_email(message, email_subject)
+#' # email without attachemnts
+#' send_email(email_body, email_subject)
+#'
+#' email_to <- c("email1@example.com email2@example.com")
+#' dfs_to_email <- list(head(cars), tail(cars))
+#' file_names <- c("file1.csv", "file2.xlsx")
+#'
+#' # single attachment and at least one email address
+#' send_email(
+#'   email_subject = email_subject,
+#'   email_body = email_body,
+#'   email_from = email_from,
+#'   email_to = email_to,
+#'   df_to_email = head(cars),
+#'   file_name = "file1.csv"
+#' )
+#'
+#' # multiple attachments and at least one email address
+#' send_email(
+#'   email_subject = email_subject,
+#'   email_body = email_body,
+#'   email_from = email_from,
+#'   email_to = email_to,
+#'   df_to_email = dfs_to_email,
+#'   file_name = file_names
+#' )
+#'
+#' send_email(
+#'   email_subject = "email_subject here",
+#'   email_body = email_body,
+#'   email_from = email_from,
+#'   email_to = email_to
+#'   file_name = c("file1.zip", "file2.zip")
+#' )
+#'
+#' # single attachment for each email group
+#' email_to <- c("email1@example.com", c("email2@example.com email2@example.com"))
+#'
+#' args_list <- list(
+#'   email_subject = email_subject,
+#'   email_body = email_body,
+#'   email_to = email_to,
+#'   email_from = email_from,
+#'   df_to_email = dfs_to_email,
+#'   file_name = file_names
+#' )
+#'
+#' purrr::pmap(args_list, send_email)
+#'
+#' # multiple attachments for each email group
+#' email_to <- c(
+#'   c("email1@example.com email2@example.com"),
+#'   c("email3@example.com email4@example.com")
+#' )
+#'
+#' args_list <- list(
+#'   email_subject = email_subject,
+#'   email_body = email_body,
+#'   email_to = email_to,
+#'   email_from = email_from,
+#'   df_to_email = list(dfs_to_email, dfs_to_email),
+#'   file_name = list(file_names, file_names)
+#' )
+#'
+#' purrr::pmap(args_list, send_email)
+#'
 #' }
 #' @importFrom sendmailR "sendmail"
+#' @importFrom utils write.csv
+#' @importFrom writexl write_xlsx
 #' @export
 send_email <-
   function(email_body,
@@ -594,7 +666,8 @@ send_email <-
            email_cc = "",
            email_from = "",
            df_to_email = NULL,
-           file_name = NULL
+           file_name = NULL,
+           ...
   ) {
 
     email_server <- list(smtpServer = Sys.getenv("SMTP_SERVER"))
@@ -617,33 +690,39 @@ send_email <-
       email_to <- unlist(strsplit(email_to, " "))
     }
 
-    email_content <- list(email_body)
+    if (!is.null(file_name)) {
+      output_dir <- tempdir()
+      email_content <- list()
 
-    if (!is.null(df_to_email)) {
-      df_to_email <- if (is.data.frame(df_to_email)) {
-        list(df_to_email)
-      } else {
-        df_to_email
+      if (!is.null(df_to_email) && is.data.frame(df_to_email)) {
+        df_to_email <- list(df_to_email)
       }
 
-      if (length(df_to_email) != length(file_name)) {
+      if (!is.null(df_to_email) &&
+          length(df_to_email) != length(file_name)) {
         stop("The number of dataframes and file names must match.")
       }
 
-      output_dir <- tempdir()
-      for (i in seq_along(df_to_email)) {
+      for (i in seq_along(file_name)) {
+        file_extension <- tolower(sub(".*\\.(.*)$", "\\1", file_name[[i]]))
         file_fullpath <- file.path(output_dir, file_name[[i]])
-        file_extension <- sub(".*\\.(.*)$", "\\1", file_name[[i]])
 
-        if (tolower(file_extension) == "csv") {
-          write.csv(df_to_email[[i]], file_fullpath, row.names = FALSE)
-        } else if (tolower(file_extension) == "xlsx") {
-          writexl::write_xlsx(df_to_email[[i]], file_fullpath)
-        } else {
-          stop("Unsupported file format. Use 'csv' or 'xlsx'.")
+        if (!is.null(df_to_email)) {
+          if (file_extension == "csv") {
+            write.csv(df_to_email[[i]], file_fullpath, ...)
+          } else if (file_extension == "xlsx") {
+            writexl::write_xlsx(df_to_email[[i]], file_fullpath, ...)
+          } else {
+            stop("Unsupported file format. Use 'csv' or 'xlsx'.")
+          }
         }
 
-        attachment_object <- sendmailR::mime_part(file_fullpath, file_name[[i]])
+        if (file_extension == "zip" &&
+            !file.copy(file_name[[i]], file_fullpath, overwrite = TRUE)) {
+          stop(paste("Failed to move", file_name[[i]]))
+        }
+
+        attachment_object <- sendmailR::mime_part(file_fullpath, basename(file_fullpath))
         email_content <- c(email_content, attachment_object)
       }
     }
@@ -663,5 +742,3 @@ send_email <-
       control = email_server
     )
   }
-
-
