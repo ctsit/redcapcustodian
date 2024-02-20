@@ -594,7 +594,6 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #' email_to <- c("email1@example.com email2@example.com")
 #' dfs_to_email <- list(head(cars), tail(cars))
 #' file_names <- c("file1.csv", "file2.xlsx")
-#' zip_files <- c("file1.zip", "file2.zip")
 #'
 #' # single attachment and at least one email address
 #' send_email(
@@ -625,7 +624,7 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #' )
 #'
 #' # single attachment for each email group
-#' email_to <- c("email1@example.com", c("email2@example.com email2@example.com"))
+#' email_to <- c("email1@example.com", c("email2@example.com email3@example.com"))
 #'
 #' args_list <- list(
 #'   email_subject = email_subject,
@@ -657,7 +656,6 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #'
 #' }
 #' @importFrom sendmailR "sendmail"
-#' @importFrom utils write.csv
 #' @importFrom writexl write_xlsx
 #' @export
 send_email <-
@@ -710,7 +708,7 @@ send_email <-
 
         if (!is.null(df_to_email)) {
           if (file_extension == "csv") {
-            write.csv(df_to_email[[i]], file_fullpath, ...)
+            readr::write_csv(df_to_email[[i]], file_fullpath, ...)
           } else if (file_extension == "xlsx") {
             writexl::write_xlsx(df_to_email[[i]], file_fullpath, ...)
           } else {

@@ -54,7 +54,6 @@ send_email(email_body, email_subject)
 email_to <- c("email1@example.com email2@example.com")
 dfs_to_email <- list(head(cars), tail(cars))
 file_names <- c("file1.csv", "file2.xlsx")
-zip_files <- c("file1.zip", "file2.zip")
 
 # single attachment and at least one email address
 send_email(
@@ -85,7 +84,7 @@ send_email(
 )
 
 # single attachment for each email group
-email_to <- c("email1@example.com", c("email2@example.com email2@example.com"))
+email_to <- c("email1@example.com", c("email2@example.com email3@example.com"))
 
 args_list <- list(
   email_subject = email_subject,
