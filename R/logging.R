@@ -566,7 +566,7 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 
 #' A wrapper function that sends an email (via sendmailR) reporting the outcome of another function
 #'
-#' This function sends an email via `sendmailR`, optionally including a dataframe (or dataframes) as file attachment(s).
+#' This function sends an email via `sendmailR`, optionally including a dataframe(s) or zip files(s) as attachments.
 #'
 #' @param email_body The contents of the email
 #' @param email_subject The subject line of the email
@@ -577,8 +577,8 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #'                    Each dataframe in the list must have a corresponding file name in the `file_name` parameter to ensure a one-to-one match between dataframes and file names.
 #' @param file_name (Optional) A character vector specifying the file name(s) of the attachment(s). Valid file extensions are `.csv`, `.xlsx`, and `.zip`. Each file name must be unique.
 #' @param ... Additional arguments passed directly to the file writing functions: `write.csv` for CSV files, and `writexl::write_xlsx` for XLSX files.
-#' @return This function does not return a value. It performs an action by sending an email.
-#' @return No returned value
+#'
+#' @return No returned value. It performs an action by sending an email.
 #' @examples
 #'
 #' \dontrun{
@@ -594,6 +594,7 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #' email_to <- c("email1@example.com email2@example.com")
 #' dfs_to_email <- list(head(cars), tail(cars))
 #' file_names <- c("file1.csv", "file2.xlsx")
+#' zip_files <- c("file1.zip", "file2.zip")
 #'
 #' # single attachment and at least one email address
 #' send_email(
@@ -616,11 +617,11 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #' )
 #'
 #' send_email(
-#'   email_subject = "email_subject here",
+#'   email_subject = email_subject,
 #'   email_body = email_body,
 #'   email_from = email_from,
-#'   email_to = email_to
-#'   file_name = c("file1.zip", "file2.zip")
+#'   email_to = email_to,
+#'   file_name = c("file1.zip", "<path_to_file>file2.zip")
 #' )
 #'
 #' # single attachment for each email group
@@ -705,7 +706,7 @@ send_email <-
 
       for (i in seq_along(file_name)) {
         file_extension <- tolower(sub(".*\\.(.*)$", "\\1", file_name[[i]]))
-        file_fullpath <- file.path(output_dir, file_name[[i]])
+        file_fullpath <- file.path(output_dir, basename(file_name[[i]]))
 
         if (!is.null(df_to_email)) {
           if (file_extension == "csv") {
@@ -718,7 +719,7 @@ send_email <-
         }
 
         if (file_extension == "zip" &&
-            !file.copy(file_name[[i]], file_fullpath, overwrite = TRUE)) {
+            !file.copy(file_name[[i]], output_dir, overwrite = TRUE)) {
           stop(paste("Failed to move", file_name[[i]]))
         }
 

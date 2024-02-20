@@ -34,12 +34,10 @@ Each dataframe in the list must have a corresponding file name in the `file_name
 \item{...}{Additional arguments passed directly to the file writing functions: `write.csv` for CSV files, and `writexl::write_xlsx` for XLSX files.}
 }
 \value{
-This function does not return a value. It performs an action by sending an email.
-
-No returned value
+No returned value. It performs an action by sending an email.
 }
 \description{
-This function sends an email via `sendmailR`, optionally including a dataframe (or dataframes) as file attachment(s).
+This function sends an email via `sendmailR`, optionally including a dataframe(s) or zip files(s) as attachments.
 }
 \examples{
 
@@ -56,6 +54,7 @@ send_email(email_body, email_subject)
 email_to <- c("email1@example.com email2@example.com")
 dfs_to_email <- list(head(cars), tail(cars))
 file_names <- c("file1.csv", "file2.xlsx")
+zip_files <- c("file1.zip", "file2.zip")
 
 # single attachment and at least one email address
 send_email(
@@ -78,11 +77,11 @@ send_email(
 )
 
 send_email(
-  email_subject = "email_subject here",
+  email_subject = email_subject,
   email_body = email_body,
   email_from = email_from,
-  email_to = email_to
-  file_name = c("file1.zip", "file2.zip")
+  email_to = email_to,
+  file_name = c("file1.zip", "<path_to_file>file2.zip")
 )
 
 # single attachment for each email group
