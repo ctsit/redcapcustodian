@@ -1,3 +1,7 @@
+# redcapcustodian 1.20.0 (released 2024-02-28)
+- Add get_redcap_credentials() (@ljwoodley, #149, #151)
+- Revert "add redcap wrapper functions" (@ljwoodley, #149, #150)
+
 # redcapcustodian 1.19.0 (released 2024-01-30)
 - Add REDCapR wrapper functions (@ljwoodley, #147, #148)
 
