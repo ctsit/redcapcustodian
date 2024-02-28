@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.19.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.20.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -125,7 +125,7 @@ script_run_time
 </tr></thead>
 <tbody><tr>
 <td style="text-align:right;">
-0.2545772
+0.2719743
 </td>
 <td style="text-align:left;">
 It worked!
@@ -134,13 +134,13 @@ It worked!
 SUCCESS
 </td>
 <td style="text-align:left;">
-2024-01-30 19:47:46
+2024-02-28 16:33:00
 </td>
 <td style="text-align:left;">
 my_useful_script
 </td>
 <td style="text-align:left;">
-2024-01-30 19:47:46
+2024-02-28 16:33:00
 </td>
 </tr></tbody>
 </table>
@@ -157,11 +157,11 @@ going on in those few lines.</p>
 of name-value pairs into the environment of the script. By default it
 reads <code>.env</code> from the current directory. To make logging work
 correctly, that <code>.env</code> file will need a stanza like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">LOG_DB_NAME</span><span class="ot">=</span><span class="st">rcc_log</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">LOG_DB_HOST</span><span class="ot">=</span><span class="st">127.0.0.1</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">LOG_DB_USER</span><span class="ot">=</span><span class="st">rcc_log</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">LOG_DB_PASSWORD</span><span class="ot">=</span><span class="st">password</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">LOG_DB_PORT</span><span class="ot">=</span><span class="dv">9000</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="dt">LOG_DB_NAME</span><span class="ot">=</span><span class="st">rcc_log</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="dt">LOG_DB_HOST</span><span class="ot">=</span><span class="st">127.0.0.1</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="dt">LOG_DB_USER</span><span class="ot">=</span><span class="st">rcc_log</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="dt">LOG_DB_PASSWORD</span><span class="ot">=</span><span class="st">password</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="dt">LOG_DB_PORT</span><span class="ot">=</span><span class="dv">9000</span></span></code></pre></div>
 <p>The “LOG_DB_*” strings are the environment variable names
 <code>redcapcustodian</code> uses to locate the MySQL DB where it stores
 the logging data. You need to use these names and the values need to
@@ -178,9 +178,9 @@ and it verifies the connection to the database described by the
 “LOG_DB_*” environment variables. If the database is there,
 <code><a href="../reference/init_etl.html">init_etl()</a></code> quietly exits. If the database is not there you
 will see</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Warning<span class="sc">:</span> Failed to connect to log DB<span class="sc">:</span> rcc_log_bad</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>The reason given was<span class="sc">:</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> Error<span class="sc">:</span> Failed to connect<span class="sc">:</span> Access denied <span class="cf">for</span> user <span class="st">'rcc_log'</span><span class="sc">@</span><span class="st">'%'</span> to database <span class="st">'rcc_log_bad'</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>Warning<span class="sc">:</span> Failed to connect to log DB<span class="sc">:</span> rcc_log_bad</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>The reason given was<span class="sc">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a> Error<span class="sc">:</span> Failed to connect<span class="sc">:</span> Access denied <span class="cf">for</span> user <span class="st">'rcc_log'</span><span class="sc">@</span><span class="st">'%'</span> to database <span class="st">'rcc_log_bad'</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="log_job_success">
@@ -264,9 +264,9 @@ operations. e.g.,</p>
 <span>  <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The output from <code>unnest_job_summary_data_json_object</code>,
 once unnested, would look like:</p>
-<div class="figure">
-<img src="unnest_job_summary_data_json_object_output.png" width="744" alt=""><p class="caption">Example output from
-unnest_job_summary_data_json_object</p>
+<div class="float">
+<img src="unnest_job_summary_data_json_object_output.png" width="744" alt="Example output from unnest_job_summary_data_json_object"><div class="figcaption">Example output from
+unnest_job_summary_data_json_object</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
