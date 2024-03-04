@@ -55,7 +55,8 @@ Imports:
     tibble,
     tidyr,
     vctrs,
-    jsonlite
+    jsonlite,
+    writexl
 Suggests:
     RSQLite,
     digest,
