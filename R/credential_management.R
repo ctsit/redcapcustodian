@@ -22,7 +22,7 @@ scrape_user_api_tokens <- function(conn, username_to_scrape = Sys.info()[["user"
   # collect super API token if one exists
   super_credentials <- dplyr::tbl(conn, "redcap_user_information") %>%
     dplyr::filter(.data$username == username_to_scrape) %>%
-    dplyr::select(.data$username, .data$api_token) %>%
+    dplyr::select("username", "api_token") %>%
     dplyr::collect() %>%
     dplyr::mutate(project_id = 0) %>%
     dplyr::filter(!is.na(.data$api_token)) %>%
@@ -32,16 +32,16 @@ scrape_user_api_tokens <- function(conn, username_to_scrape = Sys.info()[["user"
     dplyr::filter(.data$username == username_to_scrape) %>%
     dplyr::filter(!is.na(.data$api_token)) %>%
     dplyr::select(
-      .data$project_id,
-      .data$username,
-      .data$api_token
+      "project_id",
+      "username",
+      "api_token"
     ) %>%
     # add project information
     dplyr::left_join(
       dplyr::tbl(conn, "redcap_projects") %>%
         dplyr::select(
-          .data$project_id,
-          .data$app_title
+          "project_id",
+          "app_title"
         ),
       by = "project_id"
     ) %>%
@@ -49,8 +49,8 @@ scrape_user_api_tokens <- function(conn, username_to_scrape = Sys.info()[["user"
     # bind_rows used over rbind to avoid need to align column order
     dplyr::bind_rows(super_credentials) %>%
     dplyr::rename(
-      project_display_name = .data$app_title,
-      token = .data$api_token # rename for compatibility with REDCapR credential objects
+      project_display_name = "app_title",
+      token = "api_token" # rename for compatibility with REDCapR credential objects
     )
 
   return(credentials)
