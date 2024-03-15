@@ -1,3 +1,6 @@
+# redcapcustodian 1.21.0 (released 2024-03-15)
+- Add attachment management to send_email() allowing lists of files or dataframes to be attached to an email (@ljwoodley, #152, #153)
+
 # redcapcustodian 1.20.0 (released 2024-02-28)
 - Add get_redcap_credentials() (@ljwoodley, #149, #151)
 - Revert "add redcap wrapper functions" (@ljwoodley, #149, #150)
