@@ -689,9 +689,10 @@ send_email <-
       email_to <- unlist(strsplit(email_to, " "))
     }
 
+    email_content <- list(email_body)
+
     if (!is.null(file_name)) {
       output_dir <- tempdir()
-      email_content <- list()
 
       if (!is.null(df_to_email) && is.data.frame(df_to_email)) {
         df_to_email <- list(df_to_email)
@@ -722,7 +723,7 @@ send_email <-
         }
 
         attachment_object <- sendmailR::mime_part(file_fullpath, basename(file_fullpath))
-        email_content <- c(email_body, attachment_object)
+        email_content <- c(email_content, attachment_object)
       }
     }
 
