@@ -722,7 +722,7 @@ send_email <-
         }
 
         attachment_object <- sendmailR::mime_part(file_fullpath, basename(file_fullpath))
-        email_content <- c(email_content, attachment_object)
+        email_content <- c(email_body, attachment_object)
       }
     }
 
