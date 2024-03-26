@@ -1,3 +1,9 @@
+# redcapcustodian 1.22.0 (released 2024-03-26)
+- Implement hacky fix for tlmgr 2023 being unable to install packages (@ChemiKyle, #156)
+- Fix bug that prevented email_body from being included in email (@ljwoodley, @ChemiKyle, #155)
+- Add 'Scraping one user's API tokens' section to vignettes/credential-scraping.Rmd (@pbchase, @ChemiKyle, #154)
+- Update scrape_user_api_tokens() to tidyselect 1.2 standards (@pbchase, #154)
+
 # redcapcustodian 1.21.0 (released 2024-03-15)
 - Add attachment management to send_email() allowing lists of files or dataframes to be attached to an email (@ljwoodley, #152, #153)
 
