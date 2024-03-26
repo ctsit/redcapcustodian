@@ -689,7 +689,7 @@ send_email <-
       email_to <- unlist(strsplit(email_to, " "))
     }
 
-    email_content <- list(email_body)
+    email_content <- email_body
 
     if (!is.null(file_name)) {
       output_dir <- tempdir()
