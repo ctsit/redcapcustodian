@@ -1,9 +1,12 @@
-FROM --platform=linux/amd64 rocker/verse:4.3.2
+FROM --platform=linux/amd64 rocker/verse:4.3.3
 
 WORKDIR /home/rocker
 
 RUN apt update -y && apt install -y libmariadb-dev libmariadb-dev-compat
 RUN apt install -y --no-install-recommends libxt6
+
+# returns an error but tlmgr is updated to 2024 regardless
+RUN wget ${CTAN_REPO}/update-tlmgr-latest.sh && bash update-tlmgr-latest.sh; exit 0
 
 # install necessary libraries
 RUN R -e "install.packages(c( \
