@@ -5,18 +5,16 @@ library(lubridate)
 library(rmarkdown)
 library(sendmailR)
 library(redcapcustodian)
-library(argparse)
 
 init_etl("render_report")
 
-parser <- ArgumentParser()
-parser$add_argument("script_name", nargs=1, help="Script to be run")
+if (!dir.exists("output")){
+  dir.create("output")
+}
+
 if (!interactive()) {
-  args <- parser$parse_args()
-  script_name <- args$script_name
-  if(!fs::file_exists(script_name)) {
-    stop(sprintf("Specified file, %s, does not exist", script_name))
-  }
+  args <- commandArgs(trailingOnly = T)
+  script_name <- word(args, 2, sep = "=")
 } else {
   script_name <- "report/sample_report.qmd"
   if(!fs::file_exists(script_name)) {
@@ -25,7 +23,6 @@ if (!interactive()) {
 }
 
 report_name <- word(script_name, 1, sep = "\\.")
-report_type <- word(script_name, 2, sep = "\\.")
 
 script_run_time <- set_script_run_time()
 output_filename <-
