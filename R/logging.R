@@ -656,7 +656,7 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #'
 #' }
 #' @importFrom sendmailR "sendmail"
-#' @importFrom writexl write_xlsx
+#' @importFrom openxlsx write.xlsx
 #' @export
 send_email <-
   function(email_body,
@@ -711,7 +711,7 @@ send_email <-
           if (file_extension == "csv") {
             readr::write_csv(df_to_email[[i]], file_fullpath, ...)
           } else if (file_extension == "xlsx") {
-            writexl::write_xlsx(df_to_email[[i]], file_fullpath, ...)
+            openxlsx::write.xlsx(df_to_email[[i]], file_fullpath, ...)
           } else {
             stop("Unsupported file format. Use 'csv' or 'xlsx'.")
           }
