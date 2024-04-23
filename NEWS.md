@@ -1,3 +1,7 @@
+# redcapcustodian 1.22.1 (released 2024-04-23)
+- Update run-tests.yaml to use rstudio-ci:4.3.3 (@pbchase, #157)
+- Switch send_mail() to use openxlsx (@ljwoodley, #152, #157)
+
 # redcapcustodian 1.22.0 (released 2024-03-26)
 - Implement hacky fix for tlmgr 2023 being unable to install packages (@ChemiKyle, #156)
 - Fix bug that prevented email_body from being included in email (@ljwoodley, @ChemiKyle, #155)
