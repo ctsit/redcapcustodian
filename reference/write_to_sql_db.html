@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.14.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.22.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,7 @@
     <a class="dropdown-item" href="../articles/expire_user_project_rights.html">expire_user_project_rights</a>
     <a class="dropdown-item" href="../articles/friday-call-demo-setup.html">REDCap Custodian Friday Call Demo Credentials Setup</a>
     <a class="dropdown-item" href="../articles/friday-call-demo.html">REDCap Custodian Friday Call Demo</a>
+    <a class="dropdown-item" href="../articles/job_logging.html">Job Logging</a>
     <a class="dropdown-item" href="../articles/randomization-management.html">Randomization Management</a>
   </div>
 </li>
@@ -124,7 +125,18 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">write_to_sql_db</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  conn <span class="op">=</span> <span class="va">con</span>,</span></span>
+<span class="r-in"><span>  table_name <span class="op">=</span> <span class="st">"my_table"</span>,</span></span>
+<span class="r-in"><span>  df_to_write <span class="op">=</span> <span class="va">rule_output</span>,</span></span>
+<span class="r-in"><span>  schema <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"ETL_DB_SCHEMA"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  db_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"ETL_DB_NAME"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  append <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

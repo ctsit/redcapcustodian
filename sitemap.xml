@@ -31,6 +31,9 @@
     <loc>/articles/index.html</loc>
   </url>
   <url>
+    <loc>/articles/job_logging.html</loc>
+  </url>
+  <url>
     <loc>/articles/randomization-management.html</loc>
   </url>
   <url>
@@ -76,6 +79,9 @@
     <loc>/reference/create_test_tables.html</loc>
   </url>
   <url>
+    <loc>/reference/dataframe_to_redcap_dictionary.html</loc>
+  </url>
+  <url>
     <loc>/reference/dataset_diff.html</loc>
   </url>
   <url>
@@ -85,10 +91,16 @@
     <loc>/reference/dataset_diff_test_user_data.html</loc>
   </url>
   <url>
+    <loc>/reference/delete_project.html</loc>
+  </url>
+  <url>
     <loc>/reference/disable_non_interactive_quit.html</loc>
   </url>
   <url>
     <loc>/reference/enable_randomization_on_a_preconfigured_project_in_production.html</loc>
+  </url>
+  <url>
+    <loc>/reference/evaluate_checksums.html</loc>
   </url>
   <url>
     <loc>/reference/expire_user_project_rights.html</loc>
@@ -121,6 +133,9 @@
     <loc>/reference/get_project_life_cycle.html</loc>
   </url>
   <url>
+    <loc>/reference/get_redcap_credentials.html</loc>
+  </url>
+  <url>
     <loc>/reference/get_redcap_db_connection.html</loc>
   </url>
   <url>
@@ -140,6 +155,9 @@
   </url>
   <url>
     <loc>/reference/get_script_run_time.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_table_checksum.html</loc>
   </url>
   <url>
     <loc>/reference/get_test_table_names.html</loc>
