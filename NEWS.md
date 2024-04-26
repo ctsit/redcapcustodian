@@ -1,3 +1,6 @@
+# redcapcustodian 1.22.2 (released 2024-04-26)
+- Restore 'writexl' to Dockerfile (@pbchase)
+
 # redcapcustodian 1.22.1 (released 2024-04-23)
 - Update run-tests.yaml to use rstudio-ci:4.3.3 (@pbchase, #157)
 - Switch send_mail() to use openxlsx (@ljwoodley, #152, #157)
