@@ -25,6 +25,7 @@ RUN R -e "install.packages(c( \
   'rjson', \
   'sendmailR', \
   'sqldf', \
+  'writexl', \
   'openxlsx', \
   'kableExtra' \
 ))"
