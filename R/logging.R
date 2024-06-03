@@ -247,7 +247,7 @@ set_project_name <- function(project_name = "") {
   return(redcapcustodian.env$project_name)
 }
 
-#' SEts the package-scoped value of project_instance
+#' Sets the package-scoped value of project_instance
 #' @param project_instance Defaults to NULL. If provided and not NULL, this value is used.
 #'                     If NULL, the function attempts to fetch the value from the environment variable.
 #'
