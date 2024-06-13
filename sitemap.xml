@@ -130,7 +130,13 @@
     <loc>/reference/get_package_scope_var.html</loc>
   </url>
   <url>
+    <loc>/reference/get_project_instance.html</loc>
+  </url>
+  <url>
     <loc>/reference/get_project_life_cycle.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_project_name.html</loc>
   </url>
   <url>
     <loc>/reference/get_redcap_credentials.html</loc>
@@ -218,6 +224,12 @@
   </url>
   <url>
     <loc>/reference/set_project_api_token.html</loc>
+  </url>
+  <url>
+    <loc>/reference/set_project_instance.html</loc>
+  </url>
+  <url>
+    <loc>/reference/set_project_name.html</loc>
   </url>
   <url>
     <loc>/reference/set_script_name.html</loc>

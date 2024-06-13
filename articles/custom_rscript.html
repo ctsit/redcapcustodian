@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.22.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,15 +127,21 @@ mis-steps.</p>
 will probably want both. Rename the <code>example.env</code> to
 <code>testing.env</code> and configure it for development on your
 computer. That file is composed of five sections.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="va">INSTANCE</span><span class="op">=</span>Development</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="va">TIME_ZONE</span><span class="op">=</span>America/New_York</span></code></pre></div>
-<p><code>INSTANCE</code> names the REDCap system or <em>instance</em>
-you’ll be talking to. This file assumes you are talking to only one
-REDCap in your script. There are other tools for multiple-instances.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="va">PROJECT</span><span class="op">=</span>study_template</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="va">INSTANCE</span><span class="op">=</span>Development</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="va">TIME_ZONE</span><span class="op">=</span>America/New_York</span></code></pre></div>
+<p><code>PROJECT</code> names the project, study, or git repository that
+owns the scripts. This is useful when reading log data from a shared log
+database. A unique value in the PROJECT field allows you to identify log
+entries specific to a project.</p>
+<p><code>INSTANCE</code> names the <em>instance</em> or a project,
+study, or REDCap system. If scripts are deployed in development,
+testing, and production, a unique value in this field allows you to
+identify log entries from different deployments.</p>
 <p><code>TIME_ZONE</code> should be the local timezone of your REDCap
-instance. Note that REDCap time facts in local time. The MariaDB driver
-and the Lubridate library default to UTC. That can get complicated. Be
-careful with time. For more details see <a href="https://gist.github.com/pbchase/ed55ab5dacbcc5d8a702a9cb935cccb5" class="external-link"><code>stupid_date_tricks.R</code></a></p>
+instance. Note that REDCap records time facts in local time. The MariaDB
+driver and the Lubridate library default to UTC. That can get
+complicated. Be careful with time. For more details see <a href="https://gist.github.com/pbchase/ed55ab5dacbcc5d8a702a9cb935cccb5" class="external-link"><code>stupid_date_tricks.R</code></a></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Email config</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="va">EMAIL_TO</span><span class="op">=</span>you@example.org</span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="va">EMAIL_CC</span><span class="op">=</span></span>
