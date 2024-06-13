@@ -29,6 +29,8 @@ build_etl_job_log_df <- function(job_duration, job_summary, level) {
   ) %>%
   dplyr::mutate(
     log_date = get_current_time(),
+    project = get_project_name(),
+    instance = get_project_instance(),
     script_name = get_script_name(),
     script_run_time = get_script_run_time(),
     job_duration = .data$job_duration,
@@ -65,6 +67,8 @@ build_formatted_df_from_result <- function(result, database_written, table_writt
     dplyr::mutate(record_level_data = purrr::pmap(.data, ~ rjson::toJSON(c(...)))) %>%
     dplyr::select(primary_key = pk_col, .data$record_level_data) %>%
     dplyr::mutate(
+      project = get_project_name(),
+      instance = get_project_instance(),
       script_name = get_script_name(),
       script_run_time = get_script_run_time(),
       log_date = get_current_time(),
@@ -129,6 +133,19 @@ get_script_name <- function() {
 get_script_run_time <- function() {
   return(redcapcustodian.env$script_run_time)
 }
+
+#' Fetches the package-scoped value of project_name
+#' @export
+get_project_name <- function() {
+  return(redcapcustodian.env$project_name)
+}
+
+#' Fetches the package-scoped value of project_instance
+#' @export
+get_project_instance <- function() {
+  return(redcapcustodian.env$project_instance)
+}
+
 
 #' Initialize the connection to the log db and set redcapcustodian.env$log_con
 #'
@@ -203,6 +220,55 @@ set_script_run_time <- function(fake_runtime = lubridate::NA_POSIXct_) {
     envir = redcapcustodian.env
   )
   return(redcapcustodian.env$script_run_time)
+}
+
+#' Sets the package-scoped value of project_name
+#'
+#' @param project_name Defaults to NULL. If provided and not NULL, this value is used.
+#'                     If NULL, the function attempts to fetch the value from the environment variable.
+#' @return the package-scoped value of project_name
+
+#' @examples
+#' \dontrun{
+#' project_name <- set_project_name()
+#' project_name <- set_project_name("project_name")
+#' }
+#'
+#' @export
+set_project_name <- function(project_name = "") {
+  if (project_name == "") {
+    project_name <- Sys.getenv("PROJECT")
+  }
+
+  assign("project_name",
+         project_name,
+         envir = redcapcustodian.env)
+
+  return(redcapcustodian.env$project_name)
+}
+
+#' Sets the package-scoped value of project_instance
+#' @param project_instance Defaults to NULL. If provided and not NULL, this value is used.
+#'                     If NULL, the function attempts to fetch the value from the environment variable.
+#'
+#' @return the package-scoped value of project_instance
+#' @examples
+#' \dontrun{
+#' project_instance <- set_project_instance()
+#' project_instance <- set_project_instance("project_instance")
+#' }
+#'
+#' @export
+set_project_instance <- function(project_instance = "") {
+  if (project_instance == "") {
+    project_instance <- Sys.getenv("INSTANCE")
+  }
+
+  assign("project_instance",
+         project_instance,
+         envir = redcapcustodian.env)
+
+  return(redcapcustodian.env$project_instance)
 }
 
 #' Attempts to connect to the DB using all LOG_DB_* environment variables. Returns an empty list if a connection is established, returns an `error_list` entry otherwise.

@@ -6,12 +6,18 @@
 \usage{
 init_etl(
   script_name = "",
+  project_name = "",
+  project_instance = "",
   fake_runtime = NULL,
   log_db_drv = RMariaDB::MariaDB()
 )
 }
 \arguments{
 \item{script_name}{name passed to \code{\link{set_script_name}}}
+
+\item{project_name}{name passed to \code{\link{set_project_name}}}
+
+\item{project_instance}{name passed to \code{\link{set_project_instance}}}
 
 \item{fake_runtime}{An optional asserted script run time passed to \code{\link{set_script_run_time}}, defaults to the time this function is called}
 

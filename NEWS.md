@@ -1,3 +1,6 @@
+# redcapcustodian 1.23.0 (released 2024-06-13)
+- Add project and instance to logging (@ljwoodley, @pbchase, #159, #160)
+
 # redcapcustodian 1.22.2 (released 2024-04-26)
 - Restore 'writexl' to Dockerfile (@pbchase)
 
