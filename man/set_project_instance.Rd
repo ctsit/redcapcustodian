@@ -2,18 +2,19 @@
 % Please edit documentation in R/logging.R
 \name{set_project_instance}
 \alias{set_project_instance}
-\title{Fetches the package-scoped value of project_instance}
+\title{Sets the package-scoped value of project_instance}
 \usage{
 set_project_instance(project_instance = "")
 }
 \arguments{
 \item{project_instance}{Defaults to NULL. If provided and not NULL, this value is used.
-                    If NULL, the function attempts to fetch the value from the environment variable.
-
-the package-scoped value of project_instance}
+If NULL, the function attempts to fetch the value from the environment variable.}
+}
+\value{
+the package-scoped value of project_instance
 }
 \description{
-Fetches the package-scoped value of project_instance
+Sets the package-scoped value of project_instance
 }
 \examples{
 \dontrun{
