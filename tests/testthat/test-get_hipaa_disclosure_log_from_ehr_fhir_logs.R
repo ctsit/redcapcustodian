@@ -30,7 +30,7 @@ testthat::test_that("get_hipaa_disclosure_log_from_ehr_fhir_logs works", {
     )
 
   # Write the mutated data back to the database
-  dbWriteTable(conn, "redcap_ehr_fhir_logs", redcap_ehr_fhir_logs, overwrite = TRUE)
+  duckdb_register(conn, "redcap_ehr_fhir_logs", redcap_ehr_fhir_logs)
 
   # Required column names
   required_names <- c(
