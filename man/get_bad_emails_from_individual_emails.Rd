@@ -23,7 +23,7 @@ get_bad_emails_from_individual_emails(
 \value{
 A dataframe of bounced email addresses
 \itemize{
-  \item{\code{email}}{character email address the bounced}
+  \item email character email address the bounced
 }
 }
 \description{

@@ -10,7 +10,7 @@
 #'
 #' @return A dataframe of bounced email addresses
 #' \itemize{
-#'   \item{\code{email}}{character email address the bounced}
+#'   \item email character email address the bounced
 #' }
 #' @export
 #' @importFrom magrittr "%>%"
