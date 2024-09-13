@@ -22,7 +22,7 @@ if (!interactive()) {
 }
 
 tryCatch({
-  callr::rscript(script_name, stderr = "log.txt")
+  rscript(script_name, stderr = "log.txt")
 }, error = function(e) {
   email_body <- "See the attached log for error details."
   script_path <- paste(basename(getwd()), script_name, sep = "/")
