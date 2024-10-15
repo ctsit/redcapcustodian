@@ -7,7 +7,7 @@ set_script_run_time()
 
 parser <- ArgumentParser()
 parser$add_argument("script_name", help="Script to be run")
-parser$add_argument("--optional_args", nargs='*', help="Zero or more optional arguments of any type")
+parser$add_argument("optional_args", nargs='*', help="Zero or more optional arguments of any type")
 
 if (!interactive()) {
   args <- parser$parse_args()
@@ -15,7 +15,6 @@ if (!interactive()) {
   args <- parser$parse_args(
     c(
       "study_template/etl/test_failure_alert.R",
-      "--optional_args",
       "test",
       "another test"
     )

@@ -1,2 +1,3 @@
 # Test email alert on script failure
-0 0 1 * * root /usr/bin/docker run --rm --env-file /rcc/study_template/.env rcc.site Rscript etl/run_etl.R etl/test_failure_alert.R --optional_args test "another test"
+0 0 1 * * root /usr/bin/docker run --rm --env-file /rcc/study_template/.env rcc.site Rscript etl/run_etl.R etl/test_failure_alert.R test "another test"
+
