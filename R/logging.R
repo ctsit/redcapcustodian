@@ -641,7 +641,7 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 #' @param email_from The email addresses of the sender
 #' @param df_to_email (Optional) A dataframe or a list of dataframes to be included as file attachment(s). If this parameter is used, `file_name` must also be specified.
 #'                    Each dataframe in the list must have a corresponding file name in the `file_name` parameter to ensure a one-to-one match between dataframes and file names.
-#' @param file_name (Optional) A character vector specifying the file name(s) of the attachment(s). Valid file extensions are `.csv`, `.xlsx`, and `.zip`. Each file name must be unique.
+#' @param file_name (Optional) A character vector specifying the file name(s) of the attachment(s). Valid file extensions are `.csv`, `.xlsx`, `.zip` and, `.txt`. Each file name must be unique.
 #' @param ... Additional arguments passed directly to the file writing functions: `write.csv` for CSV files, and `writexl::write_xlsx` for XLSX files.
 #'
 #' @return No returned value. It performs an action by sending an email.
@@ -783,7 +783,7 @@ send_email <-
           }
         }
 
-        if (file_extension == "zip" &&
+        if ((file_extension == "zip" || file_extension == "txt") &&
             !file.copy(file_name[[i]], output_dir, overwrite = TRUE)) {
           stop(paste("Failed to move", file_name[[i]]))
         }
