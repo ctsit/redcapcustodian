@@ -41,11 +41,15 @@ scrape_user_api_tokens <- function(conn, username_to_scrape = Sys.info()[["user"
       dplyr::tbl(conn, "redcap_projects") %>%
         dplyr::select(
           "project_id",
-          "app_title"
+          "app_title",
+          "date_deleted"
         ),
       by = "project_id"
     ) %>%
     dplyr::collect() %>%
+    # filter out deleted projects
+    dplyr::filter(is.na(.data$date_deleted)) |>
+    dplyr::select(-"date_deleted") |>
     # bind_rows used over rbind to avoid need to align column order
     dplyr::bind_rows(super_credentials) %>%
     dplyr::rename(
@@ -125,12 +129,9 @@ set_project_api_token <- function(conn, username, project_id) {
   DBI::dbExecute(conn, sql)
 }
 
-
-
 save_credentials <- function(
-                             file_path,
-                             project_id = "0",
-                             token
-                             ) {
+    file_path,
+    project_id = "0",
+    token) {
 
 }

@@ -1,3 +1,11 @@
+# redcapcustodian 1.24.0 (released 2024-10-17)
+- Add job failure alerts with run_etl.R and updates to send_mail() (@ljwoodley, #100, #165)
+- Add Sai as author in DESCRIPTION (@pbchase)
+- Filter out deleted projects in scrape_user_api_tokens() (@pbchase, #163, #164)
+- Move Roxygen2 to 7.3.2 (@pbchase)
+- Add get_hipaa_disclosure_log_from_ehr_fhir_logs() (@pbchase, #158)
+- Update run-tests.yaml to use rstudio-ci:4.3.3 (@pbchase)
+
 # redcapcustodian 1.23.0 (released 2024-06-13)
 - Add project and instance to logging (@ljwoodley, @pbchase, #159, #160)
 
