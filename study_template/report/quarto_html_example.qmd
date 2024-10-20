@@ -2,6 +2,7 @@
 title: "Quarto HTML example"
 author: "John Doe"
 format: html
+embed-resources: true
 editor: visual
 ---
 
