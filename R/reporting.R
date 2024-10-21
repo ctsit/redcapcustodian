@@ -11,13 +11,13 @@
 #'  If rendering is successful, the list includes:
 #'    \itemize{
 #'      \item `success`: TRUE
-#'      \item `report_name`: The name of the report file
-#'      \item `filepath`: The full path to where the report is saved
+#'      \item `report_name`: The name of the report file.
+#'      \item `filepath`: The full path to the report.
 #'  }
 #'   If rendering fails, the list includes:
 #'   \itemize{
 #'     \item `success`: FALSE
-#'      \item `error`: A string describing the error message
+#'      \item `logfile`: The full path to the log file.
 #'  }
 #'
 #' @export
@@ -25,7 +25,7 @@
 #' @examples
 #' \dontrun{
 #' script_path <- here::here("report", "quarto_html_example.qmd")
-#' report_metadata <- render_report(script_path)
+#' render_results <- render_report(script_path)
 #' }
 #'
 #'
@@ -33,14 +33,13 @@ render_report <- function(script_path) {
 
   script_path_without_extension <- tools::file_path_sans_ext(script_path)
   base_script_name <- basename(script_path_without_extension)
+  logfile <- paste0(script_path_without_extension, "_log.txt")
 
   result <- tryCatch({
-    quarto::quarto_render(script_path)
-    # Return a success indicator if no error occurs
+    capture.output(quarto::quarto_render(script_path), file = logfile)
     list(success = TRUE)
   }, error = function(e) {
-    # Return failure and error message
-    list(success = FALSE, error = e$message)
+    list(success = FALSE, logfile = logfile)
   })
 
   if (!result$success) {

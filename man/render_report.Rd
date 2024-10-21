@@ -15,13 +15,13 @@ A list containing details about the operation's outcome:
  If rendering is successful, the list includes:
    \itemize{
      \item `success`: TRUE
-     \item `report_name`: The name of the report file
-     \item `filepath`: The full path to where the report is saved
+     \item `report_name`: The name of the report file.
+     \item `filepath`: The full path to the report.
  }
   If rendering fails, the list includes:
   \itemize{
     \item `success`: FALSE
-     \item `error`: A string describing the error message
+     \item `logfile`: The full path to the log file.
  }
 }
 \description{
@@ -32,7 +32,7 @@ timestamp appended to the filename.
 \examples{
 \dontrun{
 script_path <- here::here("report", "quarto_html_example.qmd")
-report_metadata <- render_report(script_path)
+render_results <- render_report(script_path)
 }
 
 
