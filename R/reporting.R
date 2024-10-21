@@ -39,7 +39,7 @@ render_report <- function(script_path) {
     capture.output(quarto::quarto_render(script_path), file = logfile)
     list(success = TRUE)
   }, error = function(e) {
-    list(success = FALSE, logfile = logfile)
+    list(success = FALSE, logfile = logfile, error = e$message)
   })
 
   if (!result$success) {
