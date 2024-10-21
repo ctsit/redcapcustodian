@@ -1,6 +1,8 @@
 ---
 title: "Sample Report"
-output: pdf_document
+format:
+  pdf:
+    self-contained: true
 ---
 
 ```{r setup, include=FALSE}
