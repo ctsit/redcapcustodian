@@ -18,6 +18,7 @@
 #'   \itemize{
 #'     \item `success`: FALSE
 #'      \item `logfile`: The full path to the log file.
+#'      \item `error`: Error message returned from quarto_render.
 #'  }
 #'
 #' @export
