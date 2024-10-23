@@ -7,19 +7,17 @@ library(argparse)
 init_etl("render_report")
 
 parser <- ArgumentParser()
-parser$add_argument("script_path", nargs=1, help="The full path of the script to be run")
+parser$add_argument("script_path", nargs=1, help="The path of the script to be run")
 
 if (!interactive()) {
   args <- parser$parse_args()
   script_path <- args$script_path
-  if(!fs::file_exists(script_path)) {
-    stop(sprintf("Specified file, %s, does not exist", script_path))
-  }
 } else {
-  script_path <- "study_template/report/quarto_html_example.qmd"
-  if(!fs::file_exists(script_path)) {
-    stop(sprintf("Specified file, %s, does not exist", script_path))
-  }
+  script_path <- here::here("report", "quarto_html_example.qmd")
+}
+
+if(!fs::file_exists(script_path)) {
+  stop(sprintf("Specified file, %s, does not exist", script_path))
 }
 
 render_results <- render_report(script_path)

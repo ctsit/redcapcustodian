@@ -34,7 +34,8 @@ render_report <- function(script_path) {
 
   script_path_without_extension <- tools::file_path_sans_ext(script_path)
   base_script_name <- basename(script_path_without_extension)
-  logfile <- paste0(script_path_without_extension, "_log.txt")
+  run_time <- format(redcapcustodian::get_script_run_time(), "%Y-%m-%d_%H%M%S")
+  logfile <- here::here("report", "log", paste0(base_script_name, "_", run_time, ".txt"))
 
   result <- tryCatch({
     capture.output(quarto::quarto_render(script_path), file = logfile)
@@ -57,7 +58,7 @@ render_report <- function(script_path) {
       report_name <- paste0(
         base_script_name,
         "_",
-        format(redcapcustodian::get_script_run_time(), "%Y-%m-%d_%H%M%S"),
+        run_time,
         ".",
         file_extension
       )

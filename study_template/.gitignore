@@ -6,4 +6,5 @@
 *.env
 !examples/testing.env
 output/
-report/*log.txt
+report/output/*
+report/log/*
