@@ -1,3 +1,8 @@
+# redcapcustodian 1.25.0 (released 2024-10-24)
+- Add report crash logging to render_report.R  (@ljwoodley, #166)
+- Update render_report.R to use render_report() function  (@ljwoodley, #166)
+- Add render_report() (@ljwoodley, #166)
+
 # redcapcustodian 1.24.0 (released 2024-10-17)
 - Add job failure alerts with run_etl.R and updates to send_mail() (@ljwoodley, #100, #165)
 - Add Sai as author in DESCRIPTION (@pbchase)
