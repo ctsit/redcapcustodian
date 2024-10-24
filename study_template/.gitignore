@@ -6,3 +6,7 @@
 *.env
 !examples/testing.env
 output/
+report/*.html
+report/*.pdf
+report/*.txt
+
