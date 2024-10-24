@@ -10,8 +10,11 @@
 *.zip
 site
 !inst/testdata/*.csv
-report/output/*
-report/log/*
+report/*.html
+report/*.pdf
+report/*.txt
+
+
 
 # env file
 *.env
