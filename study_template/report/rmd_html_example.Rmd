@@ -1,7 +1,7 @@
 ---
-title: "Sample Report"
+title: "Rmd HTML Example"
 format:
-  pdf:
+  html:
     self-contained: true
 ---
 
