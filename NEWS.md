@@ -1,3 +1,6 @@
+# redcapcustodian 1.26.0 (released 2024-10-30)
+- Update Dockerfile to rocker/verse:4.4.1 (@pbchase)
+
 # redcapcustodian 1.25.0 (released 2024-10-24)
 - Add report crash logging to render_report.R  (@ljwoodley, #166)
 - Update render_report.R to use render_report() function  (@ljwoodley, #166)
