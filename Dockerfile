@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 rocker/verse:4.3.3
+FROM --platform=linux/amd64 rocker/verse:4.4.1
 
 WORKDIR /home/rocker
 
