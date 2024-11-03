@@ -35,10 +35,10 @@ render_report <- function(script_path) {
   script_path_without_extension <- tools::file_path_sans_ext(script_path)
   base_script_name <- basename(script_path_without_extension)
   run_time <- format(redcapcustodian::get_script_run_time(), "%Y-%m-%d_%H%M%S")
-  logfile <- here::here("report", "log", paste0(base_script_name, "_", run_time, ".txt"))
+  logfile <- file.path(tempdir(), paste0(base_script_name, "_", run_time, ".txt"))
 
   result <- tryCatch({
-    capture.output(quarto::quarto_render(script_path), file = logfile)
+    utils::capture.output(quarto::quarto_render(script_path), file = logfile)
     list(success = TRUE)
   }, error = function(e) {
     list(success = FALSE, logfile = logfile, error = e$message)
@@ -55,15 +55,9 @@ render_report <- function(script_path) {
     if (file.exists(default_filename)) {
       file_extension <- tools::file_ext(default_filename)
 
-      report_name <- paste0(
-        base_script_name,
-        "_",
-        run_time,
-        ".",
-        file_extension
-      )
+      report_name <- paste0(base_script_name, "_", run_time, ".", file_extension)
 
-      report_filepath <- here::here("report", "output", report_name)
+      report_filepath <- file.path("report", report_name)
 
       file.rename(default_filename, report_filepath)
 
