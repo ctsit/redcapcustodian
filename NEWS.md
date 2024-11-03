@@ -1,3 +1,9 @@
+# redcapcustodian 1.26.1 (released 2024-11-03)
+- Use latest rstudio-ci in run-tests.yaml (@pbchase, #167)
+- Address check errors (@pbchase, #167)
+- remove log and output folder from study_template (@ljwoodley, #167)
+- write log file to tempdir (@ljwoodley, #167)
+
 # redcapcustodian 1.26.0 (released 2024-10-30)
 - Update Dockerfile to rocker/verse:4.4.1 (@pbchase)
 
