@@ -38,7 +38,7 @@ render_report <- function(script_path) {
   logfile <- file.path(tempdir(), paste0(base_script_name, "_", run_time, ".txt"))
 
   result <- tryCatch({
-    capture.output(quarto::quarto_render(script_path), file = logfile)
+    utils::capture.output(quarto::quarto_render(script_path), file = logfile)
     list(success = TRUE)
   }, error = function(e) {
     list(success = FALSE, logfile = logfile, error = e$message)
