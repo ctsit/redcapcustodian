@@ -50,7 +50,7 @@ testthat::test_that("get_project_life_cycle caches and returns event_date, log_e
   testthat::expect_true(all.equal(result, cached_result))
   testthat::expect_equal("Date", class(result$event_date))
   testthat::expect_equal(
-    result$log_event_table %in% seq(1:9),
+    result$log_event_table %in% seq(1:12),
     rep(TRUE, nrow(result))
   )
   testthat::expect_equal(
