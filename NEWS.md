@@ -1,3 +1,7 @@
+# redcapcustodian 1.26.2 (released 2024-11-20)
+- Add new production status (@saipavan10-git, #168, #170)
+- Add log event tables 10,11,12 (@saipavan10-git, #168, #170)
+
 # redcapcustodian 1.26.1 (released 2024-11-03)
 - Use latest rstudio-ci in run-tests.yaml (@pbchase, #167)
 - Address check errors (@pbchase, #167)

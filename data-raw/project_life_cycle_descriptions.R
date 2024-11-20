@@ -1,4 +1,6 @@
 project_life_cycle_descriptions <- c(
+  # Latest addition
+  "Move project to Production status (delete all records)",
   # modern values from Spring 2023
   "Add/edit survey login settings",
   "Approve production project modifications",
