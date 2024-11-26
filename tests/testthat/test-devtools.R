@@ -22,6 +22,8 @@ testthat::test_that("create_test_table creates redcap_projects with the right di
   testthat::expect_equal(dim(tbl(conn, "redcap_projects") %>% collect()), c(20,142))
 })
 
+DBI::dbDisconnect(conn)
+
 testthat::test_that("convert_schema_to_sqlite can convert a MySQL schema to valid SQLite syntax", {
   mysql_schema <- "CREATE TABLE `redcap_entity_project_ownership` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -72,9 +74,14 @@ testthat::test_that("copy_entire_table_to_db works", {
     target_conn = target_conn
   )
 
+  result <- dplyr::collect(dplyr::tbl(target_conn, table_name))
+
+  DBI::dbDisconnect(source_conn, shutdown = TRUE)
+  DBI::dbDisconnect(target_conn, shutdown = TRUE)
+
   # verify the copy
   testthat::expect_equal(
-    dplyr::collect(dplyr::tbl(target_conn, table_name)),
+    result,
     test_data
   )
 })

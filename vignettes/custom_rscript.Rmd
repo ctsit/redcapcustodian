@@ -53,13 +53,16 @@ If this is not your first REDCap Custodian rodeo, you might remember what you ne
 You'll need to talk to at least a REDCap or a MySQL database. You will probably want both. Rename the `example.env` to `testing.env` and configure it for development on your computer. That file is composed of five sections.
 
 ```sh
+PROJECT=study_template
 INSTANCE=Development
 TIME_ZONE=America/New_York
 ```
 
-`INSTANCE` names the REDCap system or _instance_ you'll be talking to. This file assumes you are talking to only one REDCap in your script. There are other tools for multiple-instances.
+`PROJECT` names the project, study, or git repository that owns the scripts. This is useful when reading log data from a shared log database. A unique value in the PROJECT field allows you to identify log entries specific to a project.
 
-`TIME_ZONE` should be the local timezone of your REDCap instance. Note that REDCap time facts in local time. The MariaDB driver and the Lubridate library default to UTC. That can get complicated. Be careful with time. For more details see [`stupid_date_tricks.R`](https://gist.github.com/pbchase/ed55ab5dacbcc5d8a702a9cb935cccb5)
+`INSTANCE` names the _instance_ or a project, study, or REDCap system. If scripts are deployed in development, testing, and production, a unique value in this field allows you to identify log entries from different deployments.
+
+`TIME_ZONE` should be the local timezone of your REDCap instance. Note that REDCap records time facts in local time. The MariaDB driver and the Lubridate library default to UTC. That can get complicated. Be careful with time. For more details see [`stupid_date_tricks.R`](https://gist.github.com/pbchase/ed55ab5dacbcc5d8a702a9cb935cccb5)
 
 ```sh
 # Email config
@@ -150,6 +153,7 @@ activity_log <- diff_output$update_records %>%
   select(pid, billable, updated)
 
 log_job_success(jsonlite::toJSON(activity_log))
+dbDisconnect(conn)
 ```
 
 That script generated this log record in the log database:

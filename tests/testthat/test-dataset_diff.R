@@ -3,7 +3,7 @@
 # dataset_diff result separately
 test_dataset_diff_components <- function(df, df_name) {
   testthat::test_that(paste("dataset_diff updates match for", df_name), {
-    testthat::expect_true(dplyr::all_equal(
+    testthat::expect_true(all.equal(
       dataset_diff(
         source = df$source,
         source_pk = df$source_pk,
@@ -15,7 +15,7 @@ test_dataset_diff_components <- function(df, df_name) {
   })
 
   testthat::test_that(paste("dataset_diff updates match for", df_name), {
-    testthat::expect_true(dplyr::all_equal(
+    testthat::expect_true(all.equal(
       dataset_diff(
         source = df$source,
         source_pk = df$source_pk,
@@ -27,7 +27,7 @@ test_dataset_diff_components <- function(df, df_name) {
   })
 
   testthat::test_that(paste("dataset_diff updates match for", df_name), {
-    testthat::expect_true(dplyr::all_equal(
+    testthat::expect_true(all.equal(
       dataset_diff(
         source = df$source,
         source_pk = df$source_pk,
@@ -41,3 +41,4 @@ test_dataset_diff_components <- function(df, df_name) {
 
 test_dataset_diff_components(dataset_diff_test_bar_bang, "bar_bang")
 test_dataset_diff_components(dataset_diff_test_user_data, "user_data")
+

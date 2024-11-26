@@ -1,7 +1,8 @@
 ---
-title: "Quarto HTML example"
+title: "Quarto HTML Example"
 author: "John Doe"
 format: html
+embed-resources: true
 editor: visual
 ---
 

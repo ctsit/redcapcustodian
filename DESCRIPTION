@@ -1,7 +1,7 @@
 Package: redcapcustodian
 Type: Package
 Title: Data automation for R-centric workflows with a nod towards REDCap
-Version: 1.14.1
+Version: 1.26.2
 Authors@R: c(
   person("Philip", "Chase",
         email = "pbc@ufl.edu",
@@ -23,6 +23,10 @@ Authors@R: c(
         email = "mbentz@ufl.edu",
         role = "aut",
         comment=c(ORCID = "0000-0002-5790-4268")),
+  person("Sai Pavan", "Kamma",
+        email = "saipavankamma@ufl.edu",
+        role = "aut",
+        comment=c(ORCID = "0009-0004-4619-0409")),
   person("Christopher", "Barnes",
         email = "cpb@ufl.edu",
         role = "ctb",
@@ -55,17 +59,22 @@ Imports:
     tibble,
     tidyr,
     vctrs,
-    jsonlite
+    jsonlite,
+    openxlsx,
+    quarto
 Suggests:
     RSQLite,
     digest,
+    dotenv,
     duckdb,
     fs,
+    kableExtra,
     knitr (>= 1.18),
     rmarkdown (>= 2.0),
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tidyverse
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)

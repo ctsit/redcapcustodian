@@ -55,6 +55,9 @@ copy_entire_table_to_db(
 
 dplyr::collect(dplyr::tbl(target_conn, table_name))
 
+DBI::dbDisconnect(source_conn, shutdown = TRUE)
+DBI::dbDisconnect(target_conn, shutdown = TRUE)
+
 \dontrun{
 library(tidyverse)
 library(lubridate)

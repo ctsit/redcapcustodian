@@ -18,8 +18,8 @@ error_list <- dplyr::tibble(
 #' \dontrun{
 #'  build_etl_job_log_df(
 #'    job_duration,
-#'    job_summary
-#'    level,
+#'    job_summary,
+#'    level
 #'  )
 #' }
 build_etl_job_log_df <- function(job_duration, job_summary, level) {
@@ -29,6 +29,8 @@ build_etl_job_log_df <- function(job_duration, job_summary, level) {
   ) %>%
   dplyr::mutate(
     log_date = get_current_time(),
+    project = get_project_name(),
+    instance = get_project_instance(),
     script_name = get_script_name(),
     script_run_time = get_script_run_time(),
     job_duration = .data$job_duration,
@@ -65,6 +67,8 @@ build_formatted_df_from_result <- function(result, database_written, table_writt
     dplyr::mutate(record_level_data = purrr::pmap(.data, ~ rjson::toJSON(c(...)))) %>%
     dplyr::select(primary_key = pk_col, .data$record_level_data) %>%
     dplyr::mutate(
+      project = get_project_name(),
+      instance = get_project_instance(),
       script_name = get_script_name(),
       script_run_time = get_script_run_time(),
       log_date = get_current_time(),
@@ -129,6 +133,19 @@ get_script_name <- function() {
 get_script_run_time <- function() {
   return(redcapcustodian.env$script_run_time)
 }
+
+#' Fetches the package-scoped value of project_name
+#' @export
+get_project_name <- function() {
+  return(redcapcustodian.env$project_name)
+}
+
+#' Fetches the package-scoped value of project_instance
+#' @export
+get_project_instance <- function() {
+  return(redcapcustodian.env$project_instance)
+}
+
 
 #' Initialize the connection to the log db and set redcapcustodian.env$log_con
 #'
@@ -203,6 +220,55 @@ set_script_run_time <- function(fake_runtime = lubridate::NA_POSIXct_) {
     envir = redcapcustodian.env
   )
   return(redcapcustodian.env$script_run_time)
+}
+
+#' Sets the package-scoped value of project_name
+#'
+#' @param project_name Defaults to NULL. If provided and not NULL, this value is used.
+#'                     If NULL, the function attempts to fetch the value from the environment variable.
+#' @return the package-scoped value of project_name
+
+#' @examples
+#' \dontrun{
+#' project_name <- set_project_name()
+#' project_name <- set_project_name("project_name")
+#' }
+#'
+#' @export
+set_project_name <- function(project_name = "") {
+  if (project_name == "") {
+    project_name <- Sys.getenv("PROJECT")
+  }
+
+  assign("project_name",
+         project_name,
+         envir = redcapcustodian.env)
+
+  return(redcapcustodian.env$project_name)
+}
+
+#' Sets the package-scoped value of project_instance
+#' @param project_instance Defaults to NULL. If provided and not NULL, this value is used.
+#'                     If NULL, the function attempts to fetch the value from the environment variable.
+#'
+#' @return the package-scoped value of project_instance
+#' @examples
+#' \dontrun{
+#' project_instance <- set_project_instance()
+#' project_instance <- set_project_instance("project_instance")
+#' }
+#'
+#' @export
+set_project_instance <- function(project_instance = "") {
+  if (project_instance == "") {
+    project_instance <- Sys.getenv("INSTANCE")
+  }
+
+  assign("project_instance",
+         project_instance,
+         envir = redcapcustodian.env)
+
+  return(redcapcustodian.env$project_instance)
 }
 
 #' Attempts to connect to the DB using all LOG_DB_* environment variables. Returns an empty list if a connection is established, returns an `error_list` entry otherwise.
@@ -492,9 +558,9 @@ write_success_job_log_entry <- function(con, job_duration, job_summary) {
 #'  write_error_log_entry(
 #'    conn = con,
 #'    target_db_name = rc_case,
-#'    table_written = "cases"
+#'    table_written = "cases",
 #'    df = data_written,
-#'    pk_col = "record_id",
+#'    pk_col = "record_id"
 #'  )
 #' }
 write_error_log_entry <- function(conn, target_db_name, table_written = NULL, df, pk_col) {
@@ -566,53 +632,179 @@ write_info_log_entry <- function(conn, target_db_name, table_written = NULL, df,
 
 #' A wrapper function that sends an email (via sendmailR) reporting the outcome of another function
 #'
+#' This function sends an email via `sendmailR`, optionally including a dataframe(s) or zip files(s) as attachments.
+#'
 #' @param email_body The contents of the email
 #' @param email_subject The subject line of the email
 #' @param email_to The email addresses of the primary recipient(s), separate recipient addresses with spaces
 #' @param email_cc The email addresses of cc'd recipient(s), separate recipient addresses with spaces
 #' @param email_from The email addresses of the sender
-#' @return No returned value
+#' @param df_to_email (Optional) A dataframe or a list of dataframes to be included as file attachment(s). If this parameter is used, `file_name` must also be specified.
+#'                    Each dataframe in the list must have a corresponding file name in the `file_name` parameter to ensure a one-to-one match between dataframes and file names.
+#' @param file_name (Optional) A character vector specifying the file name(s) of the attachment(s). Valid file extensions are `.csv`, `.xlsx`, `.zip` and, `.txt`. Each file name must be unique.
+#' @param ... Additional arguments passed directly to the file writing functions: `write.csv` for CSV files, and `writexl::write_xlsx` for XLSX files.
+#'
+#' @return No returned value. It performs an action by sending an email.
 #' @examples
 #'
 #' \dontrun{
-#' message <- paste("Failed REDCap data import to", project_title,
+#' email_body <- paste("Failed REDCap data import to", project_title,
 #'                   "\nThe reason given was:", error_message)
 #'
 #' email_subject <- paste("FAILED |", script_name, "|",
 #'                         Sys.getenv("INSTANCE"), "|", script_run_time)
 #'
-#' send_email(message, email_subject)
+#' # email without attachemnts
+#' send_email(email_body, email_subject)
+#'
+#' email_to <- c("email1@example.com email2@example.com")
+#' dfs_to_email <- list(head(cars), tail(cars))
+#' file_names <- c("file1.csv", "file2.xlsx")
+#'
+#' # single attachment and at least one email address
+#' send_email(
+#'   email_subject = email_subject,
+#'   email_body = email_body,
+#'   email_from = email_from,
+#'   email_to = email_to,
+#'   df_to_email = head(cars),
+#'   file_name = "file1.csv"
+#' )
+#'
+#' # multiple attachments and at least one email address
+#' send_email(
+#'   email_subject = email_subject,
+#'   email_body = email_body,
+#'   email_from = email_from,
+#'   email_to = email_to,
+#'   df_to_email = dfs_to_email,
+#'   file_name = file_names
+#' )
+#'
+#' send_email(
+#'   email_subject = email_subject,
+#'   email_body = email_body,
+#'   email_from = email_from,
+#'   email_to = email_to,
+#'   file_name = c("file1.zip", "<path_to_file>file2.zip")
+#' )
+#'
+#' # single attachment for each email group
+#' email_to <- c("email1@example.com", c("email2@example.com email3@example.com"))
+#'
+#' args_list <- list(
+#'   email_subject = email_subject,
+#'   email_body = email_body,
+#'   email_to = email_to,
+#'   email_from = email_from,
+#'   df_to_email = dfs_to_email,
+#'   file_name = file_names
+#' )
+#'
+#' purrr::pmap(args_list, send_email)
+#'
+#' # multiple attachments for each email group
+#' email_to <- c(
+#'   c("email1@example.com email2@example.com"),
+#'   c("email3@example.com email4@example.com")
+#' )
+#'
+#' args_list <- list(
+#'   email_subject = email_subject,
+#'   email_body = email_body,
+#'   email_to = email_to,
+#'   email_from = email_from,
+#'   df_to_email = list(dfs_to_email, dfs_to_email),
+#'   file_name = list(file_names, file_names)
+#' )
+#'
+#' purrr::pmap(args_list, send_email)
+#'
 #' }
 #' @importFrom sendmailR "sendmail"
+#' @importFrom openxlsx write.xlsx
 #' @export
-send_email <- function(email_body, email_subject = "", email_to = "", email_cc = "", email_from = "") {
-  # email credentials
-  email_server <- list(smtpServer = Sys.getenv("SMTP_SERVER"))
-  if (email_from == "") {
-    email_from <- Sys.getenv("EMAIL_FROM")
-  }
-  if (email_cc == "") {
-    email_cc <- unlist(strsplit(Sys.getenv("EMAIL_CC"), " "))
-  } else {
-    email_cc <- unlist(strsplit(email_cc, " "))
-  }
-  if (email_subject == "") {
-    email_subject <- paste(Sys.getenv("EMAIL_SUBJECT"), get_script_run_time())
-  }
+send_email <-
+  function(email_body,
+           email_subject = "",
+           email_to = "",
+           email_cc = "",
+           email_from = "",
+           df_to_email = NULL,
+           file_name = NULL,
+           ...
+  ) {
 
-  if (email_to == "") {
-    email_to <- unlist(strsplit(Sys.getenv("EMAIL_TO"), " "))
-  } else {
-    email_to <- unlist(strsplit(email_to, " "))
-  }
+    email_server <- list(smtpServer = Sys.getenv("SMTP_SERVER"))
+    if (email_from == "") {
+      email_from <- Sys.getenv("EMAIL_FROM")
+    }
+    if (email_cc == "") {
+      email_cc <- unlist(strsplit(Sys.getenv("EMAIL_CC"), " "))
+    } else {
+      email_cc <- unlist(strsplit(email_cc, " "))
+    }
+    if (email_subject == "") {
+      email_subject <-
+        paste(Sys.getenv("EMAIL_SUBJECT"), get_script_run_time())
+    }
 
-  ## TODO: consider toggling bypass of printing if interactive and local env detected
-  ## if (interactive()) {
-  ##   print(email_body)
-  ##   return(email_body)
-  ## }
-  # TODO: consider replacing sendmailR with mRpostman
-  sendmailR::sendmail(from = email_from, to = email_to, cc = email_cc,
-                      subject = email_subject, msg = email_body,
-                      control = email_server)
-}
+    if (email_to == "") {
+      email_to <- unlist(strsplit(Sys.getenv("EMAIL_TO"), " "))
+    } else {
+      email_to <- unlist(strsplit(email_to, " "))
+    }
+
+    email_content <- email_body
+
+    if (!is.null(file_name)) {
+      output_dir <- tempdir()
+
+      if (!is.null(df_to_email) && is.data.frame(df_to_email)) {
+        df_to_email <- list(df_to_email)
+      }
+
+      if (!is.null(df_to_email) &&
+          length(df_to_email) != length(file_name)) {
+        stop("The number of dataframes and file names must match.")
+      }
+
+      for (i in seq_along(file_name)) {
+        file_extension <- tolower(sub(".*\\.(.*)$", "\\1", file_name[[i]]))
+        file_fullpath <- file.path(output_dir, basename(file_name[[i]]))
+
+        if (!is.null(df_to_email)) {
+          if (file_extension == "csv") {
+            readr::write_csv(df_to_email[[i]], file_fullpath, ...)
+          } else if (file_extension == "xlsx") {
+            openxlsx::write.xlsx(df_to_email[[i]], file_fullpath, ...)
+          } else {
+            stop("Unsupported file format. Use 'csv' or 'xlsx'.")
+          }
+        }
+
+        if ((file_extension == "zip" || file_extension == "txt") &&
+            !file.copy(file_name[[i]], output_dir, overwrite = TRUE)) {
+          stop(paste("Failed to move", file_name[[i]]))
+        }
+
+        attachment_object <- sendmailR::mime_part(file_fullpath, basename(file_fullpath))
+        email_content <- c(email_content, attachment_object)
+      }
+    }
+
+    ## TODO: consider toggling bypass of printing if interactive and local env detected
+    ## if (interactive()) {
+    ##   print(email_body)
+    ##   return(email_body)
+    ## }
+    # TODO: consider replacing sendmailR with mRpostman
+    sendmailR::sendmail(
+      from = email_from,
+      to = email_to,
+      cc = email_cc,
+      subject = email_subject,
+      msg = email_content,
+      control = email_server
+    )
+  }

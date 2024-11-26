@@ -1,3 +1,87 @@
+# redcapcustodian 1.26.2 (released 2024-11-20)
+- Add new production status (@saipavan10-git, #168, #170)
+- Add log event tables 10,11,12 (@saipavan10-git, #168, #170)
+
+# redcapcustodian 1.26.1 (released 2024-11-03)
+- Use latest rstudio-ci in run-tests.yaml (@pbchase, #167)
+- Address check errors (@pbchase, #167)
+- remove log and output folder from study_template (@ljwoodley, #167)
+- write log file to tempdir (@ljwoodley, #167)
+
+# redcapcustodian 1.26.0 (released 2024-10-30)
+- Update Dockerfile to rocker/verse:4.4.1 (@pbchase)
+
+# redcapcustodian 1.25.0 (released 2024-10-24)
+- Add report crash logging to render_report.R  (@ljwoodley, #166)
+- Update render_report.R to use render_report() function  (@ljwoodley, #166)
+- Add render_report() (@ljwoodley, #166)
+
+# redcapcustodian 1.24.0 (released 2024-10-17)
+- Add job failure alerts with run_etl.R and updates to send_mail() (@ljwoodley, #100, #165)
+- Add Sai as author in DESCRIPTION (@pbchase)
+- Filter out deleted projects in scrape_user_api_tokens() (@pbchase, #163, #164)
+- Move Roxygen2 to 7.3.2 (@pbchase)
+- Add get_hipaa_disclosure_log_from_ehr_fhir_logs() (@pbchase, #158)
+- Update run-tests.yaml to use rstudio-ci:4.3.3 (@pbchase)
+
+# redcapcustodian 1.23.0 (released 2024-06-13)
+- Add project and instance to logging (@ljwoodley, @pbchase, #159, #160)
+
+# redcapcustodian 1.22.2 (released 2024-04-26)
+- Restore 'writexl' to Dockerfile (@pbchase)
+
+# redcapcustodian 1.22.1 (released 2024-04-23)
+- Update run-tests.yaml to use rstudio-ci:4.3.3 (@pbchase, #157)
+- Switch send_mail() to use openxlsx (@ljwoodley, #152, #157)
+
+# redcapcustodian 1.22.0 (released 2024-03-26)
+- Implement hacky fix for tlmgr 2023 being unable to install packages (@ChemiKyle, #156)
+- Fix bug that prevented email_body from being included in email (@ljwoodley, @ChemiKyle, #155)
+- Add 'Scraping one user's API tokens' section to vignettes/credential-scraping.Rmd (@pbchase, @ChemiKyle, #154)
+- Update scrape_user_api_tokens() to tidyselect 1.2 standards (@pbchase, #154)
+
+# redcapcustodian 1.21.0 (released 2024-03-15)
+- Add attachment management to send_email() allowing lists of files or dataframes to be attached to an email (@ljwoodley, #152, #153)
+
+# redcapcustodian 1.20.0 (released 2024-02-28)
+- Add get_redcap_credentials() (@ljwoodley, #149, #151)
+- Revert "add redcap wrapper functions" (@ljwoodley, #149, #150)
+
+# redcapcustodian 1.19.0 (released 2024-01-30)
+- Add REDCapR wrapper functions (@ljwoodley, #147, #148)
+
+# redcapcustodian 1.18.0 (released 2024-01-10)
+- Update Dockerfile to verse:4.3.2 (@pbchase)
+
+# redcapcustodian 1.17.4 (released 2023-11-22)
+- Turn off code chunks in job_logging.Rmd to fix pkgdown::deploy_to_branch() errors (@pbchase)
+
+# redcapcustodian 1.17.3 (released 2023-11-21)
+- Fix 4 intermittent test failures caused by environment vars (@pbchase, #143)
+- Fix error in test 'init_etl properly sets script name, script run time, and initializes log connection' (@pbchase, #143)
+- Fix 11 warnings about dplyr::all_equal() in tests (@pbchase, #143)
+- Address lots of pkgdown::build_site() complaints about garbage-collected connections (@pbchase, @ChemiKyle, #143)
+- Address pkgdown::build_site() complaints about non-parsable code examples (@pbchase, @ChemiKyle, #104, #143)
+- Update vignettes/job_logging.Rmd to fix build errors (@pbchase, #143)
+
+# redcapcustodian 1.17.2 (released 2023-11-17)
+- Update vignettes/job_logging.Rmd to fix build errors (@pbchase, #142)
+
+# redcapcustodian 1.17.1 (released 2023-11-17)
+- Fix build failures caused by vignettes/job_logging.Rmd (@pbchase)
+
+# redcapcustodian 1.17.0 (released 2023-11-17)
+- Add job_logging vignette (@pbchase, #113, #115)
+- Add objects_to_include param to unnest_job_summary_data_json_object() (@pbchase, #112, #115)
+
+# redcapcustodian 1.16.0 (released 2023-11-16)
+- Add MySQL database comparison tools (@pbchase, @ChemiKyle, #140)
+
+# redcapcustodian 1.15.0 (released 2023-10-31)
+- Fix test data for get_redcap_email_revisions() (@pbchase)
+- Add delete_project() (@ljwoodley, #139)
+- Add dataframe_to_redcap_dictionary() (@ljwoodley, #136)
+
 # redcapcustodian 1.14.1 (released 2023-08-24)
 - Update etl/delete_erroneous_survey_reminders.R (@pbchase, #137)
 

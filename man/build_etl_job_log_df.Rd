@@ -23,8 +23,8 @@ Builds formatted rcc_job_log data frame from source data
 \dontrun{
  build_etl_job_log_df(
    job_duration,
-   job_summary
-   level,
+   job_summary,
+   level
  )
 }
 }
