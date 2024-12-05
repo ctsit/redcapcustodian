@@ -60,8 +60,8 @@ delete_project <- function(project_id, conn) {
 
     # Define logging parameters
     ts <- format(Sys.time(), "%Y%m%d%H%M%S") # Time stamp
-    user <- "admin" # Placeholder for user
-    ip <- "192.168.65.1" # Placeholder for IP address
+    user <- ifelse(is.null(get_script_name()), "admin", get_script_name())
+    ip <- getip::getip("local")
     page <- "rcc.billing::delete_abandoned_projects"
     event <- "MANAGE"
     object_type <- "redcap_projects"
@@ -102,7 +102,7 @@ delete_project <- function(project_id, conn) {
                 data_values,
                 description,
                 legacy,
-                ifelse(is.null(change_reason), "NULL", sprintf("'%s'", change_reason)) # Change reason
+                ifelse(is.null(change_reason), "NULL", sprintf("'%s'", change_reason))
               )
             )
           }
