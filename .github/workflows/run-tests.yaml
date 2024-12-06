@@ -21,11 +21,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # Restore R dependencies cache
+      # Create directories for R libraries if not already present
+      - name: Create R Library Paths
+        run: |
+          mkdir -p /github/home/R/x86_64-pc-linux-gnu-library/4.4
+          mkdir -p renv/library
+
+      # Restore cache for R dependencies
       - name: Restore R Dependencies Cache
         uses: actions/cache@v4
         with:
-          path: /github/home/R/x86_64-pc-linux-gnu-library/4.4
+          path: |
+            /github/home/R/x86_64-pc-linux-gnu-library/4.4
+            renv/library
           key: ${{ runner.os }}-r-libs-${{ hashFiles('DESCRIPTION') }}
           restore-keys: |
             ${{ runner.os }}-r-libs-
@@ -41,8 +49,11 @@ jobs:
         run: devtools::test(stop_on_failure = TRUE)
         shell: Rscript {0}
 
+      # Save R dependencies to cache
       - name: Save R Dependencies Cache
         uses: actions/cache@v4
         with:
-          path: /github/home/R/x86_64-pc-linux-gnu-library/4.4
+          path: |
+            /github/home/R/x86_64-pc-linux-gnu-library/4.4
+            renv/library
           key: ${{ runner.os }}-r-libs-${{ hashFiles('DESCRIPTION') }}
