@@ -15,6 +15,7 @@ jobs:
 
     env:
       CI: "TRUE"
+      R_LIBS_USER: /github/home/R/x86_64-pc-linux-gnu-library/4.4
 
     steps:
       - uses: actions/checkout@v2
