@@ -28,6 +28,7 @@ RUN R -e "install.packages(c( \
   'writexl', \
   'openxlsx', \
   'kableExtra' \
+  'getip' \
 ))"
 
 RUN R -e "devtools::install_github('allanvc/mRpostman')"
