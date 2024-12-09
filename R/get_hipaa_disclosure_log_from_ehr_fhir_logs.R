@@ -30,6 +30,10 @@ get_hipaa_disclosure_log_from_ehr_fhir_logs <- function(
     conn,
     ehr_id = NA_real_,
     start_date = as.Date(NA)) {
+
+  # rename parameters for local use
+  ehr_id_local <- ehr_id
+
   # make DBI objects for joins
   user_information <- dplyr::tbl(conn, "redcap_user_information") |>
     dplyr::select(
@@ -49,8 +53,11 @@ get_hipaa_disclosure_log_from_ehr_fhir_logs <- function(
       "project_irb_number"
     )
 
-  disclosures <- dplyr::tbl(conn, "redcap_ehr_fhir_logs") |>
+  disclosures <-
+    dplyr::tbl(conn, "redcap_ehr_fhir_logs") |>
     dplyr::filter(.data$resource_type == "Patient" & .data$mrn != "") |>
+    dplyr::filter(is.na(start_date) | .data$created_at >= start_date) |>
+    dplyr::filter(is.na(ehr_id_local) | ehr_id_local == .data$ehr_id) |>
     dplyr::left_join(user_information, by = c("user_id" = "ui_id")) |>
     dplyr::left_join(projects, by = c("project_id")) |>
     dplyr::collect() |>
