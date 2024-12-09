@@ -28,6 +28,6 @@ It will also log the event in the appropriate `log_event_table` for each project
 \examples{
 \dontrun{
 conn <- DBI::dbConnect(...)
-delete_project(c(1,2,3), conn)
+delete_project(c(1, 2, 3), conn)
 }
 }

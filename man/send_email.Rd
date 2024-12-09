@@ -29,7 +29,7 @@ send_email(
 \item{df_to_email}{(Optional) A dataframe or a list of dataframes to be included as file attachment(s). If this parameter is used, `file_name` must also be specified.
 Each dataframe in the list must have a corresponding file name in the `file_name` parameter to ensure a one-to-one match between dataframes and file names.}
 
-\item{file_name}{(Optional) A character vector specifying the file name(s) of the attachment(s). Valid file extensions are `.csv`, `.xlsx`, and `.zip`. Each file name must be unique.}
+\item{file_name}{(Optional) A character vector specifying the file name(s) of the attachment(s). Valid file extensions are `.csv`, `.xlsx`, `.zip` and, `.txt`. Each file name must be unique.}
 
 \item{...}{Additional arguments passed directly to the file writing functions: `write.csv` for CSV files, and `writexl::write_xlsx` for XLSX files.}
 }

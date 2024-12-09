@@ -11,14 +11,49 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/ctsit/rstudio-ci:4.3.3
+      image: ghcr.io/ctsit/rstudio-ci:latest
 
     env:
       CI: "TRUE"
+      R_LIBS_USER: /github/home/R/x86_64-pc-linux-gnu-library/4.4
+      R_LIB_FOR_PAK: /usr/local/lib/R/site-library
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Check
+      # Create directories for R libraries if not already present
+      - name: Create R Library Paths
+        run: |
+          mkdir -p /github/home/R/x86_64-pc-linux-gnu-library/4.4
+          mkdir -p renv/library
+
+      # Restore cache for R dependencies
+      - name: Restore R Dependencies Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            /github/home/R/x86_64-pc-linux-gnu-library/4.4
+            renv/library
+          key: ${{ runner.os }}-r-libs-${{ hashFiles('DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-r-libs-
+
+      # Install R dependencies
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache: false
+
+      # Run tests
+      - name: Run Tests
         run: devtools::test(stop_on_failure = TRUE)
         shell: Rscript {0}
+
+      # Save R dependencies to cache
+      - name: Save R Dependencies Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            /github/home/R/x86_64-pc-linux-gnu-library/4.4
+            renv/library
+          key: ${{ runner.os }}-r-libs-${{ hashFiles('DESCRIPTION') }}

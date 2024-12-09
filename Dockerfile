@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 rocker/verse:4.3.3
+FROM --platform=linux/amd64 rocker/verse:4.4.1
 
 WORKDIR /home/rocker
 
@@ -28,6 +28,7 @@ RUN R -e "install.packages(c( \
   'writexl', \
   'openxlsx', \
   'kableExtra' \
+  'getip' \
 ))"
 
 RUN R -e "devtools::install_github('allanvc/mRpostman')"

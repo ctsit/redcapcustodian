@@ -1,5 +1,5 @@
 ---
-title: "Quarto PDF example"
+title: "Quarto PDF Example"
 format: pdf
 editor: visual
 ---
