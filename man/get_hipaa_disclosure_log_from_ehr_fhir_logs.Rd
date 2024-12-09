@@ -13,7 +13,7 @@ get_hipaa_disclosure_log_from_ehr_fhir_logs(
 \arguments{
 \item{conn}{a DBI connection object to the REDCap database}
 
-\item{ehr_id}{the REDCap EHR_ID for the EHR of interest (optional)}
+\item{ehr_id}{a vector of REDCap EHR_IDs for the EHR(s) of interest (optional)}
 
 \item{start_date}{The first date from which we should return results (optional)}
 }

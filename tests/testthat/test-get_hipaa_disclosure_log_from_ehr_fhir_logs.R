@@ -64,5 +64,9 @@ testthat::test_that("get_hipaa_disclosure_log_from_ehr_fhir_logs works", {
   result_future_date <- get_hipaa_disclosure_log_from_ehr_fhir_logs(conn, start_date = future_start_date)
   testthat::expect_equal(nrow(result_future_date), 0)
 
+  # test that we can query with multiple EHR_IDs
+  result_multiple_filtered_ehr_id <- get_hipaa_disclosure_log_from_ehr_fhir_logs(conn, ehr_id = c(1,2))
+  testthat::expect_true(all(result_multiple_filtered_ehr_id$ehr_id %in% c(1,2)))
+
   DBI::dbDisconnect(conn, shutdown = TRUE)
 })
