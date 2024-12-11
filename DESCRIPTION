@@ -1,7 +1,7 @@
 Package: redcapcustodian
 Type: Package
 Title: Data automation for R-centric workflows with a nod towards REDCap
-Version: 1.26.2
+Version: 1.27.0
 Authors@R: c(
   person("Philip", "Chase",
         email = "pbc@ufl.edu",
@@ -61,7 +61,8 @@ Imports:
     vctrs,
     jsonlite,
     openxlsx,
-    quarto
+    quarto,
+    getip
 Suggests:
     RSQLite,
     digest,

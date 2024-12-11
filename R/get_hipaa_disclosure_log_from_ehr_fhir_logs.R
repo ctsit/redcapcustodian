@@ -5,7 +5,7 @@
 #' parameters to narrow the returned result.
 #'
 #' @param conn a DBI connection object to the REDCap database
-#' @param ehr_id the REDCap EHR_ID for the EHR of interest (optional)
+#' @param ehr_id a vector of REDCap EHR_IDs for the EHR(s) of interest (optional)
 #' @param start_date The first date from which we should return results (optional)
 #'
 #' @return A dataframe suitable for generating a HIPAA disclosure log
@@ -30,6 +30,13 @@ get_hipaa_disclosure_log_from_ehr_fhir_logs <- function(
     conn,
     ehr_id = NA_real_,
     start_date = as.Date(NA)) {
+
+  # rename parameters for local use
+  ehr_id_local <- ehr_id
+
+  # determine if ehr_id of interest
+  ehr_id_is_na <- length(ehr_id_local) == 1 & all(is.na(ehr_id_local))
+
   # make DBI objects for joins
   user_information <- dplyr::tbl(conn, "redcap_user_information") |>
     dplyr::select(
@@ -49,8 +56,11 @@ get_hipaa_disclosure_log_from_ehr_fhir_logs <- function(
       "project_irb_number"
     )
 
-  disclosures <- dplyr::tbl(conn, "redcap_ehr_fhir_logs") |>
+  disclosures <-
+    dplyr::tbl(conn, "redcap_ehr_fhir_logs") |>
     dplyr::filter(.data$resource_type == "Patient" & .data$mrn != "") |>
+    dplyr::filter(is.na(start_date) | .data$created_at >= start_date) |>
+    dplyr::filter(ehr_id_is_na | .data$ehr_id %in% ehr_id_local) |>
     dplyr::left_join(user_information, by = c("user_id" = "ui_id")) |>
     dplyr::left_join(projects, by = c("project_id")) |>
     dplyr::collect() |>
