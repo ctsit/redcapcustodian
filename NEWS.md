@@ -1,3 +1,9 @@
+# redcapcustodian 1.27.0 (released 2024-12-11)
+- Allow multiple EHR IDs in get_hipaa_disclosure_log_from_ehr_fhir_logs() (@pbchase, #173, #174)
+- Include dependency setup in gh-action for tests (@saipavan10-git, #171)
+- Improve logging for delete_project function (@saipavan10-git, #171)
+- Use parameters in get_hipaa_disclosure_log_from_ehr_fhir_logs.R (@pbchase, @saipavan10-git #162)
+
 # redcapcustodian 1.26.2 (released 2024-11-20)
 - Add new production status (@saipavan10-git, #168, #170)
 - Add log event tables 10,11,12 (@saipavan10-git, #168, #170)
