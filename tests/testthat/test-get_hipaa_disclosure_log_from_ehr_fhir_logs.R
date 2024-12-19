@@ -12,7 +12,8 @@ testthat::test_that("get_hipaa_disclosure_log_from_ehr_fhir_logs works", {
   test_tables <- c(
     "redcap_ehr_fhir_logs",
     "redcap_user_information",
-    "redcap_projects"
+    "redcap_projects",
+    "redcap_ehr_settings"
   )
 
   conn <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
@@ -34,8 +35,8 @@ testthat::test_that("get_hipaa_disclosure_log_from_ehr_fhir_logs works", {
 
   # Required column names
   required_names <- c(
-    "disclosure_date", "fhir_id", "mrn", "project_irb_number"
-  )
+  "disclosure_date", "fhir_id", "mrn", "project_irb_number",
+  "ehr_id", "ehr_name", "fhir_base_url", "patient_identifier_string")
 
   result <- get_hipaa_disclosure_log_from_ehr_fhir_logs(conn)
 
