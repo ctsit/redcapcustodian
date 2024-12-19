@@ -56,6 +56,14 @@ get_hipaa_disclosure_log_from_ehr_fhir_logs <- function(
       "project_irb_number"
     )
 
+  redcap_ehr_settings <- dplyr::tbl(conn, "redcap_ehr_settings") |>
+    dplyr::select(
+      "ehr_id",
+      "ehr_name",
+      "fhir_base_url",
+      "patient_identifier_string"
+    )
+
   disclosures <-
     dplyr::tbl(conn, "redcap_ehr_fhir_logs") |>
     dplyr::filter(.data$resource_type == "Patient" & .data$mrn != "") |>
@@ -63,6 +71,7 @@ get_hipaa_disclosure_log_from_ehr_fhir_logs <- function(
     dplyr::filter(ehr_id_is_na | .data$ehr_id %in% ehr_id_local) |>
     dplyr::left_join(user_information, by = c("user_id" = "ui_id")) |>
     dplyr::left_join(projects, by = c("project_id")) |>
+    dplyr::left_join(redcap_ehr_settings, by = c("ehr_id")) |>
     dplyr::collect() |>
     dplyr::mutate(disclosure_date = lubridate::floor_date(.data$created_at, unit = "day")) |>
     dplyr::select(-c("id", "created_at")) |>
@@ -73,6 +82,10 @@ get_hipaa_disclosure_log_from_ehr_fhir_logs <- function(
       "disclosure_date",
       "fhir_id",
       "mrn",
+      "ehr_id",
+      "ehr_name",
+      "fhir_base_url",
+      "patient_identifier_string",
       "project_irb_number",
       "project_pi_firstname",
       "project_pi_mi",
