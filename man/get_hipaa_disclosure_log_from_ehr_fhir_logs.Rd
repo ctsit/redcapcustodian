@@ -7,7 +7,8 @@
 get_hipaa_disclosure_log_from_ehr_fhir_logs(
   conn,
   ehr_id = NA_real_,
-  start_date = as.Date(NA)
+  start_date = as.Date(NA),
+  end_date = as.Date(NA)
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ get_hipaa_disclosure_log_from_ehr_fhir_logs(
 \item{ehr_id}{a vector of REDCap EHR_IDs for the EHR(s) of interest (optional)}
 
 \item{start_date}{The first date from which we should return results (optional)}
+
+\item{end_date}{The last date (non-inclusive) from which we should return results (optional)}
 }
 \value{
 A dataframe suitable for generating a HIPAA disclosure log
@@ -24,6 +27,8 @@ A dataframe suitable for generating a HIPAA disclosure log
 Read a data needed for a HIPAA disclosure log from a REDCap database
 given a DBI connection object to the REDCap database and some optional
 parameters to narrow the returned result.
+
+Optionally filter the data with the data range `[start_date, end_date)`.
 }
 \examples{
 \dontrun{

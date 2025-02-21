@@ -49,10 +49,25 @@ redcap_projects <- dplyr::tbl(conn, "redcap_projects") |>
   ) |>
   collect()
 
+redcap_ehr_settings <- dplyr::tbl(rc_conn, "redcap_ehr_settings") |>
+  dplyr::select(
+    "ehr_id",
+    "ehr_name",
+    "fhir_base_url",
+    "patient_identifier_string"
+  ) |>
+  collect() |>
+  dplyr::mutate(
+    ehr_name = "ehrnameEHRName",
+    fhir_base_url = "https://fhir.example.com",
+    patient_identifier_string = "mrnaabbccc"
+  )
+
 # Save our test tables
 test_tables <- c(
   "redcap_ehr_fhir_logs",
   "redcap_user_information",
-  "redcap_projects"
+  "redcap_projects",
+  "redcap_ehr_settings"
 )
 purrr::walk(test_tables, write_rds_to_test_dir, "hipaa_disclosure_log")

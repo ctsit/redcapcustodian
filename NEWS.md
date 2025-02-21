@@ -1,3 +1,7 @@
+# redcapcustodian 1.28.0 (released 2025-02-20)
+- Update get_hipaa_disclosure_log_from_ehr_fhir_logs() (@pbchase, #176)
+- Add redcap_ehr_settings values to the disclosures (@saipavan10-git, #172, #175)
+
 # redcapcustodian 1.27.0 (released 2024-12-11)
 - Allow multiple EHR IDs in get_hipaa_disclosure_log_from_ehr_fhir_logs() (@pbchase, #173, #174)
 - Include dependency setup in gh-action for tests (@saipavan10-git, #171)
