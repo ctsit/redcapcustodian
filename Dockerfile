@@ -27,7 +27,7 @@ RUN R -e "install.packages(c( \
   'sqldf', \
   'writexl', \
   'openxlsx', \
-  'kableExtra' \
+  'kableExtra', \
   'getip' \
 ))"
 
