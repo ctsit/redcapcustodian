@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.27.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.28.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@
       <h1>Custom Rscript</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ctsit/redcapcustodian/blob/1.27.0/vignettes/custom_rscript.Rmd" class="external-link"><code>vignettes/custom_rscript.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ctsit/redcapcustodian/blob/master/vignettes/custom_rscript.Rmd" class="external-link"><code>vignettes/custom_rscript.Rmd</code></a></small>
       <div class="d-none name"><code>custom_rscript.Rmd</code></div>
     </div>
 
@@ -247,7 +247,7 @@ in the redcap backend and logs what is did:</p>
 <span><span class="va">activity_log</span> <span class="op">&lt;-</span> <span class="va">diff_output</span><span class="op">$</span><span class="va">update_records</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">pid</span>, <span class="va">billable</span>, <span class="va">updated</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/log_job_success.html">log_job_success</a></span><span class="op">(</span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html" class="external-link">toJSON</a></span><span class="op">(</span><span class="va">activity_log</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/log_job_success.html">log_job_success</a></span><span class="op">(</span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">toJSON</a></span><span class="op">(</span><span class="va">activity_log</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></code></pre></div>
 <p>That script generated this log record in the log database:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> `rcc_job_log` (`job_duration`, `job_summary_data`, `level`, `log_date`, `script_name`, `script_run_time`) <span class="kw">VALUES</span></span>

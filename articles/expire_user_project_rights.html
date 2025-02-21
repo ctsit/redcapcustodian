@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.27.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.28.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@
       <h1>expire_user_project_rights</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ctsit/redcapcustodian/blob/1.27.0/vignettes/expire_user_project_rights.Rmd" class="external-link"><code>vignettes/expire_user_project_rights.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ctsit/redcapcustodian/blob/master/vignettes/expire_user_project_rights.Rmd" class="external-link"><code>vignettes/expire_user_project_rights.Rmd</code></a></small>
       <div class="d-none name"><code>expire_user_project_rights.Rmd</code></div>
     </div>
 
@@ -152,7 +152,7 @@ to the redcap_user_rights table.</p>
 summary field of the log record. Closing the database connection is
 optional, but responsible coding.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/log_job_success.html">log_job_success</a></span><span class="op">(</span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html" class="external-link">toJSON</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/log_job_success.html">log_job_success</a></span><span class="op">(</span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">toJSON</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></code></pre></div>
 <p>Here’s the entire script, but you’ll need to write your own user
@@ -187,7 +187,7 @@ There is no check that you typed the right ID.</p>
 <span>  expiration_date <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/now.html" class="external-link">today</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/duration.html" class="external-link">ddays</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/log_job_success.html">log_job_success</a></span><span class="op">(</span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html" class="external-link">toJSON</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/log_job_success.html">log_job_success</a></span><span class="op">(</span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">toJSON</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></code></pre>
 <p>And here’s the entire <code>redcap_server.env</code> file, but make
