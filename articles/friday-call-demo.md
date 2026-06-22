@@ -1,0 +1,183 @@
+# REDCap Custodian Friday Call Demo
+
+## Overview
+
+This is a demonstration of some features of the REDCap Custodian R
+package.
+
+We will demonstrate how to:
+
+1.  Fetch and store you API tokens in a database
+2.  Get some data from a REDCap project
+3.  Transform your data
+4.  Write it to another project
+5.  Review the logs of what the job
+
+Then we’ll talk about how to automate that whole process.
+
+## Prequisites
+
+Follow the steps and run the code provided in
+[`vignette("friday-call-demo-setup")`](../articles/friday-call-demo-setup.md).
+
+## Premise
+
+You have a big important project with many rows of data and many more
+rows coming in every week, a researcher asks you to build them a
+biorepository project for the biospecimens collected for this protocol.
+We do not want anyone to transcribe existing data, so we will
+*automatically* copy it for them every day. No transcription, no typos,
+no overtime.
+
+## Get some data from a REDCap project
+
+First, load some R packages:
+
+``` r
+
+library(redcapcustodian)
+library(DBI)
+library(tidyverse)
+library(dotenv)
+library(lubridate)
+
+load_dot_env(here::here("local.env.txt"))
+
+init_etl("friday_call_demo")
+```
+
+Next, connect to the credential database. Then read your credentials to
+the REDCap project you want to read from.
+
+``` r
+
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), here::here("credentials/credentials.db"))
+my_username <- "admin"
+
+source_credentials <- tbl(file_conn, "credentials") %>%
+  filter(username == my_username) %>%
+  collect() %>%
+  filter(str_detect(project_display_name, "Demo Main")) %>%
+  unnest()
+```
+
+At this point, it’s time to read the portions of the project data that
+interest you.
+
+For our task, we want to read identifiers for collected data so we can
+write them into the Biospecimen tracking project
+
+``` r
+
+record_count_to_create <- 50
+collection_events <- 5
+tubes_per_collection <- 30
+
+fields_to_read <- c(
+  "record_id",
+  "redcap_event_name",
+  "sample_collected_date",
+  paste0("tube_id", 1:tubes_per_collection),
+  paste0("tube_specimen_type", 1:tubes_per_collection),
+  paste0("tube_volume", 1:tubes_per_collection)
+)
+
+source_project_data <- REDCapR::redcap_read(
+  redcap_uri = source_credentials$redcap_uri,
+  token = source_credentials$token,
+  fields = fields_to_read
+)
+
+# Validate that data was retrieved and alert regarding issues
+if (!source_project_data$success) {
+  warning("Data was not successfully read from REDCap")
+}
+```
+
+Our customer’s requirements for the biorepository require us to do some
+transformations before writing. That’s easy with the `dplyr` library
+
+``` r
+
+
+# Append the event number to the subject_id to make the record_id needed in the biorepository
+new_target_project_data <- source_project_data$data %>%
+  rename(subject_id = record_id) %>%
+  mutate(record_id = paste0(
+    subject_id, "-",
+    str_replace(redcap_event_name, "event_", "") %>% str_replace(., "_arm_1", ""))) %>%
+  select(record_id, everything()) %>%
+  rename(date_draw = sample_collected_date)
+```
+
+Now write that data to the target project
+
+``` r
+
+target_credentials <- tbl(file_conn, "credentials") %>%
+  filter(username == my_username) %>%
+  collect() %>%
+  filter(str_detect(project_display_name, "Demo Biospecimen")) %>%
+  unnest()
+
+# Want to know exactly what is getting updated in the target project? Fetch that data then anti-join with the new data set
+target_fields_to_read <- c(
+  "record_id",
+  "redcap_event_name",
+  "sample_collected_date"
+)
+
+old_target_project_data <- REDCapR::redcap_read(
+  redcap_uri = target_credentials$redcap_uri,
+  token = target_credentials$token,
+  fields = target_fields_to_read
+)
+
+if (old_target_project_data$success) {
+  target_project_data <- new_target_project_data %>%
+    dplyr::anti_join(old_target_project_data$data)
+} else {
+  target_project_data <- new_target_project_data
+}
+
+# now write that small dataset
+result <- REDCapR::redcap_write(
+  ds_to_write = slice_head(target_project_data, prop=0.5),
+  redcap_uri = target_credentials$redcap_uri,
+  token = target_credentials$token
+)
+
+# now log what we did
+if (result$success) {
+  log_job_success(jsonlite::toJSON(target_project_data))
+} else {
+  log_job_failure(jsonlite::toJSON(result))
+}
+```
+
+## Review the logs of what the job did
+
+When doing automated jobs, it’s important to have a record of what
+happened. REDCap Custodian writes logs so you can review its actions
+later.
+
+``` r
+
+# Get the connection to the log database
+log_con <- get_package_scope_var("log_con")
+
+# Look at the entire log of jobs run
+tbl(log_con, "rcc_job_log") %>%
+  collect() %>%
+  view()
+
+# Read the summary of the last 'friday_call_demo' job
+tbl(log_con, "rcc_job_log") %>%
+  filter(script_name == "friday_call_demo") %>%
+  collect() %>%
+  arrange(desc(log_date)) %>%
+  head(n=1) %>%
+  pull(job_summary_data) %>%
+  jsonlite::fromJSON() %>%
+  view()
+```

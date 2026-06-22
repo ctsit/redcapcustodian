@@ -1,0 +1,295 @@
+# Credential Scraping
+
+``` r
+
+library(redcapcustodian)
+```
+
+## API Token Scraping and Fabricating
+
+Using credential management tools requires `.env` files populated with
+database credentials for a each REDCap instance, the following examples
+use one for a production instance (`prod.env`) and one for a local
+instance (`local_1134.env`). Here is my `local_1134.env` file:
+
+``` bash
+INSTANCE=local_1134
+TIME_ZONE=America/New_York
+
+# REDCap API endpoint, REDCap webroot + "/api/"
+URI=https://localhost:11134/api/
+
+# REDCap DB Credentials
+REDCAP_DB_NAME=redcap
+REDCAP_DB_HOST=127.0.0.1
+REDCAP_DB_USER=redcap
+REDCAP_DB_PASSWORD=redcap123
+REDCAP_DB_PORT=3306
+```
+
+### Preparation
+
+The following block creates a `credentials` directory and a sqlite
+database in which to store your credentials.
+
+``` r
+
+library(redcapcustodian)
+library(DBI)
+library(tidyverse)
+library(dotenv)
+
+# fetching all extant API tokens and adding them to storage #################
+
+dir.create("credentials")
+
+# creates file if one does not exist
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), "credentials/credentials.db")
+
+# SQLite friendly schema
+credentials_sql <- "CREATE TABLE IF NOT EXISTS `credentials` (
+  `redcap_uri` TEXT NOT NULL,
+  `server_short_name` varchar(128) NOT NULL,
+  `username` varchar(191) NOT NULL,
+  `project_id` int(10) NOT NULL,
+  `project_display_name` TEXT NOT NULL,
+  `project_short_name` varchar(128) DEFAULT NULL,
+  `token` varchar(64) NOT NULL,
+  `comment` varchar(256) DEFAULT NULL
+);
+"
+
+dbExecute(file_conn, credentials_sql)
+
+dbDisconnect(file_conn)
+```
+
+### Scraping a server’s API tokens and putting them in a local sqlite DB for use
+
+Fetching all extant API tokens and adding them to storage
+
+``` r
+
+library(redcapcustodian)
+library(DBI)
+library(tidyverse)
+library(dotenv)
+
+# fetching all extant API tokens and adding them to storage #################
+
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), "credentials/credentials.db")
+
+dbExecute(file_conn, credentials_sql)
+
+load_dot_env("prod.env")
+
+username <- "your_redcap_username"
+source_conn <- connect_to_redcap_db()
+source_credentials <- scrape_user_api_tokens(source_conn, username)
+
+# alter credentials to match local schema
+source_credentials_upload <- source_credentials %>%
+  mutate(
+    redcap_uri = Sys.getenv("URI"),
+    server_short_name = tolower(Sys.getenv("INSTANCE"))
+  ) %>%
+  # remove duplicates
+  anti_join(
+    tbl(file_conn, "credentials") %>%
+      collect()
+  )
+
+dbAppendTable(file_conn, "credentials", source_credentials_upload)
+
+dbDisconnect(file_conn)
+dbDisconnect(source_conn)
+```
+
+### Scraping one user’s API tokens
+
+Scraping one user’s API tokens and putting them in a new, local sqlite
+DB for use.
+
+You must provide the username in the API_USER environment variable or on
+the command line. To specify it on the command line via `Rscript` and
+specify a REDCap username. e.g.
+
+``` sh
+Rscript scrape_one_user.R jane_doe
+```
+
+``` r
+
+library(redcapcustodian)
+library(DBI)
+library(tidyverse)
+library(dotenv)
+
+# Get the username provided on the command line if one is provided. 
+# Otherwise, get the username form the environment.
+# Otherwise, exit.
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) > 0) {
+  # Use the command line argument
+  username <- args
+} else if (Sys.getenv("API_USER") != "") {
+  # Use the environment variable
+  username <- Sys.getenv("API_USER")
+} else {
+  # Exit
+  warning("Please provide a username that whose API tokens you want to read either on the command line or via the API_USER environment variable. No action taken.")
+  quit()
+}
+
+# Creates the credentials file if one does not exists.
+# Otherwise it deletes the credentials file
+credentials_db_path <- here::here(paste0("credentials-", username, ".db"))
+if (fs::file_exists(credentials_db_path)) fs::file_delete(credentials_db_path)
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), credentials_db_path)
+
+# SQLite friendly schema
+credentials_sql <- "CREATE TABLE IF NOT EXISTS `credentials` (
+  `redcap_uri` TEXT NOT NULL,
+  `server_short_name` varchar(128) NOT NULL,
+  `username` varchar(191) NOT NULL,
+  `project_id` int(10) NOT NULL,
+  `project_display_name` TEXT NOT NULL,
+  `project_short_name` varchar(128) DEFAULT NULL,
+  `token` varchar(64) NOT NULL,
+  `comment` varchar(256) DEFAULT NULL
+);
+"
+
+dbExecute(file_conn, credentials_sql)
+
+# Connect to the REDCap database specified in the environment
+# loaded by the dotenv library
+source_conn <- connect_to_redcap_db()
+source_credentials <- scrape_user_api_tokens(
+  conn = source_conn,
+  username_to_scrape = username
+)
+
+# alter credentials to match local schema
+source_credentials_upload <- source_credentials %>%
+  mutate(
+    redcap_uri = Sys.getenv("URI"),
+    server_short_name = tolower(Sys.getenv("INSTANCE"))
+  )
+
+dbAppendTable(file_conn, "credentials", source_credentials_upload)
+
+dbDisconnect(file_conn)
+dbDisconnect(source_conn)
+```
+
+### Creating API tokens for all local projects
+
+``` r
+
+library(redcapcustodian)
+library(DBI)
+library(tidyverse)
+library(dotenv)
+
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), "credentials/credentials.db")
+
+load_dot_env("local_1134.env")
+
+# note, this will close any other connections
+target_conn <- connect_to_redcap_db()
+
+local_credentials <- scrape_user_api_tokens(target_conn, "admin")
+
+# specify a subset of project_ids rather than making tokens for all
+target_pids <- tbl(target_conn, "redcap_projects") %>%
+  select(project_id) %>%
+  filter(project_id > 15) %>%
+  filter(!project_id %in% local(local_credentials$project_id)) %>%
+  collect() %>%
+  pull(project_id)
+
+# create tokens individually
+for(pid in target_pids) {
+  set_project_api_token(target_conn, "admin", pid)
+}
+
+# gather newly created tokens and insert them into local storage
+local_credentials <- scrape_user_api_tokens(target_conn, "admin")
+
+local_credentials_upload <- local_credentials %>%
+  mutate(
+    redcap_uri = Sys.getenv("URI"),
+    server_short_name = tolower(Sys.getenv("INSTANCE"))
+  ) %>%
+  # remove duplicates
+  anti_join(
+    tbl(file_conn, "credentials") %>%
+      collect()
+  )
+
+dbAppendTable(file_conn, "credentials", local_credentials_upload)
+
+dbDisconnect(file_conn)
+dbDisconnect(target_conn)
+```
+
+## Syncing a production project to your local instance
+
+After completing the previous 2 sections.
+
+The following chink uses the credentials you have saved to copy project
+metadata from a source project ()
+
+``` r
+
+library(redcapcustodian)
+library(tidyverse)
+
+file_conn <- DBI::dbConnect(RSQLite::SQLite(), "credentials/credentials.db")
+
+source_username <- "your_production_username"
+
+source_credentials <- tbl(file_conn, "credentials") %>%
+  filter(source_username) %>%
+  filter(server_short_name == "prod") %>%
+  collect() %>%
+  filter(
+    str_detect(project_display_name, "The big important project")
+  ) %>%
+  unnest()
+
+local_credentials <- tbl(file_conn, "credentials") %>%
+  filter(username == "admin") %>%
+  filter(server_short_name == "local_1134") %>%
+  collect() %>%
+  # adjust url to make REDCapR's validation processes happy
+  mutate(redcap_uri = str_replace(redcap_uri, "https", "http")) %>%
+  mutate(redcap_uri = str_replace(redcap_uri, "localhost", "127.0.0.1")) %>%
+  filter(
+    str_detect(project_display_name, "The big important project")
+  ) %>%
+  unnest()
+
+sync_metadata(source_credentials, local_credentials, strip_action_tags = TRUE)
+
+dbDisconnect(file_conn)
+```
+
+### Large data dictionaries and XDebug/REDCap Docker Compose
+
+IF your REDCap instance is hosted on a machine (or docker container)
+using xdebug, the metadata may be too large, in which case you’ll see an
+error message like this:
+
+    The REDCapR write/import metadata operation was not successful.  The error message was:\n\t\t\t\t<div class=\"red\" style=\"margin:20px 0px;max-width:700px;\">\n\t\t\t\t\t<b>REDCap crashed due to an unexpected PHP fatal error!</b><br><br>\n\t\t\t\t\t<b>Error message:</b> Uncaught Error: Xdebug has detected a possible infinite loop, and aborted your script with a stack depth of '256' frames in /var/www/html/redcap_v11.3.4/Classes/LogicParser.php:280\
+
+Alter the following file
+`<your-rdc-instance>/redcap-overrides/web/php/80-xdebug.ini` and set an
+arbitrarily large stack frame limit, at least equal to the number of
+fields in your data dictionary
+
+``` bash
+# solution: https://stackoverflow.com/a/65997576/7418735
+xdebug.max_nesting_level=<high-value>
+```

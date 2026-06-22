@@ -1,0 +1,46 @@
+# Developer Notes for REDCap Custodian
+
+If you’d like to develop for *redcapcustodian*, these notes might be
+helpful.
+
+## Release and Deployment
+
+This project uses the Git Flow workflow for releases. Every release
+should be versioned and have a ChangeLog entry that describes the new
+features and bug fixes. Every release should also be accompanied by an
+updated `VERSION` and a manual revision to the version number in
+[`DESCRIPTION`](https://github.com/ctsit/redcapcustodian/tree/master/DESCRIPTION).
+The latter tells devtools about version number changes. The former
+allows image builds to be tagged as they are built by the
+[`build.sh`](https://github.com/ctsit/redcapcustodian/tree/master/build.sh)
+
+To deploy a new release on the Linux host, execute this series of
+commands or an equivalent from your home directory on that host:
+
+``` bash
+git clone git@github.com:ctsit/redcapcustodian.git
+cd redcapcustodian
+git pull
+sudo ./build.sh
+```
+
+## Local logging for development work
+
+When doing development work, it’s useful to have a local log database.
+This allows you to initialize logging as you test your scripts without
+throwing an error and then test the write to the log on success or
+failure. REDCap Custodian provides an example logging system in the form
+of a `docker-compose.yml` and a database schema at `./rcc.log.db/`. You
+can start the logging database with these commands:
+
+``` sh
+cd ./rcc.log.db/
+docker-compose up -d
+```
+
+By default, a PHPMyAdmin interface is accessible at
+<http://localhost:9080/>. That and other configuration parameters are
+defined in `./rcc.log.db/.env`. These same parameters are used in
+`./study_template/example.env`. Using those example values in your local
+environment files will allow all your scripts across all you redcap
+custodian projects will allow them to share this logging database.
