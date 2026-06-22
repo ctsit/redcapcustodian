@@ -1,3 +1,6 @@
+# redcapcustodian 1.28.2 (released 2026-06-22)
+- Update container and refactor CI (@pbchase, #180)
+
 # redcapcustodian 1.28.1 (released 2025-02-20)
 - Fix Dockerfile (@pbchase)
 

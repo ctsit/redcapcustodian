@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 rocker/verse:4.4.1
+FROM rocker/verse:4.5.3
 
 WORKDIR /home/rocker
 
@@ -31,7 +31,7 @@ RUN R -e "install.packages(c( \
   'getip' \
 ))"
 
-RUN R -e "devtools::install_github('allanvc/mRpostman')"
+RUN R -e "pak::pak('allanvc/mRpostman')"
 RUN R -e "tinytex::tlmgr_install(c(\
   'amscls', 'amsmath', \
   'bookmark', \
@@ -82,4 +82,4 @@ RUN rm -rf .Rhistory
 RUN rm -rf Dockerfile
 
 # Note where we are, what is there, and what's in the package dir
-CMD pwd && ls -AlhF ./
+CMD ["sh", "-c", "pwd && ls -AlhF ./"]

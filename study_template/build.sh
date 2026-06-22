@@ -71,5 +71,5 @@ site_image=${image_name}
 echo "Building $site_image"
 old_pwd=$(pwd)
 cd $sitepath
-docker build -t $site_image . && docker tag $site_image:latest $site_image:`cat VERSION` && docker image ls $site_image | head -n 5
+docker build --platform=linux/amd64 -t $site_image . && docker tag $site_image:latest $site_image:`cat VERSION` && docker image ls $site_image | head -n 5
 cd $old_pwd
