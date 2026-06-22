@@ -23,4 +23,4 @@ shift $((OPTIND -1))
 
 shared_image=redcapcustodian
 echo "Building $shared_image image"
-docker build -t $shared_image . && docker tag $shared_image:latest $shared_image:`cat VERSION` && docker image ls $shared_image | head -n 5
+docker build --platform=linux/amd64 -t $shared_image . && docker tag $shared_image:latest $shared_image:`cat VERSION` && docker image ls $shared_image | head -n 5
