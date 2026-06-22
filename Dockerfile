@@ -82,4 +82,4 @@ RUN rm -rf .Rhistory
 RUN rm -rf Dockerfile
 
 # Note where we are, what is there, and what's in the package dir
-CMD pwd && ls -AlhF ./
+CMD ["sh", "-c", "pwd && ls -AlhF ./"]
