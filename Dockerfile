@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 rocker/verse:4.4.1
+FROM rocker/verse:4.5.3
 
 WORKDIR /home/rocker
 
@@ -31,7 +31,7 @@ RUN R -e "install.packages(c( \
   'getip' \
 ))"
 
-RUN R -e "devtools::install_github('allanvc/mRpostman')"
+RUN R -e "pak::pak('allanvc/mRpostman')"
 RUN R -e "tinytex::tlmgr_install(c(\
   'amscls', 'amsmath', \
   'bookmark', \
