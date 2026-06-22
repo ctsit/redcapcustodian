@@ -21,7 +21,7 @@ shown in below.
 
 | job_duration | job_summary_data | level | log_date | project | instance | script_name | script_run_time |
 |---:|:---|:---|:---|:---|:---|:---|:---|
-| 0.1867149 | It worked! | SUCCESS | 2026-06-22 20:25:32 |  |  | my_useful_script | 2026-06-22 20:25:32 |
+| 0.198606 | It worked! | SUCCESS | 2026-06-22 20:28:47 |  |  | my_useful_script | 2026-06-22 20:28:47 |
 
 ## Behind the scenes
 

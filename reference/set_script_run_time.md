@@ -22,7 +22,7 @@ the package-scoped value of script_run_time
 
 ``` r
 set_script_run_time()
-#> [1] "2026-06-22 20:25:09 UTC"
+#> [1] "2026-06-22 20:28:22 UTC"
 set_script_run_time(fake_runtime =
                     as.POSIXct("2021-02-23 02:23:00",
                                tz="",

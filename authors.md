@@ -23,7 +23,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/ctsit/redcapcustodian/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/ctsit/redcapcustodian/blob/1.28.2/DESCRIPTION)
 
 Chase P, James-Woodley L, Chesney K, Bentz M, Kamma S (2026).
 *redcapcustodian: Data automation for R-centric workflows with a nod
