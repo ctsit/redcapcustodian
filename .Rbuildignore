@@ -28,3 +28,4 @@ local.env.txt
 ^pkgdown$
 ^scratch.R
 LICENSE
+CLAUDE.md
