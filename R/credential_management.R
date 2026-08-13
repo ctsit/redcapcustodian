@@ -18,7 +18,10 @@
 #'   my_credentials <- scrape_user_api_tokens(conn, "admin")
 #'
 #' }
-scrape_user_api_tokens <- function(conn, username_to_scrape = Sys.info()[["user"]]) {
+scrape_user_api_tokens <- function(
+  conn,
+  username_to_scrape = Sys.info()[["user"]]
+) {
   # collect super API token if one exists
   super_credentials <- dplyr::tbl(conn, "redcap_user_information") %>%
     dplyr::filter(.data$username == username_to_scrape) %>%
@@ -46,8 +49,10 @@ scrape_user_api_tokens <- function(conn, username_to_scrape = Sys.info()[["user"
         ),
       by = "project_id"
     ) %>%
-    dplyr::collect() %>%
-    # filter out deleted projects
+    # filter out permanently deleted projects
+    dplyr::filter(!is.na(.data$app_title)) |>
+    dplyr::collect() |>
+    # filter out non-purged, deleted projects
     dplyr::filter(is.na(.data$date_deleted)) |>
     dplyr::select(-"date_deleted") |>
     # bind_rows used over rbind to avoid need to align column order
@@ -63,7 +68,6 @@ scrape_user_api_tokens <- function(conn, username_to_scrape = Sys.info()[["user"
 ###############################################################################
 #                         Creation of new credentials                         #
 ###############################################################################
-
 
 #' Generate and set a Super API token for a provided REDCap user
 #'
@@ -85,8 +89,10 @@ set_super_api_token <- function(conn, username) {
 
   sql <- paste0(
     "UPDATE redcap_user_information",
-    "SET api_token = ", token,
-    "WHERE username = ", username,
+    "SET api_token = ",
+    token,
+    "WHERE username = ",
+    username,
     "LIMIT 1"
   )
 }
@@ -120,9 +126,15 @@ set_project_api_token <- function(conn, username, project_id) {
   # TODO: consider respecting existing API tokens
   sql <- paste0(
     "UPDATE `redcap_user_rights` ",
-    "SET api_token = '", token, "' ",
-    "WHERE username = '", username, "' ",
-    "AND project_id = ", project_id, " ",
+    "SET api_token = '",
+    token,
+    "' ",
+    "WHERE username = '",
+    username,
+    "' ",
+    "AND project_id = ",
+    project_id,
+    " ",
     "LIMIT 1"
   )
 
@@ -130,8 +142,7 @@ set_project_api_token <- function(conn, username, project_id) {
 }
 
 save_credentials <- function(
-    file_path,
-    project_id = "0",
-    token) {
-
-}
+  file_path,
+  project_id = "0",
+  token
+) {}
