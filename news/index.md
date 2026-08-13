@@ -1,5 +1,13 @@
 # Changelog
 
+## redcapcustodian 1.28.3 (released 2026-08-13)
+
+- Update scrape_user_api_tokens()
+  ([@pbchase](https://github.com/pbchase),
+  [\#161](https://github.com/ctsit/redcapcustodian/issues/161),
+  [\#162](https://github.com/ctsit/redcapcustodian/issues/162))
+  - Protect it from orphaned records in redcap_user_rights.
+
 ## redcapcustodian 1.28.2 (released 2026-06-22)
 
 - Update container and refactor CI

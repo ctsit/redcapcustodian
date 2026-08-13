@@ -33,7 +33,7 @@ When called via purrr::walk2(), all tables in the vector of
 
     <a class="navbar-brand me-2" href="../index.html">redcapcustodian</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.28.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.28.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@ When called via purrr::walk2(), all tables in the vector of
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>copy_entire_table_to_db</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ctsit/redcapcustodian/blob/1.28.2/R/devtools.R" class="external-link"><code>R/devtools.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ctsit/redcapcustodian/blob/master/R/devtools.R" class="external-link"><code>R/devtools.R</code></a></small>
       <div class="d-none name"><code>copy_entire_table_to_db.Rd</code></div>
     </div>
 
@@ -122,10 +122,26 @@ be copied</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">table_name</span> <span class="op">&lt;-</span> <span class="st">"test_data"</span></span></span>
 <span class="r-in"><span><span class="va">source_conn</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>, dbdir <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> duckdb keeps downloaded extensions and secrets in a temporary directory:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> /tmp/Rtmp7QzVaI/duckdb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This is removed when the R session ends.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Secrets are lost.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> See ?duckdb_storage for details and alternatives.</span>
 <span class="r-in"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html" class="external-link">dbWriteTable</a></span><span class="op">(</span>conn <span class="op">=</span> <span class="va">source_conn</span>, name <span class="op">=</span> <span class="va">table_name</span>, value <span class="op">=</span> <span class="va">test_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># copy the table</span></span></span>
 <span class="r-in"><span><span class="va">target_conn</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>, dbdir <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> duckdb keeps downloaded extensions and secrets in a temporary directory:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> /tmp/Rtmp7QzVaI/duckdb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This is removed when the R session ends.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Secrets are lost.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> See ?duckdb_storage for details and alternatives.</span>
 <span class="r-in"><span><span class="fu">copy_entire_table_to_db</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  source_conn <span class="op">=</span> <span class="va">source_conn</span>,</span></span>
 <span class="r-in"><span>  table_name <span class="op">=</span> <span class="va">table_name</span>,</span></span>
@@ -197,7 +213,7 @@ be copied</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
