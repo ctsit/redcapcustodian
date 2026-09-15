@@ -91,6 +91,13 @@
 #' @details DETAILS
 "log_event_tables"
 
+#' @title project_creation_descriptions
+#' @description A character vector of the descriptions used in the redcap_log_event table
+#'   to describe the different ways a REDCap Project can be created
+#' @format A character vector with 7 elements
+#' @details DETAILS
+"project_creation_descriptions"
+
 #' @title project_life_cycle_descriptions
 #' @description A character vector of the descriptions used in the redcap_log_event table
 #'   to describe the different stages in the life cycle of a REDCap Project
