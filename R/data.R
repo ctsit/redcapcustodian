@@ -86,8 +86,8 @@
 "get_redcap_email_revisions_test_data"
 
 #' @title log_event_tables
-#' @description A vector of the names of the 9 redcap log event tables
-#' @format A vector with 9 elements
+#' @description A vector of the names of the 15 redcap log event tables
+#' @format A vector with 15 elements
 #' @details DETAILS
 "log_event_tables"
 
