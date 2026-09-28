@@ -55,7 +55,7 @@ test_data <- dplyr::tribble(
 table_name <- "test_data"
 source_conn <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp7QzVaI/duckdb
+#> ℹ /tmp/RtmpwuJhOo/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -67,7 +67,7 @@ DBI::dbWriteTable(conn = source_conn, name = table_name, value = test_data)
 # copy the table
 target_conn <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp7QzVaI/duckdb
+#> ℹ /tmp/RtmpwuJhOo/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

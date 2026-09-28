@@ -44,6 +44,7 @@
 <url><loc>/reference/get_institutional_person_data.html</loc></url>
 <url><loc>/reference/get_job_duration.html</loc></url>
 <url><loc>/reference/get_package_scope_var.html</loc></url>
+<url><loc>/reference/get_project_creations.html</loc></url>
 <url><loc>/reference/get_project_instance.html</loc></url>
 <url><loc>/reference/get_project_life_cycle.html</loc></url>
 <url><loc>/reference/get_project_name.html</loc></url>
@@ -67,6 +68,7 @@
 <url><loc>/reference/log_job_failure.html</loc></url>
 <url><loc>/reference/log_job_success.html</loc></url>
 <url><loc>/reference/mutate_columns_to_posixct.html</loc></url>
+<url><loc>/reference/project_creation_descriptions.html</loc></url>
 <url><loc>/reference/project_life_cycle_descriptions.html</loc></url>
 <url><loc>/reference/project_purpose_labels.html</loc></url>
 <url><loc>/reference/project_purpose_other_research_labels.html</loc></url>

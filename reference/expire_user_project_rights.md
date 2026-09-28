@@ -76,7 +76,7 @@ expire_user_project_rights(
 #> # A tibble: 2 × 3
 #>   project_id username expiration
 #>        <int> <chr>    <date>    
-#> 1         34 bob      2026-08-13
-#> 2         34 dan      2026-08-13
+#> 1         34 bob      2026-09-28
+#> 2         34 dan      2026-09-28
 #> 
 ```

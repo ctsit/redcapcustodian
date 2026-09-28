@@ -90,6 +90,9 @@
 - [`get_package_scope_var()`](get_package_scope_var.md) : Get the value
   from the redcapcustodian.env environment
 
+- [`get_project_creations()`](get_project_creations.md) :
+  get_project_creations
+
 - [`get_project_instance()`](get_project_instance.md) : Fetches the
   package-scoped value of project_instance
 
@@ -149,6 +152,9 @@
 
 - [`mutate_columns_to_posixct()`](mutate_columns_to_posixct.md) :
   mutate_columns_to_posixct
+
+- [`project_creation_descriptions`](project_creation_descriptions.md) :
+  project_creation_descriptions
 
 - [`project_life_cycle_descriptions`](project_life_cycle_descriptions.md)
   : project_life_cycle_descriptions

@@ -1,5 +1,19 @@
 # Changelog
 
+## redcapcustodian 1.29.0 (released 2026-09-28)
+
+- Update Dockerfile ([@pbchase](https://github.com/pbchase))
+  - Build on top of rocker/verse:4 instead of a specific version of 4
+- Add redcap_log_event13-15 to log_event_tables
+  ([@pbchase](https://github.com/pbchase))
+  - REDCap has added new log_event tables since log_event_tables was
+    last updated. Add redcap_log_event13, 14, and 15 to the vector so
+    queries over the full log event history (get_project_life_cycle(),
+    get_project_creations()) cover them too.
+- Add get_project_creations() for fast project-creation queries
+  ([@pbchase](https://github.com/pbchase),
+  [\#183](https://github.com/ctsit/redcapcustodian/issues/183))
+
 ## redcapcustodian 1.28.3 (released 2026-08-13)
 
 - Update scrape_user_api_tokens()

@@ -27,13 +27,13 @@ Source:
 
 Chase P, James-Woodley L, Chesney K, Bentz M, Kamma S (2026).
 *redcapcustodian: Data automation for R-centric workflows with a nod
-towards REDCap*. R package version 1.28.3,
+towards REDCap*. R package version 1.29.0,
 <https://ctsit.github.io/redcapcustodian/>.
 
     @Manual{,
       title = {redcapcustodian: Data automation for R-centric workflows with a nod towards REDCap},
       author = {Philip Chase and Laurence James-Woodley and Kyle Chesney and Michael Bentz and Sai Pavan Kamma},
       year = {2026},
-      note = {R package version 1.28.3},
+      note = {R package version 1.29.0},
       url = {https://ctsit.github.io/redcapcustodian/},
     }
