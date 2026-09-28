@@ -10,7 +10,10 @@ log_event_tables <- c(
   "redcap_log_event9",
   "redcap_log_event10",
   "redcap_log_event11",
-  "redcap_log_event12"
+  "redcap_log_event12",
+  "redcap_log_event13",
+  "redcap_log_event14",
+  "redcap_log_event15"
 )
 
 # write the test data

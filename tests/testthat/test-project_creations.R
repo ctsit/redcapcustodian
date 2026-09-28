@@ -1,7 +1,6 @@
-testthat::test_that("get_project_life_cycle caches and returns event_date, log_event_table, and description", {
+testthat::test_that("get_project_creations caches and returns event_date, log_event_table, and description", {
   set_script_run_time()
   # build test tables in memory
-  # t_conn <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
   t_conn <- DBI::dbConnect(RSQLite::SQLite(), dbname = ":memory:")
 
   purrr::walk(
@@ -16,13 +15,13 @@ testthat::test_that("get_project_life_cycle caches and returns event_date, log_e
 
   cache_file <- tempfile()
 
-  result <- get_project_life_cycle(
+  result <- get_project_creations(
     rc_conn = t_conn,
     cache_file = cache_file,
     read_cache = F
   )
 
-  cached_result <- get_project_life_cycle(
+  cached_result <- get_project_creations(
     rc_conn = t_conn,
     cache_file = cache_file,
     read_cache = T
@@ -40,7 +39,7 @@ testthat::test_that("get_project_life_cycle caches and returns event_date, log_e
     dplyr::filter(start_date <= .data$event_date) %>%
     nrow()
 
-  time_filtered_result <- get_project_life_cycle(
+  time_filtered_result <- get_project_creations(
     rc_conn = t_conn,
     start_date = start_date,
     cache_file = cache_file,
@@ -54,7 +53,7 @@ testthat::test_that("get_project_life_cycle caches and returns event_date, log_e
     rep(TRUE, nrow(result))
   )
   testthat::expect_equal(
-    result$description_base_name %in% redcapcustodian::project_life_cycle_descriptions,
+    result$description_base_name %in% redcapcustodian::project_creation_descriptions,
     rep(TRUE, nrow(result))
   )
   testthat::expect_equal(records_to_include, nrow(time_filtered_result))

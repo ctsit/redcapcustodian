@@ -5,13 +5,13 @@
 \alias{log_event_tables}
 \title{log_event_tables}
 \format{
-A vector with 9 elements
+A vector with 15 elements
 }
 \usage{
 log_event_tables
 }
 \description{
-A vector of the names of the 9 redcap log event tables
+A vector of the names of the 15 redcap log event tables
 }
 \details{
 DETAILS

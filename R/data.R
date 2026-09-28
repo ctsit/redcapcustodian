@@ -86,10 +86,17 @@
 "get_redcap_email_revisions_test_data"
 
 #' @title log_event_tables
-#' @description A vector of the names of the 9 redcap log event tables
-#' @format A vector with 9 elements
+#' @description A vector of the names of the 15 redcap log event tables
+#' @format A vector with 15 elements
 #' @details DETAILS
 "log_event_tables"
+
+#' @title project_creation_descriptions
+#' @description A character vector of the descriptions used in the redcap_log_event table
+#'   to describe the different ways a REDCap Project can be created
+#' @format A character vector with 7 elements
+#' @details DETAILS
+"project_creation_descriptions"
 
 #' @title project_life_cycle_descriptions
 #' @description A character vector of the descriptions used in the redcap_log_event table
