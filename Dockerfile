@@ -1,4 +1,4 @@
-FROM rocker/verse:4.5.3
+FROM rocker/verse:4
 
 WORKDIR /home/rocker
 
